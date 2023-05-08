@@ -56,7 +56,7 @@ const AddPays: React.FC<Props> = ({data_props}) => {
         })
         .catch((err) => {
           if (err.response.status === 400) {
-            setResponse(err.response.data);
+            setResponseError(err.response.data);
           }
           setIsSubmit(false);
         });

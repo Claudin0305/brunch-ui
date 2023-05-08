@@ -17,21 +17,21 @@ import {
 type Props = {
   data: any;
 };
-const TablePays: React.FC<Props> = ({ data }) => {
+const TableVille: React.FC<Props> = ({ data }) => {
    const handleCellClick = (param: any, event: MouseEvent) => {
     event.stopPropagation();
   };
 
   const getRowId = (row:any):GridRowId => {
-  return row.id_pays;
+  return row.id_ville;
 };
 
   const handleRowClick = (param: any, event: MouseEvent) => {
     event.stopPropagation();
   };
-  //  const handlePageSizeChange = (params: GridPageChangeParams) => {
-  //   setPageSize(params.pageSize);
-  // };
+//    const handlePageSizeChange = (params: GridPageChangeParams) => {
+//     setPageSize(params.pageSize);
+//   };
  const [pageSize, setPageSize] = React.useState<number>(10);
   const actionSetting = {
     sortable: false,
@@ -48,13 +48,7 @@ const TablePays: React.FC<Props> = ({ data }) => {
       // width:100,
       flex:1,
     },
-    {
-      field: "pays_abbreviation",
-      headerName: "Abréviation",
-      // renderCell: (value) => <PersoToolTip value={value} />,
-      // width:100,
-      flex:1,
-    },
+
 
 
 
@@ -73,8 +67,8 @@ const TablePays: React.FC<Props> = ({ data }) => {
         //   )}
         // </div>
         <MenuAction
-        path_details={`/pays/show/${cellValues.id}`}
-        path_edit={`/pays/edit/${cellValues.id}`}
+        path_details={`/villes/show/${cellValues.id}`}
+        path_edit={`/villes/edit/${cellValues.id}`}
         />
       ),
     },
@@ -125,4 +119,4 @@ const TablePays: React.FC<Props> = ({ data }) => {
   );
 };
 
-export default TablePays;
+export default TableVille;
