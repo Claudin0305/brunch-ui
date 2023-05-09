@@ -7,6 +7,7 @@ import ChurchIcon from '@mui/icons-material/Church';
 import PersonIcon from '@mui/icons-material/Person';
 import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
 import LocationCityIcon from '@mui/icons-material/LocationCity';
+import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 type nav = {
   path: string;
   name: string;
@@ -19,6 +20,11 @@ const SideBare: React.FC = () => {
       path: "/dashboard",
       icon: <DashboardCustomizeRounded/>,
       name: "Tableau de bord",
+    },
+    {
+      path: "/devises",
+      icon: <MonetizationOnIcon />,
+      name: "Devises",
     },
     {
       path: "/pays",
