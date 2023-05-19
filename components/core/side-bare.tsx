@@ -8,6 +8,9 @@ import PersonIcon from '@mui/icons-material/Person';
 import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
 import LocationCityIcon from '@mui/icons-material/LocationCity';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
+import { GrStatusInfo } from "react-icons/gr";
+import SettingsEthernetIcon from '@mui/icons-material/SettingsEthernet';
+import WcIcon from '@mui/icons-material/Wc';
 type nav = {
   path: string;
   name: string;
@@ -20,6 +23,21 @@ const SideBare: React.FC = () => {
       path: "/dashboard",
       icon: <DashboardCustomizeRounded/>,
       name: "Tableau de bord",
+    },
+    {
+      path: "/civilites",
+      icon: <WcIcon />,
+      name: "Civilités",
+    },
+    {
+      path: "/tranches-ages",
+      icon: <SettingsEthernetIcon />,
+      name: "Tranches-age",
+    },
+    {
+      path: "/statuts",
+      icon: <GrStatusInfo />,
+      name: "Statuts",
     },
     {
       path: "/devises",

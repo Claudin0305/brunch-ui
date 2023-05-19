@@ -7,15 +7,15 @@ import AddIcon from '@mui/icons-material/Add';
 type Props = {
   children: ReactNode;
 };
-const DeviseLayout: React.FC<Props> = ({ children }) => {
+const CiviliteLayout: React.FC<Props> = ({ children }) => {
   const router = useRouter();
   return (
     <div className="relative px-4">
       <div className="flex flex-col w-full pb-8">
         <div className={"flex justify-center md:justify-start pt-8 mb-8 gap-8"}>
-          {router.pathname.includes("add")? <LinkButton path="/devises" text="Lister devises" icon={<ListAltIcon/>}/>:<LinkButton path="/devises/add" text="Ajouter devises" icon={<AddIcon/>}/>}
-            {router.pathname.includes('edit') && <LinkButton path="/devises" text="Lister devises" icon={<ListAltIcon/>}/>}
-            {router.pathname.includes('show') && <LinkButton path="/devises" text="Lister devises" icon={<ListAltIcon/>}/>}
+          {router.pathname.includes("add")? <LinkButton path="/civilites" text="Lister civilites" icon={<ListAltIcon/>}/>:<LinkButton path="/civilites/add" text="Ajouter civilites" icon={<AddIcon/>}/>}
+            {router.pathname.includes('edit') && <LinkButton path="/civilites" text="Lister civilites" icon={<ListAltIcon/>}/>}
+            {router.pathname.includes('show') && <LinkButton path="/civilites" text="Lister civilites" icon={<ListAltIcon/>}/>}
           {/* {router.pathname.includes("add") ? (
             <LinkButton path="/pays" text="Lister pays" icon={<ListAltIcon/>} />
           ) : (
@@ -28,4 +28,4 @@ const DeviseLayout: React.FC<Props> = ({ children }) => {
   );
 };
 
-export default DeviseLayout;
+export default CiviliteLayout;
