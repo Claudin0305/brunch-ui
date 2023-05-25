@@ -5,7 +5,7 @@ import React, { MouseEvent } from "react";
 import Link from 'next/link'
 import Button from "@mui/material/Button";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import CiviliteLayout from "@/components/civilites/civilite-layout";
+import EventLayout from "@/components/evenements/event-layout";
 import Swal from 'sweetalert2'
 import { useRouter } from 'next/router'
 
@@ -16,8 +16,8 @@ type Props = {
 
 const Page: React.FC<Props> = ({ data }) => {
   const router = useRouter()
-  const deleteCivilite = (id: number) => {
-    fetch(`${process.env.base_route}/civilites/${id}`, {
+  const deleteEvent = (id: number) => {
+    fetch(`${process.env.base_route}/events/${id}`, {
       method: "DELETE",
 
       headers: {
@@ -39,7 +39,7 @@ const Page: React.FC<Props> = ({ data }) => {
         })
 
 
-        router.push('/civilites')
+        router.push('/evenements')
 
       }
     }).catch((e) => {
@@ -55,7 +55,7 @@ const Page: React.FC<Props> = ({ data }) => {
   const handleDelete = (event: MouseEvent) => {
     Swal.fire({
       title: 'Etes-vous sûr?',
-      text: "Supprimer " + data.libelle,
+      text: "Supprimer ",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#2563eb',
@@ -70,7 +70,7 @@ const Page: React.FC<Props> = ({ data }) => {
         //   'Your file has been deleted.',
         //   'success'
         // )
-        deleteCivilite(data.id_civilite)
+        deleteEvent(data.id_event)
       }
     })
 
@@ -81,18 +81,18 @@ const Page: React.FC<Props> = ({ data }) => {
   return (
     <Layout>
       <Head>
-        <title>Civilité | Détails</title>
+        <title>Evénement | Détails</title>
       </Head>
-      <CiviliteLayout>
+      <EventLayout>
         <div className="bg-white px-8 py-4 mb-4 shadow-md h-[calc(100vh_-_215px)] overflow-y-scroll">
 
           <div className="flex flex-col gap-y-4 w-1/2 mx-auto">
             <h1 className="font-bold text-sm md:text-lg capitalize bg-slate-100 text-center col-span-2">
-              Détails Civilité
+              Détails Evénement
             </h1>
             <div className="flex justify-between">
 
-              <p>Civilité</p><p>{data.libelle}</p>
+              <p>Date debut</p><p>{data.date_debut}</p>
             </div>
 
 
@@ -105,7 +105,7 @@ const Page: React.FC<Props> = ({ data }) => {
               Supprimer
             </Button>
 
-            <Link href={`/civilites/edit/${data.id_civilite}`}>
+            <Link href={`/evenements/edit/${data.id_event}`}>
               <Button className="bg-blue-600 capitalize" variant="contained" startIcon={<EditIcon />}>
                 Editer
               </Button>
@@ -113,14 +113,14 @@ const Page: React.FC<Props> = ({ data }) => {
 
           </div>
         </div>
-      </CiviliteLayout>
+      </EventLayout>
     </Layout>
   );
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   // ...
-  const res = await fetch(`${process.env.base_route}/civilites/${context?.params?.id}`)
+  const res = await fetch(`${process.env.base_route}/events/${context?.params?.id}`)
   //    console.log(res)
   const data = await res.json()
 

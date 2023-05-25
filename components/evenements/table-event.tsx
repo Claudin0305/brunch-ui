@@ -17,13 +17,13 @@ import {
 type Props = {
   data: any;
 };
-const TableCivilite: React.FC<Props> = ({ data }) => {
+const TableEvent: React.FC<Props> = ({ data }) => {
    const handleCellClick = (param: any, event: MouseEvent) => {
     event.stopPropagation();
   };
 
   const getRowId = (row:any):GridRowId => {
-  return row.id_civilite;
+  return row.id_event;
 };
 
   const handleRowClick = (param: any, event: MouseEvent) => {
@@ -42,8 +42,8 @@ const TableCivilite: React.FC<Props> = ({ data }) => {
   };
    const columns: GridColDef[] = [
     {
-      field: "libelle",
-      headerName: "Libelle",
+      field: "date_debut",
+      headerName: "Date debut",
       // renderCell: (value) => <PersoToolTip value={value} />,
       // width:100,
       flex:1,
@@ -67,8 +67,8 @@ const TableCivilite: React.FC<Props> = ({ data }) => {
         //   )}
         // </div>
         <MenuAction
-        path_details={`/civilites/show/${cellValues.id}`}
-        path_edit={`/civilites/edit/${cellValues.id}`}
+        path_details={`/events/show/${cellValues.id}`}
+        path_edit={`/events/edit/${cellValues.id}`}
         />
       ),
     },
@@ -119,4 +119,4 @@ const TableCivilite: React.FC<Props> = ({ data }) => {
   );
 };
 
-export default TableCivilite;
+export default TableEvent;

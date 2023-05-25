@@ -34,7 +34,7 @@ const AddCivilite: React.FC<Props> = ({data_props}) => {
 
    const updateCivilite = (data:Inputs) => {
     axios
-        .put(`${process.env.base_route}/civilites/${data_props.id_devise}`, data)
+        .put(`${process.env.base_route}/civilites/${data_props.id_civilite}`, data)
         .then((response) => {
           if (response.status === 200) {
 

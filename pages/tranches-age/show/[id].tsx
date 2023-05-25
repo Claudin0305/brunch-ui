@@ -5,7 +5,7 @@ import React, { MouseEvent } from "react";
 import Link from 'next/link'
 import Button from "@mui/material/Button";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import TranchesAgeLayout from "@/components/tranches-age/tranches-age-layout";
+import TranchesAgeLayout from "@/components/tranches-ages/tranches-age-layout";
 import Swal from 'sweetalert2'
 import { useRouter } from 'next/router'
 

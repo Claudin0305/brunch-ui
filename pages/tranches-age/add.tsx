@@ -1,9 +1,9 @@
 import Layout from "@/components/home/layout";
 import Head from "next/head";
 import React from "react";
-import TranchesAgeLayout from "@/components/tranches-age/tranches-age-layout";
+import TranchesAgeLayout from "@/components/tranches-ages/tranches-age-layout";
 // import AddP
-import AddTranchesAge from "@/components/tranches-age/add-tranches-age";
+import AddTranchesAge from "@/components/tranches-ages/add-tranches-age";
 
 const Add:React.FC = () => {
   return (

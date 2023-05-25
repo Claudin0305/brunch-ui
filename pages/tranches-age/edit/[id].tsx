@@ -2,8 +2,8 @@ import Layout from "@/components/home/layout";
 import Head from "next/head";
 import React from "react";
 import { GetServerSideProps } from 'next'
-import TranchesAgeLayout from "@/components/tranches-age/tranches-age-layout";
-import AddTranchesAge from "@/components/tranches-age/add-tranches-age";
+import TranchesAgeLayout from "@/components/tranches-ages/tranches-age-layout";
+import AddTranchesAge from "@/components/tranches-ages/add-tranches-age";
 type Props = {
   data: any;
 }

@@ -11,6 +11,7 @@ import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import { GrStatusInfo } from "react-icons/gr";
 import SettingsEthernetIcon from '@mui/icons-material/SettingsEthernet';
 import WcIcon from '@mui/icons-material/Wc';
+import EventIcon from '@mui/icons-material/Event';
 type nav = {
   path: string;
   name: string;
@@ -23,6 +24,11 @@ const SideBare: React.FC = () => {
       path: "/dashboard",
       icon: <DashboardCustomizeRounded/>,
       name: "Tableau de bord",
+    },
+    {
+      path: "/evenements",
+      icon: <EventIcon />,
+      name: "Evénements",
     },
     {
       path: "/civilites",

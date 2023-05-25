@@ -1,8 +1,8 @@
 import React from 'react'
 import Layout from '@/components/home/layout'
 import Head from 'next/head'
-import TranchesAgeLayout from '@/components/tranches-age/tranches-age-layout';
-import TableTranchesAge from '@/components/tranches-age/table-tranches-age';
+import TranchesAgeLayout from '@/components/tranches-ages/tranches-age-layout';
+import TableTranchesAge from '@/components/tranches-ages/table-tranches-age';
 type Props = {
   data: any
 }
