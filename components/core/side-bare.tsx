@@ -36,7 +36,7 @@ const SideBare: React.FC = () => {
       name: "Civilités",
     },
     {
-      path: "/tranches-ages",
+      path: "/tranches-age",
       icon: <SettingsEthernetIcon />,
       name: "Tranches-age",
     },

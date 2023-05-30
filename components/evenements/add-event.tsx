@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm, SubmitHandler,  Controller } from "react-hook-form";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Swal from 'sweetalert2'
@@ -9,10 +9,10 @@ import axios from 'axios';
 import { useRouter } from 'next/router'
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import Select from 'react-select';
 
 
 type Inputs = {
-  libelle: string;
   date_debut: String;
   date_fin: String;
   heure_debut: String;
@@ -22,7 +22,7 @@ type Inputs = {
   adr_email_event: String;
   domaine_email: String;
   cible_participation: number;
-  logo_image_event: any
+  image_event: any
 
 
 };
@@ -50,6 +50,14 @@ const format_events: option[] = [
 ]
 
 const AddEvent: React.FC<Props> = ({ data_props }) => {
+  const [valueText, setValueText] =  useState<String|null>("");
+  const [errorDate, setErrorDate] = useState<boolean>(false);
+  const [dateFin, setDateFin] = useState<String>("")
+  const [dateDebut, setDateDebut] = useState<String>("")
+  const [valueTextError, setValueTextError] = useState<boolean>(false);
+  const [defaultDate, setDefaultDate] = useState<String | null>("")
+  const [previewImage, setPreviewImage] = useState<String>("")
+  const [currentImage, setCurrentImage] = useState<File>()
   const  modules  = {
     toolbar: [
         [{ font: [] }],
@@ -67,22 +75,51 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
 
   const router = useRouter()
   const { register, handleSubmit, watch, reset, setValue, control, formState: { errors } } = useForm<Inputs>();
+  const min = 1;
   const [isSubmit, setIsSubmit] = useState<boolean>(false);
 
   const [responseError, setResponseError] = useState<any>(null);
   useEffect(() => {
 
     if (data_props !== null) {
-      setValue('libelle', data_props.libelle);
+      setValue('domaine_email', data_props.domaine_email);
+      setValue('domaine_email', data_props.domaine_email);
 
     }
   }, [])
 
+  useEffect(()=>{
+    setValueTextError(valueText ==="<p><br></p>" || valueText === null || valueText ==="")
+
+  }, [valueText])
 
 
-  const updateEvent = (data: Inputs) => {
+  useEffect(()=>{
+ const today = new Date();
+  const year = today.getFullYear();
+  let month = today.getMonth() + 1;
+  let day = today.getDate();
+  if(month < 10){
+    month = '0' + month;
+  }
+  if(day < 10){
+    day = '0' + day;
+  }
+  const formattedDate = `${year}-${month}-${day}`
+  setDefaultDate(formattedDate);
+  setDateFin(formattedDate)
+  setDateDebut(formattedDate)
+  }, [])
+
+
+
+  const updateEvent = (data: FormData) => {
     axios
-      .put(`${process.env.base_route}/events/${data_props.id_event}`, data)
+      .put(`${process.env.base_route}/events/${data_props.id_event}`, data, {
+                headers: {
+                  "Content-Type": "multipart/form-data",
+                },
+              })
       .then((response) => {
         if (response.status === 200) {
 
@@ -109,9 +146,14 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
 
 
   };
-  const createEvent = (data: Inputs) => {
 
-    axios.post(`${process.env.base_route}/events`, data).then(response => {
+  const createEvent = (data: FormData) => {
+
+    axios.post(`${process.env.base_route}/events`, data, {
+                headers: {
+                  "Content-Type": "multipart/form-data",
+                },
+              }).then(response => {
       console.log(response);
       if (response.status === 201) {
         Swal.fire({
@@ -127,14 +169,18 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
         })
         setIsSubmit(false);
         reset();
+        setValue('format_event', "");
+        setValueText("");
+        console.log(response);
       }
     }).catch(err => {
       setIsSubmit(false);
-      if (err.response.status === 400) {
-        setResponseError(err.response.data);
-        // console.log(responseError)
-        //sweal error
-      }
+      // console.log(err)
+      // if (err.response.status === 400) {
+      //   setResponseError(err.response.data);
+      //   // console.log(responseError)
+      //   //sweal error
+      // }
     })
 
 
@@ -143,14 +189,33 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
     // console.log(data)
 
     setIsSubmit(true);
+    let formData = new FormData()
+    formData.append("date_debut", data.date_debut)
+    formData.append('date_fin', data.date_fin)
+    formData.append('heure_debut', data.heure_debut)
+    formData.append('heure_fin', data.heure_fin)
+    formData.append('domaine_email', data.domaine_email)
+    formData.append('adr_email_event', data.adr_email_event)
+    formData.append('image', data.image_event[0])
+    formData.append('format_event', data.format_event?.value)
+    formData.append('cible_participation', data.cible_participation)
+    formData.append('text_descriptif', valueText);
+
     if (data_props === null) {
-      createEvent(data);
+
+      createEvent(formData);
     } else {
-      updateEvent(data)
+      updateEvent(formData)
     }
 
   };
 
+  useEffect(()=>{
+    const debut = new Date(dateDebut);
+    const fin = new Date(dateFin)
+    setErrorDate(fin < debut)
+  }, [dateDebut, dateFin])
+  // console.log(previewImage)
   return (
     <div className="container">
       <h1 className="font-bold text-sm md:text-lg capitalize mb-8">
@@ -159,18 +224,9 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
       <form onSubmit={handleSubmit(onSubmit)} className="center">
         {/* register your input into the hook by invoking the "register" function */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* <div className="block">
 
-          <TextField
-            required
-            autoComplete="given-name"
-            fullWidth
-            id="libelle"
-            label="Libelle"
-            {...register("libelle", { required: true })}
-          />
-          {responseError !== null && <Error text={responseError?.libelle}/>}
-          </div> */}
+          <div className="grid col-span-1 md:col-span-2 grid-cols-1 md:grid-cols-4 gap-8">
+
           <div className="block">
             <TextField
               required
@@ -178,11 +234,18 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
               fullWidth
               id="date_debut"
               label="Date debut"
+              defaultValue={defaultDate}
               type="date"
-              defaultValue={"2022-04-17"}
-              {...register("date_debut", { required: true })}
+              value={dateDebut}
+              {...register("date_debut", { required: 'Ce champ est obligatoire!' })}
+              onChange={e=>{
+                setDateFin(defaultDate);
+                setDateDebut(e.target.value.trim())
+                register('date_debut').onChange(e)
+                setErrorDate(false)
+              }}
             />
-
+            {errors?.date_debut && <Error text={errors.date_debut.message}/>}
             {responseError !== null && <Error text={responseError?.libelle} />}
           </div>
           <div className="block">
@@ -196,8 +259,6 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
               defaultValue={"00:00"}
               {...register("heure_debut", { required: true })}
             />
-
-            {responseError !== null && <Error text={responseError?.libelle} />}
           </div>
           <div className="block">
             <TextField
@@ -206,12 +267,21 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
               fullWidth
               id="date_fin"
               label="Date fin"
+              defaultValue={defaultDate}
               type="date"
-              defaultValue={"2022-04-17"}
-              {...register("date_fin", { required: true })}
-            />
+              value={dateFin}
+              {...register("date_fin", { required: 'Ce champ est obligatoire' })}
+              onChange={e=>{
+                setDateFin(e.target.value.trim());
+    register('date_fin').onChange(e);
 
+
+    // console.log(errorDate, 'fin: '+fin.getTime(), 'debut: ' +debut.getTime())
+              }}
+            />
+{errors?.date_fin && <Error text={errors.date_fin.message}/>}
             {responseError !== null && <Error text={responseError?.libelle} />}
+            {errorDate && <Error text={'La valeur de la date de fin est incorrecte!'}/>}
           </div>
           <div className="block">
             <TextField
@@ -221,17 +291,143 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
               id="heure_fin"
               label="Heure fin"
               type="time"
+
               defaultValue={"00:00"}
               {...register("heure_fin", { required: true })}
             />
 
             {responseError !== null && <Error text={responseError?.libelle} />}
           </div>
-          <div className="block col-span-2">
-            <ReactQuill modules={modules} theme="snow" placeholder="Content goes here..." />
+          </div>
+          <div className="grid grid-cols-1 col-span-1 md:col-span-2 md:grid-cols-4 gap-8">
+            <div className="flex-col flex md:-mt-4 ">
+                        <label
+                            className="mb-2"
+                            htmlFor={`format_event`}
+                        >
+                            {" "}
+                            Format événement*{" "}
+                        </label>
+                        <Controller
+                            name={`format_event`}
+                            control={control}
+                            rules={{
+                                required: "Ce champ est obligatoire",
+                            }}
+
+                            render={({ field }) => (
+                                <Select
+                                    {...field}
+                                    placeholder={
+                                        "Choisir le format..."
+                                    }
+                                    isClearable
+                                    options={format_events}
+                                    className="z-50"
+                                />
+                            )}
+                        />{" "}
+{errors?.format_event && <Error text={errors.format_event.message}/>}
+                    </div>
+          <div className="block">
+            <TextField
+              required
+              autoComplete="given-name"
+              fullWidth
+              id="cible_participation"
+              label="Cible participation"
+              type="number"
+              inputProps={{min}}
+              {...register("cible_participation", { required: true, min:{
+                value:1,
+                message: 'La valeur doit être plus grande que 1'
+              } })}
+            />
+
+            {responseError !== null && <Error text={responseError?.libelle} />}
+            {errors?.cible_participation && <Error text={errors.cible_participation.message}/>}
+          </div>
+          <div className="block">
+            <TextField
+              required
+              autoComplete="given-name"
+              fullWidth
+              id="adr_email_event"
+              label="Email événement"
+              type="email"
+              {...register("adr_email_event", { required: true, pattern:{
+                value:/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+                message:"L'email est invalide!"
+              }})}
+            />
+
+            {errors?.adr_email_event && <Error text={errors.adr_email_event.message} />}
+          </div>
+          <div className="block">
+
+
+             <TextField
+              required
+              autoComplete="given-name"
+              fullWidth
+              id="domaine_email"
+              label="Domaine email"
+              type="url"
+
+              {...register("domaine_email", { required: true})}
+            />
 
             {responseError !== null && <Error text={responseError?.libelle} />}
           </div>
+          </div>
+          <div className="row-span-4">
+            <div className="block">
+              {previewImage !== "" && <div className="mb-8 text-center">
+              <img src={previewImage}/>
+ <Button
+ variant="outlined"
+ color="error"
+ className="hover:bg-red-600 hover:text-white"
+ onClick={e=>{
+  setValue('image_event', null);
+  setPreviewImage("");
+ }}
+ >
+        Effacer
+      </Button>
+              </div>}
+            <TextField
+              required
+              autoComplete="given-name"
+              fullWidth
+              id="image_event"
+              label="Image événement"
+              type="file"
+              inputProps={{accept:"image/*"}}
+
+              {...register("image_event", { required: "Ce champ est obligatoire!"})}
+              onChange={e=>{
+                setCurrentImage(e.target.files?.[0]);
+                setPreviewImage(URL.createObjectURL(e.target.files?.[0]));
+                register("image_event").onChange(e)
+              }}
+            />
+            {errors?.image_event && <Error text={errors.image_event.message}/>}
+            {responseError !== null && <Error text={responseError?.libelle} />}
+          </div>
+          </div>
+
+          <div className="row-span-5">
+            <ReactQuill
+            modules={modules}
+            theme="snow"
+            placeholder="Text descriptif...*"
+            onChange={setValueText}
+            />
+            {responseError !== null && <Error text={responseError?.libelle} />}
+          </div>
+
+
 
 
 
@@ -247,9 +443,9 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
           </Button>
 
           <Button
-            disabled={isSubmit}
+            disabled={isSubmit || errorDate || valueTextError}
             type="submit"
-            className="bg-blue-600 capitalize text-white flex items-center justify-center gap-x-2"
+            className={`${isSubmit || errorDate ||valueTextError ? 'bg-blue-300':'bg-blue-600 '} capitalize text-white flex items-center justify-center gap-x-2`}
             variant="contained"
           >
             {isSubmit && <CircularIndeterminate />} <span>{data_props === null ? 'Ajouter' : 'Modifier'}</span>

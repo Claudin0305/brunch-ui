@@ -2,7 +2,7 @@ import React from "react";
 import Stack from "@mui/material/Stack";
 
 type Props = {
-  text: string;
+  text: string | any;
 };
 
 const Error: React.FC<Props> = ({ text }) => {
