@@ -43,16 +43,55 @@ const TableEvent: React.FC<Props> = ({ data }) => {
    const columns: GridColDef[] = [
     {
       field: "date_debut",
-      headerName: "Date debut",
+      headerName: "D. debut",
       // renderCell: (value) => <PersoToolTip value={value} />,
+
+      renderCell: value=>value.row.date_debut.split('T')[0]
+       ,
+      // width:100,
+      flex:1,
+    },
+    {
+      field: "heure_debut",
+      headerName: "H. debut",
+
+
+      flex:1,
+    },
+
+{
+      field: "date_fin",
+      headerName: "D. fin",
+      // renderCell: (value) => <PersoToolTip value={value} />,
+
+      renderCell: value=>value.row.date_fin.split('T')[0]
+       ,
       // width:100,
       flex:1,
     },
 
 
+{
+      field: "heure_fin",
+      headerName: "H. fin",
 
 
+      flex:1,
+    },
+    {
+      field: "cible_participation",
+      headerName: "Cible part.",
 
+
+      flex:1,
+    },
+    {
+      field: "adr_email_event",
+      headerName: "Email",
+
+
+      flex:1,
+    },
 
     {
       field: "Actions",
@@ -67,8 +106,8 @@ const TableEvent: React.FC<Props> = ({ data }) => {
         //   )}
         // </div>
         <MenuAction
-        path_details={`/events/show/${cellValues.id}`}
-        path_edit={`/events/edit/${cellValues.id}`}
+        path_details={`/evenements/show/${cellValues.id}`}
+        path_edit={`/evenements/edit/${cellValues.id}`}
         />
       ),
     },

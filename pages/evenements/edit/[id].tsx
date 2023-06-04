@@ -2,8 +2,8 @@ import Layout from "@/components/home/layout";
 import Head from "next/head";
 import React from "react";
 import { GetServerSideProps } from 'next'
-import CiviliteLayout from "@/components/civilites/civilite-layout";
-import AddCivilite from "@/components/civilites/add-civilite";
+import EventLayout from "@/components/evenements/event-layout";
+import AddEvent from "@/components/evenements/add-event";
 type Props = {
   data: any;
 }
@@ -12,20 +12,20 @@ const Page: React.FC<Props> = ({ data }) => {
   return (
     <Layout>
       <Head>
-        <title>Civilité | Edit</title>
+        <title>Evénement | Edit</title>
       </Head>
-      <CiviliteLayout>
+      <EventLayout>
         <div className="bg-white px-8 py-4 mb-4 shadow-md h-[calc(100vh_-_215px)] overflow-y-scroll">
-          <AddCivilite data_props={data} />
+          <AddEvent data_props={data}/>
         </div>
-      </CiviliteLayout>
+      </EventLayout>
     </Layout>
   );
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   // ...
-  const res = await fetch(`${process.env.base_route}/civilites/${context?.params?.id}`)
+  const res = await fetch(`${process.env.base_route}/events/${context?.params?.id}`)
   //    console.log(res)
   const data = await res.json()
 

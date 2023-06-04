@@ -94,6 +94,8 @@ const Page: React.FC<Props> = ({ data }) => {
 
               <p>Date debut</p><p>{data.date_debut}</p>
             </div>
+            <div dangerouslySetInnerHTML={{ __html: data.text_descriptif }}>
+            </div>
 
 
 
