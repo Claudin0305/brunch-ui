@@ -4,6 +4,9 @@ const nextConfig = {
   env: {
     base_route: "http://localhost:8080/api",
   },
+  images: {
+    domains: ['localhost'],
+  },
 }
 
 module.exports = nextConfig

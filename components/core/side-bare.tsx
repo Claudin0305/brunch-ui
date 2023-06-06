@@ -12,6 +12,7 @@ import { GrStatusInfo } from "react-icons/gr";
 import SettingsEthernetIcon from '@mui/icons-material/SettingsEthernet';
 import WcIcon from '@mui/icons-material/Wc';
 import EventIcon from '@mui/icons-material/Event';
+import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
 type nav = {
   path: string;
   name: string;
@@ -29,6 +30,11 @@ const SideBare: React.FC = () => {
       path: "/evenements",
       icon: <EventIcon />,
       name: "Evénements",
+    },
+    {
+      path: "/locaux-brunch",
+      icon: <MeetingRoomIcon />,
+      name: "Locaux Brunch",
     },
     {
       path: "/civilites",
@@ -72,7 +78,7 @@ const SideBare: React.FC = () => {
     },
   ];
   return (
-    <div className="h-screen flex flex-col w-72 shadow-lg bg-white">
+    <div className="h-screen flex flex-col w-72 shadow-lg bg-white overflow-y-scrol">
       <div className="flex">
         <h1 className="text-2xl uppercase px-4 py-4">brunch ui</h1>
       </div>

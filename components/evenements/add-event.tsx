@@ -97,6 +97,9 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
       setValue('date_fin', date_fin)
       setValue('heure_debut', data_props.heure_debut)
       setValue('heure_fin', data_props.heure_fin)
+      const image = data_props.eventImages?.filter(img=> img.active === true)?.[0]
+      setPreviewImage(`${process.env.base_route}/events/images/${image?.name}`)
+      setValue('image_event', image.name)
 
     }
   }, [])
@@ -361,7 +364,6 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
                 })}
               />
 
-              {responseError !== null && <Error text={responseError?.libelle} />}
               {errors?.cible_participation && <Error text={errors.cible_participation.message} />}
             </div>
             <div className="block">
@@ -407,6 +409,7 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
                 src={previewImage}
                 width={300}
                 height={300}
+                alt={""}
 
                 />
                 </div>

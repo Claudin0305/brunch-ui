@@ -5,10 +5,9 @@ import React, { MouseEvent } from "react";
 import Link from 'next/link'
 import Button from "@mui/material/Button";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import EventLayout from "@/components/evenements/event-layout";
+import DepartementLayout from "@/components/geographie/departements/departement-layout";
 import Swal from 'sweetalert2'
 import { useRouter } from 'next/router'
-import Image from 'next/image'
 
 import EditIcon from '@mui/icons-material/Edit';
 type Props = {
@@ -17,8 +16,8 @@ type Props = {
 
 const Page: React.FC<Props> = ({ data }) => {
   const router = useRouter()
-  const deleteEvent = (id: number) => {
-    fetch(`${process.env.base_route}/events/${id}`, {
+  const deleteDepartement = (id: number) => {
+    fetch(`${process.env.base_route}/departements/${id}`, {
       method: "DELETE",
 
       headers: {
@@ -40,7 +39,7 @@ const Page: React.FC<Props> = ({ data }) => {
         })
 
 
-        router.push('/evenements')
+        router.push('/departements')
 
       }
     }).catch((e) => {
@@ -56,7 +55,7 @@ const Page: React.FC<Props> = ({ data }) => {
   const handleDelete = (event: MouseEvent) => {
     Swal.fire({
       title: 'Etes-vous sûr?',
-      text: "Supprimer ",
+      text: "Supprimer " + data.libelle,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#2563eb',
@@ -71,7 +70,7 @@ const Page: React.FC<Props> = ({ data }) => {
         //   'Your file has been deleted.',
         //   'success'
         // )
-        deleteEvent(data.id_event)
+        deleteDepartement(data.id_departement)
       }
     })
 
@@ -82,31 +81,27 @@ const Page: React.FC<Props> = ({ data }) => {
   return (
     <Layout>
       <Head>
-        <title>Evènement | Détails</title>
+        <title>Département | Details</title>
       </Head>
-      <EventLayout>
+      <DepartementLayout>
         <div className="bg-white px-8 py-4 mb-4 shadow-md h-[calc(100vh_-_215px)] overflow-y-scroll">
 
           <div className="flex flex-col gap-y-4 w-1/2 mx-auto">
             <h1 className="font-bold text-sm md:text-lg capitalize bg-slate-100 text-center col-span-2">
-              Détails Evènement
+              Détails Département
             </h1>
-            <div className="block">
-              <Image
-              src={`${process.env.base_route}/events/images/${data?.eventImages?.filter(img=>img.active===true)?.[0].name}`}
-              width={100}
-              height={100}
-              alt={'logo évènement'}
-              />
+            <div className="flex justify-between">
+
+              <p>Libelle</p><p>{data.libelle}</p>
             </div>
             <div className="flex justify-between">
 
-              <p>Date debut</p><p>{data.date_debut}</p>
+              <p>Abréviation</p><p>{data.dept_abbreviation}</p>
             </div>
-            <div dangerouslySetInnerHTML={{ __html: data.text_descriptif }}>
-            </div>
+            {/* <div className="flex justify-between">
 
-
+              <p>Nombre departement</p><p>{data.departements.length}</p>
+            </div> */}
 
             <hr />
           </div>
@@ -116,7 +111,7 @@ const Page: React.FC<Props> = ({ data }) => {
               Supprimer
             </Button>
 
-            <Link href={`/evenements/edit/${data.id_event}`}>
+            <Link href={`/departments/edit/${data.id_departement}`}>
               <Button className="bg-blue-600 capitalize" variant="contained" startIcon={<EditIcon />}>
                 Editer
               </Button>
@@ -124,14 +119,14 @@ const Page: React.FC<Props> = ({ data }) => {
 
           </div>
         </div>
-      </EventLayout>
+      </DepartementLayout>
     </Layout>
   );
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   // ...
-  const res = await fetch(`${process.env.base_route}/events/${context?.params?.id}`)
+  const res = await fetch(`${process.env.base_route}/departements/${context?.params?.id}`)
   //    console.log(res)
   const data = await res.json()
 
