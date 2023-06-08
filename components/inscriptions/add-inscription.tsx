@@ -11,33 +11,41 @@ import Select from 'react-select';
 
 
 type Inputs = {
-  email_responsable: String;
+  email: String;
+  email_confirmation: String;
+  telephone: String;
+  nom: String;
+  prenom: String;
+  sexe: String;
+  affiliation: String;
+  authorisation_liste: number;
+  abonnement_newletter: number;
   seuil_alerte: number;
   montant_participation: number;
   adresse_no_rue: String;
   id_devise: number;
   id_ville: number;
-  id_event: number;
+  id_civilite: number;
   capacite_totale: number;
   capacite_table: number;
 };
 type Props = {
   data_props: any | null;
   pays: any | null;
-  events: any | null;
-  devises: any | null;
+  tranche_ages: any | null;
+  civilites: any | null;
 }
 type option = {
   label: String;
   value: String | number;
 }
 
-const AddLocalBrunch: React.FC<Props> = ({ data_props, pays, events, devises }) => {
+const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civilites }) => {
   const router = useRouter()
   const min = 1;
   const { register, handleSubmit, watch, reset, setValue, control, formState: { errors } } = useForm<Inputs>();
   const [isSubmit, setIsSubmit] = useState<boolean>(false);
-  const [optionsEvent, setOptionsEvent] = useState<option[] | null>(null);
+  const [optionsCivilite, setOptionsCivilite] = useState<option[] | null>(null);
   const [optionsVille, setOptionsVille] = useState<option[] | null>(null);
   const [optionsDevise, setOptionsDevise] = useState<option[] | null>(null);
   const [capaciteTable, setCapaciteTable] = useState<number>(10)
@@ -55,12 +63,12 @@ const AddLocalBrunch: React.FC<Props> = ({ data_props, pays, events, devises }) 
       const ville = optionsVille?.filter(v=> v.id_ville === data_props.id_ville)?.[0];
       setValue('id_ville', ville);
       const devise = optionsDevise?.filter(v=> v.id_devise === data_props.id_devise)?.[0];
-      setValue('id_devise', devise);
-      const event = optionsEvent?.filter(v=> v.id_event === data_props.id_event)?.[0];
-      setValue('id_event', event);
+      setValue('id_ville', devise);
+      const civilite = optionsCivilite?.filter(v=> v.id_civilite === data_props.id_civilite)?.[0];
+      setValue('id_civilite', civilite);
 
     }
-  }, [optionsDevise])
+  }, [])
 
   useEffect(() => {
     const tableOptions: option[] = [];
@@ -87,26 +95,26 @@ const AddLocalBrunch: React.FC<Props> = ({ data_props, pays, events, devises }) 
   }, []);
   useEffect(() => {
     const tableOptions: option[] = [];
-    events?.sort((a, b) => {
-      let fa = a.id_event,
-        fb = b.id_event;
+    civilites?.sort((a, b) => {
+      let fa = a.libelle,
+        fb = b.libelle;
 
-      if (fa > fb) {
+      if (fa < fb) {
         return -1;
       }
-      if (fa < fb) {
+      if (fa > fb) {
         return 1;
       }
       return 0;
     });
-    events?.forEach(p => {
+    events?.forEach(e => {
       tableOptions.push({
-        label: `évènement-${p.id_event}`,
-        value: p.id_event
+        label: e.libelle,
+        value: e.id_civilite
       })
     })
 
-    setOptionsEvent(tableOptions);
+    setOptionsCivilite(tableOptions);
   }, []);
   useEffect(() => {
     const tableOptions: option[] = [];
@@ -141,7 +149,7 @@ const AddLocalBrunch: React.FC<Props> = ({ data_props, pays, events, devises }) 
 
 
 
-  const updateLocalBrunch = (data: Inputs) => {
+  const updateInscription = (data: Inputs) => {
     axios
       .put(`${process.env.base_route}/locaux-brunch/${data_props.id_local}`, data)
       .then((response) => {
@@ -170,7 +178,7 @@ const AddLocalBrunch: React.FC<Props> = ({ data_props, pays, events, devises }) 
 
 
   };
-  const createLocalBrunch = (data: Inputs) => {
+  const createInscription = (data: Inputs) => {
 
     axios.post(`${process.env.base_route}/locaux-brunch`, data).then(response => {
       console.log(response);
@@ -208,7 +216,7 @@ const AddLocalBrunch: React.FC<Props> = ({ data_props, pays, events, devises }) 
     let formData = new FormData()
     formData.append('id_devise', data.id_devise?.value)
     formData.append('id_ville', data.id_ville?.value)
-    formData.append('id_event', data.id_event?.value)
+    formData.append('id_civilite', data.id_civilite?.value)
     formData.append('capacite_totale', data.capacite_totale)
     formData.append('capacite_table', data.capacite_table)
     formData.append('montant_participation', data.montant_participation)
@@ -220,9 +228,9 @@ const AddLocalBrunch: React.FC<Props> = ({ data_props, pays, events, devises }) 
     setIsSubmit(true);
     if (data_props === null) {
       formData.append('nb_reservation', 0)
-      createLocalBrunch(formData);
+      createInscription(formData);
     } else {
-      updateLocalBrunch(formData)
+      updateInscription(formData)
     }
 
   };
@@ -230,7 +238,7 @@ const AddLocalBrunch: React.FC<Props> = ({ data_props, pays, events, devises }) 
   return (
     <div className="container">
       <h1 className="font-bold text-sm md:text-lg capitalize mb-8">
-        {data_props === null ? 'Ajouter' : 'Modifier'} Local Brunch
+        {data_props === null ? 'Ajouter' : 'Modifier'} Inscription
       </h1>
       <form onSubmit={handleSubmit(onSubmit)} className="center">
         {/* register your input into the hook by invoking the "register" function */}
@@ -238,13 +246,13 @@ const AddLocalBrunch: React.FC<Props> = ({ data_props, pays, events, devises }) 
           <div className="flex-col flex md:-mt-4 z-50">
             <label
               className="mb-2"
-              htmlFor={`id_event`}
+              htmlFor={`id_civilite`}
             >
               {" "}
-              Evènement*{" "}
+              Civilité*{" "}
             </label>
             <Controller
-              name={`id_event`}
+              name={`id_civilite`}
               control={control}
               rules={{
                 required: "Ce champ est obligatoire",
@@ -254,14 +262,14 @@ const AddLocalBrunch: React.FC<Props> = ({ data_props, pays, events, devises }) 
                 <Select
                   {...field}
                   placeholder={
-                    "Choisir évènement..."
+                    "Choisir civilité..."
                   }
                   isClearable
-                  options={optionsEvent}
+                  options={optionsCivilite}
                 />
               )}
             />{" "}
-            {errors?.id_event && <Error text={errors.id_event.message} />}
+            {errors?.id_civilite && <Error text={errors.id_civilite.message} />}
           </div>
           <div className="flex-col flex md:-mt-4 z-50 ">
             <label
@@ -474,4 +482,4 @@ const AddLocalBrunch: React.FC<Props> = ({ data_props, pays, events, devises }) 
   );
 };
 
-export default AddLocalBrunch;
+export default AddInscription;

@@ -1,8 +1,8 @@
 import React from 'react'
 import Layout from '@/components/home/layout'
 import Head from 'next/head'
-import LocalBrunchLayout from '@/components/local-brunch/local-brunch-layout';
-import TableLocalBrunch from '@/components/local-brunch/table-local-brunch';
+import InscriptionLayout from '@/components/local-brunch/local-brunch-layout';
+import TableInscription from '@/components/local-brunch/table-local-brunch';
 type Props = {
   data: any
 }
@@ -11,13 +11,13 @@ const LocalBrunch: React.FC<Props> = ({ data }) => {
   return (
     <Layout>
       <Head>
-        <title>Locaux Brunch | Liste</title>
+        <title>Inscription | Liste</title>
       </Head>
-      <LocalBrunchLayout>
+      <InscriptionLayout>
         <div className="bg-white px-8 py-4 shadow-md h-[calc(100vh_-_200px)]">
-          <TableLocalBrunch data={data} />
+          <TableInscription data={data} />
         </div>
-      </LocalBrunchLayout>
+      </InscriptionLayout>
 
 
 
@@ -26,7 +26,7 @@ const LocalBrunch: React.FC<Props> = ({ data }) => {
 }
 export async function getServerSideProps() {
   // Fetch data from external API
-  const res = await fetch(`${process.env.base_route}/locaux-brunch`)
+  const res = await fetch(`${process.env.base_route}/inscriptions`)
   const data = await res.json()
 
   // Pass data to the page via props
