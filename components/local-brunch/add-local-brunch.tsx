@@ -50,6 +50,7 @@ const AddLocalBrunch: React.FC<Props> = ({ data_props, pays, events, devises }) 
       setValue('capacite_totale', data_props.capacite_totale);
       setValue('capacite_table', data_props.capacite_table);
       setValue('adresse_no_rue', data_props.adresse_no_rue);
+    setValue('nb_reservation', data_props.nb_reservation)
       setValue('montant_participation', data_props.montant_participation);
       setValue('seuil_alerte', data_props.seuil_alerte);
       const ville = optionsVille?.filter(v=> v.id_ville === data_props.id_ville)?.[0];
@@ -187,10 +188,10 @@ const AddLocalBrunch: React.FC<Props> = ({ data_props, pays, events, devises }) 
           confirmButtonText: "Fermer",
         })
         setIsSubmit(false);
+        reset();
         setValue('id_event', null);
         setValue('id_devise', null);
         setValue('id_ville', null);
-        reset();
       }
     }).catch(err => {
       setIsSubmit(false);
@@ -214,6 +215,7 @@ const AddLocalBrunch: React.FC<Props> = ({ data_props, pays, events, devises }) 
     formData.append('montant_participation', data.montant_participation)
     formData.append('email_responsable', data.email_responsable)
     formData.append('seuil_alerte', data.seuil_alerte)
+    formData.append('nb_reservation', data.nb_reservation)
     formData.append('adresse_no_rue', data.adresse_no_rue)
 
 

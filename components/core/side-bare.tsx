@@ -85,7 +85,7 @@ const SideBare: React.FC = () => {
       <div className="flex flex-col">
         {navigation.map(({ path, icon, name }) => (
           <Link
-            className={`flex flex-row gap-x-4 py-2 ${
+            className={`flex flex-row gap-x-4 py-2 hover:bg-blue-50 hover:text-blue-600 ${
               router.pathname.includes( path)
                 ? "bg-blue-50 text-blue-600 border-r-4 border-r-blue-600 font-semibold"
                 : ""

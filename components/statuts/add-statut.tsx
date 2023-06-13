@@ -118,6 +118,7 @@ if(response.status === 201){
             autoComplete="given-name"
             fullWidth
             id="libelle"
+            size="small"
             label="Libelle"
             {...register("libelle", { required: true })}
           />

@@ -155,6 +155,7 @@ const AddVille: React.FC<Props> = ({ data_props, departements }) => {
                             autoComplete="given-name"
                             fullWidth
                             id="libelle"
+                            size="small"
                             label="Libelle"
                             {...register("libelle", { required: true })}
                         />

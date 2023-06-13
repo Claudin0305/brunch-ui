@@ -2,3 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+#event_home{
+background-image: url('/images/bg-image.jpg');
+background-size:cover;
+ background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Do not repeat the image */
+  height: 50vh;
+  background-attachment: fixed;
+}
+
+@media (min-width: 768px){
+    #event_home{
+        height: 70vh;
+    }
+}

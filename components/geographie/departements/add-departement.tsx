@@ -113,6 +113,7 @@ const AddDepartement: React.FC<Props> = ({ data_props, pays }) => {
                     confirmButtonText: "Fermer",
                 })
                 setIsSubmit(false);
+                setValue('id_pays', null)
                 reset();
             }
         }).catch(err => {
@@ -153,6 +154,7 @@ const AddDepartement: React.FC<Props> = ({ data_props, pays }) => {
                             required
                             autoComplete="given-name"
                             fullWidth
+                            size="small"
                             id="libelle"
                             label="Libelle"
                             {...register("libelle", { required: true })}
@@ -165,7 +167,8 @@ const AddDepartement: React.FC<Props> = ({ data_props, pays }) => {
                         required
                         autoComplete="given-name"
                         fullWidth
-                        id="pays_abbreviation"
+                        size="small"
+                        id="dept_abbreviation"
                         label="Abréviation du département"
                         {...register("dept_abbreviation", { required: true })}
                     />

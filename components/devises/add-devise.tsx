@@ -119,6 +119,7 @@ if(response.status === 201){
             required
             autoComplete="given-name"
             fullWidth
+            size="small"
             id="devise"
             label="Devise"
             {...register("devise", { required: true })}
@@ -132,6 +133,7 @@ if(response.status === 201){
             autoComplete="given-name"
             fullWidth
             id="code_devise"
+            size="small"
             label="Code devise"
             {...register("code_devise", { required: true })}
           />

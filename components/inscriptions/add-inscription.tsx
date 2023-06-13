@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import TextField from "@mui/material/TextField";
+import Checkbox from '@mui/material/Checkbox';
 import Button from "@mui/material/Button";
 import Swal from 'sweetalert2'
+import { FormControlLabel } from '@mui/material';
 import CircularIndeterminate from "@/components/core/circular-indeterminate";
 import Error from "@/components/core/error";
 import axios from 'axios';
@@ -11,91 +13,89 @@ import Select from 'react-select';
 
 
 type Inputs = {
-  email: String;
-  email_confirmation: String;
-  telephone: String;
-  nom: String;
-  prenom: String;
-  sexe: String;
-  affiliation: String;
-  authorisation_liste: number;
-  abonnement_newletter: number;
-  seuil_alerte: number;
-  montant_participation: number;
-  adresse_no_rue: String;
-  id_devise: number;
-  id_ville: number;
-  id_civilite: number;
-  capacite_totale: number;
-  capacite_table: number;
+  email: string;
+  email_confirmation: string;
+  tel_participant: string;
+  nom: string;
+  prenom: string;
+  affiliation: string;
+  mode_participation: string;
+  authorisation_liste: string;
+  abonnement_newsletter: string;
+  adresse_no_rue: string;
+  id_local: string | null;
+  id_ville: string | null;
+  id_civilite: string | null;
+  id_event: string | null;
+  id_tranche_age: string | null;
 };
 type Props = {
   data_props: any | null;
   pays: any | null;
   tranche_ages: any | null;
   civilites: any | null;
+  event: any | null;
+  locaux: any | null;
 }
 type option = {
-  label: String;
-  value: String | number;
+  label: string;
+  value: string | number | undefined;
+  id_ville? : string | number | null;
 }
-
-const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civilites }) => {
+const format_events: option[] = [
+  {
+    value: "PRESENTIEL",
+    label: "Présentiel"
+  },
+  {
+    value: "HYBRIDE",
+    label: "Hybride"
+  },
+  {
+    value: "DISTANCIEL",
+    label: "Distanciel"
+  },
+]
+const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civilites, event, locaux }) => {
   const router = useRouter()
   const min = 1;
   const { register, handleSubmit, watch, reset, setValue, control, formState: { errors } } = useForm<Inputs>();
   const [isSubmit, setIsSubmit] = useState<boolean>(false);
   const [optionsCivilite, setOptionsCivilite] = useState<option[] | null>(null);
   const [optionsVille, setOptionsVille] = useState<option[] | null>(null);
-  const [optionsDevise, setOptionsDevise] = useState<option[] | null>(null);
+  const [optionsLocal, setOptionsLocal] = useState<option[] | null>(null);
+  const [optionsTrancheAge, setOptionsTrancheAge] = useState<option[] | null>(null);
   const [capaciteTable, setCapaciteTable] = useState<number>(10)
+  const [selectedVille, setSelectedVille] = useState<option | null>(null);
+  const [selectedMode, setSelectedMode] = useState<option | null>(null);
+  const [formatEventOptions, setFormatEventOptions]= useState<option[]|null>(null)
+  const [errorEmail, setErrorEmail] = useState<boolean>(false);
+  const [identiqueEmail, setIdentiqueEmail] = useState<boolean>(true);
+  const [email, setEmail] = useState<String | null>(null)
 
   const [responseError, setResponseError] = useState<any>(null);
   useEffect(() => {
 
     if (data_props !== null) {
-      setValue('email_responsable', data_props.email_responsable);
-      setValue('capacite_totale', data_props.capacite_totale);
-      setValue('capacite_table', data_props.capacite_table);
-      setValue('adresse_no_rue', data_props.adresse_no_rue);
-      setValue('montant_participation', data_props.montant_participation);
-      setValue('seuil_alerte', data_props.seuil_alerte);
-      const ville = optionsVille?.filter(v=> v.id_ville === data_props.id_ville)?.[0];
-      setValue('id_ville', ville);
-      const devise = optionsDevise?.filter(v=> v.id_devise === data_props.id_devise)?.[0];
-      setValue('id_ville', devise);
-      const civilite = optionsCivilite?.filter(v=> v.id_civilite === data_props.id_civilite)?.[0];
-      setValue('id_civilite', civilite);
+      // setValue('email_responsable', data_props.email_responsable);
+      // setValue('capacite_totale', data_props.capacite_totale);
+      // setValue('capacite_table', data_props.capacite_table);
+      // setValue('adresse_no_rue', data_props.adresse_no_rue);
+      // setValue('montant_participation', data_props.montant_participation);
+      // setValue('seuil_alerte', data_props.seuil_alerte);
+      // const ville = optionsVille?.filter(v=> v.id_ville === data_props.id_ville)?.[0];
+      // setValue('id_ville', ville);
+      // const devise = optionsDevise?.filter(v=> v.id_devise === data_props.id_devise)?.[0];
+      // setValue('id_ville', devise);
+      // const civilite = optionsCivilite?.filter(v=> v.id_civilite === data_props.id_civilite)?.[0];
+      // setValue('id_civilite', civilite);
 
     }
   }, [])
 
   useEffect(() => {
     const tableOptions: option[] = [];
-    devises?.sort((a, b) => {
-      let fa = a.code_devise,
-        fb = b.code_devise;
-
-      if (fa < fb) {
-        return -1;
-      }
-      if (fa > fb) {
-        return 1;
-      }
-      return 0;
-    });
-    devises?.forEach(p => {
-      tableOptions.push({
-        label: `${p.code_devise} (${p.devise})`,
-        value: p.id_devise
-      })
-    })
-
-    setOptionsDevise(tableOptions);
-  }, []);
-  useEffect(() => {
-    const tableOptions: option[] = [];
-    civilites?.sort((a, b) => {
+    tranche_ages?.sort((a, b) => {
       let fa = a.libelle,
         fb = b.libelle;
 
@@ -107,15 +107,45 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
       }
       return 0;
     });
-    events?.forEach(e => {
+    tranche_ages?.forEach(p => {
       tableOptions.push({
-        label: e.libelle,
-        value: e.id_civilite
+        label: p.libelle,
+        value: p.id_tranche_age
       })
     })
 
-    setOptionsCivilite(tableOptions);
+    setOptionsTrancheAge(tableOptions);
   }, []);
+  useEffect(() => {
+    const tableOptions: option[] = [];
+
+    locaux?.forEach(e => {
+      tableOptions.push({
+        label: `Local-${e.id_local}`,
+        value: e.id_local,
+        id_ville: e?.ville?.id_ville
+      })
+    })
+
+    tableOptions?.sort((a, b) => {
+      let fa = a.label,
+        fb = b.label;
+
+      if (fa < fb) {
+        return -1;
+      }
+      if (fa > fb) {
+        return 1;
+      }
+      return 0;
+    });
+    if(selectedVille !== null){
+      const result = tableOptions?.filter(o=> o.id_ville===selectedVille?.value)
+      setOptionsLocal(result);
+    }else{
+      setOptionsLocal([])
+    }
+  }, [selectedVille]);
   useEffect(() => {
     const tableOptions: option[] = [];
     pays?.forEach(p => {
@@ -147,11 +177,53 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
     setOptionsVille(tableOptions);
   }, []);
 
+useEffect(()=>{
+  if(event !== null){
+    //do something
+    if(event.format_event === 'HYBRIDE'){
+      const tableOptions: option[] = [{
+    value: "PRESENTIEL",
+    label: "Présentiel"
+  },
+  {
+    value: "DISTANCIEL",
+    label: "Distanciel"
+  },];
+  setFormatEventOptions(tableOptions)
+    }else{
+      const result = format_events.filter(f=> f.value === event.format_event);
+      setFormatEventOptions(result)
+    }
+  }
+},[event])
 
+useEffect(()=>{
+  const tableOptions: option[] = [];
+    civilites?.sort((a, b) => {
+      let fa = a.libelle,
+        fb = b.libelle;
 
-  const updateInscription = (data: Inputs) => {
+      if (fa < fb) {
+        return -1;
+      }
+      if (fa > fb) {
+        return 1;
+      }
+      return 0;
+    });
+    civilites?.forEach(e => {
+      tableOptions.push({
+        label: e.libelle,
+        value: e.id_civilite
+      })
+    })
+
+    setOptionsCivilite(tableOptions);
+}, [])
+
+  const updateInscription = (data: Inputs | FormData) => {
     axios
-      .put(`${process.env.base_route}/locaux-brunch/${data_props.id_local}`, data)
+      .put(`${process.env.base_route}/participants/${data_props.id_participant}`, data)
       .then((response) => {
         if (response.status === 200) {
 
@@ -178,9 +250,9 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
 
 
   };
-  const createInscription = (data: Inputs) => {
+  const createInscription = (data: Inputs | FormData) => {
 
-    axios.post(`${process.env.base_route}/locaux-brunch`, data).then(response => {
+    axios.post(`${process.env.base_route}/participants`, data).then(response => {
       console.log(response);
       if (response.status === 201) {
         Swal.fire({
@@ -195,9 +267,17 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
           confirmButtonText: "Fermer",
         })
         setIsSubmit(false);
-        setValue('id_event', null);
-        setValue('id_devise', null);
-        setValue('id_ville', null);
+        setValue('id_event', "");
+        setValue('id_tranche_age', "");
+        setValue('id_ville', "");
+        setValue('id_local', "");
+        setValue('id_civilite', "");
+
+    setValue("abonnement_newsletter", "0")
+    setValue("authorisation_liste", "0")
+
+        setSelectedVille(null)
+        setSelectedMode(null)
         reset();
       }
     }).catch(err => {
@@ -211,23 +291,30 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
 
 
   };
+
+
   const onSubmit: SubmitHandler<Inputs> = data => {
     // console.log(data)
     let formData = new FormData()
-    formData.append('id_devise', data.id_devise?.value)
-    formData.append('id_ville', data.id_ville?.value)
-    formData.append('id_civilite', data.id_civilite?.value)
-    formData.append('capacite_totale', data.capacite_totale)
-    formData.append('capacite_table', data.capacite_table)
-    formData.append('montant_participation', data.montant_participation)
-    formData.append('email_responsable', data.email_responsable)
-    formData.append('seuil_alerte', data.seuil_alerte)
-    formData.append('adresse_no_rue', data.adresse_no_rue)
+    formData.append("id_event", event.id_event)
+    formData.append("prenom", data.prenom)
+    formData.append("nom", data.nom)
+    formData.append("email", data.email)
+    formData.append("tel_participant", data.tel_participant)
+    formData.append("adresse_no_rue", data.adresse_no_rue)
+    formData.append("affiliation", data.affiliation)
+    formData.append("abonnement_newsletter", data.abonnement_newsletter)
+    formData.append("authorisation_liste", data.authorisation_liste)
+    formData.append("id_ville", selectedVille?.value)
+    formData.append("mode_participation", selectedMode?.value)
+    formData.append("id_civilite", data.id_civilite?.value)
+    formData.append("id_tranche_age", data.id_tranche_age?.value)
+    formData.append("id_local", data.id_local?.value)
+
 
 
     setIsSubmit(true);
     if (data_props === null) {
-      formData.append('nb_reservation', 0)
       createInscription(formData);
     } else {
       updateInscription(formData)
@@ -271,6 +358,137 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
             />{" "}
             {errors?.id_civilite && <Error text={errors.id_civilite.message} />}
           </div>
+          <div className="block">
+
+            <TextField
+              required
+              autoComplete="given-name"
+              fullWidth
+              id="nom"
+              size="small"
+              type="text"
+              label="Nom"
+              {...register("nom", { required: "Ce champ est obligatoire" })}
+              className="md:mt-3"
+            />
+            {/* {responseError !== null && <Error text={responseError?.libelle}/>} */}
+            {errors?.nom && <Error text={errors.nom.message} />}
+          </div>
+          <div className="block">
+
+            <TextField
+              required
+              autoComplete="given-name"
+              fullWidth
+              id="prenom"
+              size="small"
+              type="text"
+              label="Prenom"
+              {...register("prenom", { required: "Ce champ est obligatoire" })}
+              className="md:mt-3"
+            />
+            {/* {responseError !== null && <Error text={responseError?.libelle}/>} */}
+            {errors?.prenom && <Error text={errors.prenom.message} />}
+          </div>
+          <div className="block">
+
+            <TextField
+              required
+              autoComplete="given-name"
+              fullWidth
+              id="tel_participant"
+              size="small"
+              type="text"
+              label="Téléphone"
+              {...register("tel_participant", { required: "Ce champ est obligatoire" })}
+              className=""
+            />
+            {/* {responseError !== null && <Error text={responseError?.libelle}/>} */}
+            {errors?.tel_participant && <Error text={errors.tel_participant.message} />}
+          </div>
+          <div className="block">
+
+            <TextField
+              required
+              autoComplete="given-name"
+              size="small"
+              fullWidth
+              id="email"
+              type="email"
+              label="Email"
+              {...register("email", {
+                required: "Ce champ est obligatoire", pattern: {
+                  value: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+                  message: "L'email est invalide!"
+                }
+              })}
+              onChange={e=>{
+                //do something
+                let pattern = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+                setErrorEmail(!pattern.test(e?.target.value))
+                setEmail(e?.target.value);
+                setValue('email_confirmation', "")
+                register('email').onChange(e);
+              }}
+            />
+            {/* {responseError !== null && <Error text={responseError?.libelle}/>} */}
+            {errors?.email && <Error text={errors.email.message} />}
+          </div>
+          <div className="block">
+
+            <TextField
+              required
+              autoComplete="given-name"
+              size="small"
+              disabled={errorEmail}
+              fullWidth
+              id="email_confirmation"
+              type="email"
+              label="Confirmation email"
+              {...register("email_confirmation", {
+                required: "Ce champ est obligatoire", pattern: {
+                  value: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+                  message: "L'email est invalide!"
+                }
+              })}
+              onChange={e=>{
+                setIdentiqueEmail(e?.target?.value === email);
+                register('email_confirmation').onChange(e);
+              }}
+
+            />
+            {/* {responseError !== null && <Error text={responseError?.libelle}/>} */}
+            {errors?.email_confirmation && <Error text={errors.email_confirmation.message} />}
+            {!identiqueEmail && <Error text={"Les emails ne sont pas indentiques!"}/>}
+          </div>
+          <div className="flex-col flex md:-mt-4 z-50 ">
+            <label
+              className="mb-2"
+              htmlFor={`id_tranche_age`}
+            >
+              {" "}
+              Tranche d'âge{" "}
+            </label>
+            <Controller
+              name={`id_tranche_age`}
+              control={control}
+              // rules={{
+              //   required: "Ce champ est obligatoire",
+              // }}
+
+              render={({ field }) => (
+                <Select
+                  {...field}
+                  placeholder={
+                    "Choisir tranche d'âge..."
+                  }
+                  isClearable
+                  options={optionsTrancheAge}
+                />
+              )}
+            />{" "}
+            {errors?.id_tranche_age && <Error text={errors.id_tranche_age.message} />}
+          </div>
           <div className="flex-col flex md:-mt-4 z-50 ">
             <label
               className="mb-2"
@@ -294,6 +512,11 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
                   }
                   isClearable
                   options={optionsVille}
+                  value={selectedVille}
+                 onChange={e=>{
+                  setSelectedVille(e)
+                  setValue('id_ville', e)
+                 }}
                 />
               )}
             />{" "}
@@ -306,7 +529,6 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
               autoComplete="given-name"
               fullWidth
               id="adresse_no_rue"
-              inputProps={{ min }}
               size="small"
               type="text"
               label="Adresse"
@@ -316,148 +538,121 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
             {/* {responseError !== null && <Error text={responseError?.libelle}/>} */}
             {errors?.adresse_no_rue && <Error text={errors.adresse_no_rue.message} />}
           </div>
-          <div className="block">
-
-            <TextField
-              required
-              autoComplete="given-name"
-              size="small"
-              fullWidth
-              id="email_responsable"
-              inputProps={{ min }}
-              type="email"
-              label="Email responsable"
-              {...register("email_responsable", {
-                required: "Ce champ est obligatoire", pattern: {
-                  value: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-                  message: "L'email est invalide!"
-                }
-              })}
-            />
-            {/* {responseError !== null && <Error text={responseError?.libelle}/>} */}
-            {errors?.email_responsable && <Error text={errors.email_responsable.message} />}
-          </div>
-          <div className="block">
-
-            <TextField
-              required
-              autoComplete="given-name"
-              fullWidth
-              id="capacite_totale"
-              type='number'
-              size="small"
-              inputProps={{ min }}
-              label="Capacité totale"
-              {...register("capacite_totale", {
-                required: "Ce champ est obligatoire", min: {
-                  value: 1,
-                  message: 'La valeur doit être plus grande que 1'
-                }
-              })}
-            />
-            {/* {responseError !== null && <Error text={responseError?.libelle}/>} */}
-            {errors?.capacite_totale && <Error text={errors.capacite_totale.message} />}
-          </div>
-          <div className="block">
-
-            <TextField
-              required
-              autoComplete="given-name"
-              fullWidth
-              id="capacite_table"
-              type='number'
-              defaultValue={10}
-              inputProps={{ min }}
-              value={capaciteTable}
-              size="small"
-              label="Capacité table"
-              {...register("capacite_table", { required: "Ce champ est obligatoire" })}
-              onChange={e => {
-                setCapaciteTable(e.target.value);
-                register('capacite_table').onChange(e);
-              }}
-            />
-            {/* {responseError !== null && <Error text={responseError?.libelle}/>} */}
-            {errors?.capacite_table && <Error text={errors.capacite_table.message} />}
-          </div>
-
-
-          <div className="block">
-
-            <TextField
-              required
-              autoComplete="given-name"
-              fullWidth
-              id="seuil_alerte"
-              type='number'
-              size="small"
-              inputProps={{ min }}
-              label="Seuil alerte"
-              {...register("seuil_alerte", {
-                required: "Ce champ est obligatoire", min: {
-                  value: 1,
-                  message: 'La valeur doit être plus grande que 1'
-                }
-              })}
-              className="md:mt-4"
-            />
-            {/* {responseError !== null && <Error text={responseError?.libelle}/>} */}
-            {errors?.seuil_alerte && <Error text={errors.seuil_alerte.message} />}
-          </div>
-          <div className="block">
-
-            <TextField
-              required
-              autoComplete="given-name"
-              fullWidth
-              size="small"
-              id="montant_participation"
-              type='number'
-              // step="any"
-              inputProps={{ min: 0 }}
-              label="Montant participation"
-              {...register("montant_participation", {
-                required: "Ce champ est obligatoire", min: {
-                  value: 0,
-                  message: 'La valeur doit être plus grande ou égale à 0'
-                }
-              })}
-              className="md:mt-4"
-            />
-            {/* {responseError !== null && <Error text={responseError?.libelle}/>} */}
-            {errors?.montant_participation && <Error text={errors.montant_participation.message} />}
-          </div>
-
-          <div className="flex-col flex md:-mt-4 z-50">
+          <div className="flex-col flex md:-mt-4 z-40">
             <label
               className="mb-2"
-              htmlFor={`id_devise`}
+              htmlFor={`mode_participation`}
             >
               {" "}
-              Devise*{" "}
+              Mode participation*{" "}
             </label>
             <Controller
-              name={`id_devise`}
+              name={`mode_participation`}
+              control={control}
+              // rules={{
+              //   required: "Ce champ est obligatoire",
+              // }}
+
+              render={({ field }) => (
+                <Select
+                  {...field}
+                  placeholder={
+                    "Choisir mode participation..."
+                  }
+                  isClearable
+                  options={formatEventOptions}
+                  value={selectedMode}
+                  onChange={e=>{
+                    setSelectedMode(e);
+
+                  }}
+                />
+              )}
+            />{" "}
+            {errors?.mode_participation && <Error text={errors.mode_participation.message} />}
+          </div>
+
+
+
+                  {selectedVille !== null  && selectedMode && selectedMode.value==="PRESENTIEL" &&
+<div className="flex-col flex md:-mt-4 z-40">
+            <label
+              className="mb-2"
+              htmlFor={`id_local`}
+            >
+              {" "}
+              Local*{" "}
+            </label>
+            <Controller
+              name={`id_local`}
               control={control}
               rules={{
-                required: "Ce champ est obligatoire",
+                required: {message:"Ce champ est obligatoire",
+                value:selectedMode?.value === 'PRESENTIEL'
+              },
               }}
 
               render={({ field }) => (
                 <Select
                   {...field}
                   placeholder={
-                    "Choisir devise..."
+                    "Choisir local..."
                   }
                   isClearable
-                  options={optionsDevise}
+                  options={optionsLocal}
                 />
               )}
             />{" "}
-            {errors?.id_devise && <Error text={errors.id_devise.message} />}
-          </div>
+            {errors?.id_local && <Error text={errors.id_local.message} />}
+          </div>}
+ <div className="block">
 
-        </div>
+            <TextField
+              required
+              autoComplete="given-name"
+              fullWidth
+              id="affiliation"
+              size="small"
+              type="text"
+              label="Affiliation"
+              {...register("affiliation", { required: "Ce champ est obligatoire" })}
+              className="md:mt-3"
+            />
+            {/* {responseError !== null && <Error text={responseError?.libelle}/>} */}
+            {errors?.affiliation && <Error text={errors.affiliation.message} />}
+          </div>
+          <div className="col-span-3">
+
+ <div className="block">
+
+         <Controller
+        name='authorisation_liste'
+        control={control}
+        defaultValue={false}
+        render={({ field }) => (
+            <FormControlLabel
+                control={<Checkbox {...field} />}
+                label={`J'autorise GRAHN-Monde à afficher mon nom dans le tableau des inscrits au Brunch'${new Date().getFullYear()}`}
+            />
+        )}
+    />
+          </div>
+ <div className="block">
+
+         <Controller
+        name='abonnement_newsletter'
+        control={control}
+        defaultValue={false}
+        render={({ field }) => (
+            <FormControlLabel
+                control={<Checkbox {...field} />}
+                label="Je souhaite recevoir les communications de GRAHN-Monde"
+            />
+        )}
+    />
+          </div>
+          </div>
+         </div>
         <div className="flex justify-end flex-col mt-8 md:flex-row gap-8 mb-8">
           <Button
             type="reset"
@@ -468,9 +663,9 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
           </Button>
 
           <Button
-            disabled={isSubmit}
+            disabled={isSubmit || selectedMode === null || !identiqueEmail}
             type="submit"
-            className="bg-blue-600 capitalize text-white flex items-center justify-center gap-x-2"
+            className={`bg-blue-600 capitalize text-white flex items-center justify-center gap-x-2 ${isSubmit || selectedMode === null ? "bg-blue-400" :""}`}
             variant="contained"
           >
             {isSubmit && <CircularIndeterminate />} <span>{data_props === null ? 'Ajouter' : 'Modifier'}</span>

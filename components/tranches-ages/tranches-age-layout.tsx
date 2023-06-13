@@ -13,9 +13,9 @@ const TranchesAgeLayout: React.FC<Props> = ({ children }) => {
     <div className="relative px-4">
       <div className="flex flex-col w-full pb-8">
         <div className={"flex justify-center md:justify-start pt-8 mb-8 gap-8"}>
-          {router.pathname.includes("add")? <LinkButton path="/tranches-ages" text="Lister tranches-ages" icon={<ListAltIcon/>}/>:<LinkButton path="/tranches-ages/add" text="Ajouter tranches-ages" icon={<AddIcon/>}/>}
-            {router.pathname.includes('edit') && <LinkButton path="/tranches-ages" text="Lister tranches-ages" icon={<ListAltIcon/>}/>}
-            {router.pathname.includes('show') && <LinkButton path="/tranches-ages" text="Lister tranches-ages" icon={<ListAltIcon/>}/>}
+          {router.pathname.includes("add")? <LinkButton path="/tranches-age" text="Lister tranches-ages" icon={<ListAltIcon/>}/>:<LinkButton path="/tranches-age/add" text="Ajouter tranches-age" icon={<AddIcon/>}/>}
+            {router.pathname.includes('edit') && <LinkButton path="/tranches-age" text="Lister tranches-ages" icon={<ListAltIcon/>}/>}
+            {router.pathname.includes('show') && <LinkButton path="/tranches-age" text="Lister tranches-ages" icon={<ListAltIcon/>}/>}
           {/* {router.pathname.includes("add") ? (
             <LinkButton path="/pays" text="Lister pays" icon={<ListAltIcon/>} />
           ) : (

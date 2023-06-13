@@ -9,14 +9,36 @@ import EventLayout from "@/components/evenements/event-layout";
 import Swal from 'sweetalert2'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
+import {useEffect} from "react"
 
 import EditIcon from '@mui/icons-material/Edit';
 type Props = {
   data: any;
 }
 
+type option = {
+  label: String;
+  value: String;
+}
+
+const format_events: option[] = [
+  {
+    value: "PRESENTIEL",
+    label: "Présentiel"
+  },
+  {
+    value: "HYBRIDE",
+    label: "Hybride"
+  },
+  {
+    value: "DISTANCIEL",
+    label: "Distanciel"
+  },
+]
+
 const Page: React.FC<Props> = ({ data }) => {
   const router = useRouter()
+  console.log(data.eventImages[0])
   const deleteEvent = (id: number) => {
     fetch(`${process.env.base_route}/events/${id}`, {
       method: "DELETE",
@@ -91,20 +113,53 @@ const Page: React.FC<Props> = ({ data }) => {
             <h1 className="font-bold text-sm md:text-lg capitalize bg-slate-100 text-center col-span-2">
               Détails Evènement
             </h1>
-            <div className="block">
+            <div className="block mx-auto">
               <Image
-              src={`${process.env.base_route}/events/images/${data?.eventImages?.filter(img=>img.active===true)?.[0].name}`}
-              width={100}
-              height={100}
+              src={`${process.env.base_route}/events/images/${data?.eventImages?.filter(img=>img.active===true)[0]?.name}`}
+              width={300}
+              height={300}
               alt={'logo évènement'}
               />
             </div>
-            <div className="flex justify-between">
-
-              <p>Date debut</p><p>{data.date_debut}</p>
-            </div>
             <div dangerouslySetInnerHTML={{ __html: data.text_descriptif }}>
             </div>
+            <div className="flex justify-between">
+
+              <p>Identifiant</p><p>{`évènement-${data.id_event}`}</p>
+            </div>
+            <div className="flex justify-between">
+
+              <p>Date debut</p><p>{data.date_debut.split('T')[0]}</p>
+            </div>
+            <div className="flex justify-between">
+
+              <p>Heure debut</p><p>{data.heure_debut}</p>
+            </div>
+            <div className="flex justify-between">
+
+              <p>Date fin</p><p>{data.date_fin.split('T')[0]}</p>
+            </div>
+            <div className="flex justify-between">
+
+              <p>Heure fin</p><p>{data.heure_fin}</p>
+            </div>
+            <div className="flex justify-between">
+
+              <p>Cible participation</p><p>{data.cible_participation}</p>
+            </div>
+            <div className="flex justify-between">
+
+              <p>Format évènement</p><p>{format_events.filter(f=>f.value === data.format_event)[0].label}</p>
+            </div>
+            <div className="flex justify-between">
+
+              <p>Email évènement</p><p>{data.adr_email_event}</p>
+            </div>
+            <div className="flex justify-between">
+
+              <p>Domaine email</p><p>{data.domaine_email}</p>
+            </div>
+
 
 
 

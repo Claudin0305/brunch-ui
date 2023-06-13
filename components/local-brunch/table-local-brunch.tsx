@@ -42,78 +42,60 @@ const TableLocalBrunch: React.FC<Props> = ({ data }) => {
   };
    const columns: GridColDef[] = [
     {
-      field: "id_event",
-      headerName: "Evènement",
-      // renderCell: (value) => <PersoToolTip value={value} />,
-      // width:100,
-      renderCell: value=> `évènement-${value.row.idEvent}`
-      ,
+      field: "local",
+      headerName: "Local",
+      renderCell:value=>`Local-${value.row.id_local}`,
       flex:1,
     },
     {
       field: "id_ville",
       headerName: "Ville",
-      // renderCell: (value) => <PersoToolTip value={value} />,
-      // width:100,
-      renderCell: value=>value.row.ville.libelle
-      ,
+      renderCell:value=> value.row.ville.libelle,
       flex:1,
     },
     {
       field: "adresse_no_rue",
       headerName: "Adresse",
-      // renderCell: (value) => <PersoToolTip value={value} />,
-      // width:100,
-
+      // renderCell:value=>`Local-${value.row.id_local}`,
+      flex:1,
+    },
+    {
+      field: "email_responsable",
+      headerName: "Email resp.",
+      // renderCell:value=>`Local-${value.row.id_local}`,
       flex:1,
     },
     {
       field: "capacite_totale",
-      headerName: "Capacité tot.",
-      // renderCell: (value) => <PersoToolTip value={value} />,
-      // width:100,
-      // renderCell: value=>value.row.ville.libelle
-
+      headerName: "capacite tot.",
+      // renderCell:value=>`Local-${value.row.id_local}`,
       flex:1,
     },
     {
       field: "capacite_table",
-      headerName: "Capacité tab.",
-      // renderCell: (value) => <PersoToolTip value={value} />,
-      // width:100,
-      // renderCell: value=>value.row.ville.libelle
-
+      headerName: "capacite tab.",
+      // renderCell:value=>`Local-${value.row.id_local}`,
       flex:1,
     },
     {
       field: "seuil_alerte",
       headerName: "Seuil alerte",
-      // renderCell: (value) => <PersoToolTip value={value} />,
-      // width:100,
-      // renderCell: value=>value.row.ville.libelle
-
+      // renderCell:value=>`Local-${value.row.id_local}`,
       flex:1,
     },
     {
       field: "nb_reservation",
-      headerName: "nb reservation",
-      // renderCell: (value) => <PersoToolTip value={value} />,
-      // width:100,
-      // renderCell: value=>value.row.ville.libelle
-
+      headerName: "Nb reserv.",
+      // renderCell:value=>`Local-${value.row.id_local}`,
       flex:1,
     },
-    {
+
+  {
       field: "montant_participation",
-      headerName: "Montant Part.",
-      // renderCell: (value) => <PersoToolTip value={value} />,
-      // width:100,
-      renderCell: value=>`${value.row.montant_participation} ${value.row.codeDevise}`,
-
+      headerName: "Montant part.",
+      renderCell:value=> `${value.row.montant_participation} ${value.row.codeDevise}`,
       flex:1,
     },
-
-
 
 
 

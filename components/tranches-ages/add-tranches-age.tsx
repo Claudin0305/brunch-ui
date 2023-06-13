@@ -34,7 +34,7 @@ const AddTranchesAge: React.FC<Props> = ({data_props}) => {
 
    const updateTranchesAge = (data:Inputs) => {
     axios
-        .put(`${process.env.base_route}/tranches-ages/${data_props.id_devise}`, data)
+        .put(`${process.env.base_route}/tranche-ages/${data_props.id_devise}`, data)
         .then((response) => {
           if (response.status === 200) {
 
@@ -47,7 +47,7 @@ const AddTranchesAge: React.FC<Props> = ({data_props}) => {
            confirmButtonColor: "#2563eb",
             confirmButtonText: "Fermer",
         })
-        router.push('/tranches-ages')
+        router.push('/tranches-age')
         reset();
           }
 
@@ -63,7 +63,7 @@ const AddTranchesAge: React.FC<Props> = ({data_props}) => {
    };
    const createTranchesAge =  (data:Inputs) => {
 
-  axios.post(`${process.env.base_route}/tranches-ages`, data).then(response=>{
+  axios.post(`${process.env.base_route}/tranche-ages`, data).then(response=>{
 console.log(response);
 if(response.status === 201){
         Swal.fire({
@@ -117,6 +117,7 @@ if(response.status === 201){
             required
             autoComplete="given-name"
             fullWidth
+            size="small"
             id="libelle"
             label="Libelle"
             {...register("libelle", { required: true })}

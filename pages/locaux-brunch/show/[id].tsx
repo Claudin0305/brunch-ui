@@ -5,7 +5,7 @@ import React, { MouseEvent } from "react";
 import Link from 'next/link'
 import Button from "@mui/material/Button";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import DepartementLayout from "@/components/geographie/departements/departement-layout";
+import LocalBrunchLayout from "@/components/local-brunch/local-brunch-layout";
 import Swal from 'sweetalert2'
 import { useRouter } from 'next/router'
 
@@ -16,8 +16,8 @@ type Props = {
 
 const Page: React.FC<Props> = ({ data }) => {
   const router = useRouter()
-  const deleteDepartement = (id: number) => {
-    fetch(`${process.env.base_route}/departements/${id}`, {
+  const deleteLocalBrunch = (id: number) => {
+    fetch(`${process.env.base_route}/locaux-brunch/${id}`, {
       method: "DELETE",
 
       headers: {
@@ -39,7 +39,7 @@ const Page: React.FC<Props> = ({ data }) => {
         })
 
 
-        router.push('/departements')
+        router.push('/locaux-brunch')
 
       }
     }).catch((e) => {
@@ -70,7 +70,7 @@ const Page: React.FC<Props> = ({ data }) => {
         //   'Your file has been deleted.',
         //   'success'
         // )
-        deleteDepartement(data.id_departement)
+        deleteLocalBrunch(data.id_local)
       }
     })
 
@@ -81,27 +81,52 @@ const Page: React.FC<Props> = ({ data }) => {
   return (
     <Layout>
       <Head>
-        <title>Département | Details</title>
+        <title>Local Brunch | Details</title>
       </Head>
-      <DepartementLayout>
+      <LocalBrunchLayout>
         <div className="bg-white px-8 py-4 mb-4 shadow-md h-[calc(100vh_-_215px)] overflow-y-scroll">
 
           <div className="flex flex-col gap-y-4 w-1/2 mx-auto">
             <h1 className="font-bold text-sm md:text-lg capitalize bg-slate-100 text-center col-span-2">
-              Détails Département
+              Détails LocalBrunch
             </h1>
             <div className="flex justify-between">
 
-              <p>Libelle</p><p>{data.libelle}</p>
+              <p>Identifiant</p><p>{`Local-${data.id_local}`}</p>
             </div>
             <div className="flex justify-between">
 
-              <p>Abréviation</p><p>{data.dept_abbreviation}</p>
+              <p>Ville</p><p>{data.ville.libelle}</p>
             </div>
-            {/* <div className="flex justify-between">
+            <div className="flex justify-between">
 
-              <p>Nombre departement</p><p>{data.departements.length}</p>
-            </div> */}
+              <p>Adresse</p><p>{data.adresse_no_rue}</p>
+            </div>
+            <div className="flex justify-between">
+
+              <p>Email resp.</p><p>{data.email_responsable}</p>
+            </div>
+            <div className="flex justify-between">
+
+              <p>Capacité tot.</p><p>{data.capacite_totale}</p>
+            </div>
+            <div className="flex justify-between">
+
+              <p>Capacité tab.</p><p>{data.capacite_table}</p>
+            </div>
+            <div className="flex justify-between">
+
+              <p>Seuil alerte</p><p>{data.seuil_alerte}</p>
+            </div>
+            <div className="flex justify-between">
+
+              <p>Nb Réservation</p><p>{data.nb_reservation}</p>
+            </div>
+            <div className="flex justify-between">
+
+              <p>Montant part.</p><p>{`${data.montant_participation} ${data.codeDevise}`}</p>
+            </div>
+
 
             <hr />
           </div>
@@ -111,7 +136,7 @@ const Page: React.FC<Props> = ({ data }) => {
               Supprimer
             </Button>
 
-            <Link href={`/departments/edit/${data.id_departement}`}>
+            <Link href={`/locaux-brunch/edit/${data.id_local}`}>
               <Button className="bg-blue-600 capitalize" variant="contained" startIcon={<EditIcon />}>
                 Editer
               </Button>
@@ -119,14 +144,14 @@ const Page: React.FC<Props> = ({ data }) => {
 
           </div>
         </div>
-      </DepartementLayout>
+      </LocalBrunchLayout>
     </Layout>
   );
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   // ...
-  const res = await fetch(`${process.env.base_route}/departements/${context?.params?.id}`)
+  const res = await fetch(`${process.env.base_route}/locaux-brunch/${context?.params?.id}`)
   //    console.log(res)
   const data = await res.json()
 

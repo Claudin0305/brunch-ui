@@ -119,6 +119,7 @@ if(response.status === 201){
             required
             autoComplete="given-name"
             fullWidth
+            size="small"
             id="libelle"
             label="Libelle"
             {...register("libelle", { required: true })}
@@ -131,6 +132,7 @@ if(response.status === 201){
             required
             autoComplete="given-name"
             fullWidth
+            size="small"
             id="pays_abbreviation"
             label="Abréviation du pays"
             {...register("pays_abbreviation", { required: true })}

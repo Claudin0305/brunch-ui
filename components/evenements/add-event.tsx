@@ -88,6 +88,7 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
       setValue('domaine_email', data_props.domaine_email);
       setValue('adr_email_event', data_props.adr_email_event);
       setValueText(data_props.text_descriptif);
+      setValue('text_descriptif', data_props.text_descriptif)
       setValue('cible_participation', data_props.cible_participation);
       const result:String | null = format_events.filter(e=> e.value === data_props.format_event)[0]
       setValue('format_event', result);
@@ -203,6 +204,11 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
 
 
   };
+  //ReactQuill
+   const handleQuillChange = (content, delta, source, editor) => {
+    //  setValueText(content)
+     setValue('text_descriptif', content);
+  };
   const onSubmit: SubmitHandler<Inputs> = data => {
     // console.log(data)
 
@@ -217,7 +223,8 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
     formData.append('image', data.image_event[0])
     formData.append('format_event', data.format_event?.value)
     formData.append('cible_participation', data.cible_participation)
-    formData.append('text_descriptif', valueText);
+    formData.append('text_descriptif', data.text_descriptif);
+    setValueText(data.text_descriptif)
 
     if (data_props === null) {
 
@@ -225,6 +232,7 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
     } else {
       updateEvent(formData)
     }
+
 
   };
 
@@ -251,6 +259,7 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
                 autoComplete="given-name"
                 fullWidth
                 id="date_debut"
+                size="small"
                 label="Date debut"
                 defaultValue={defaultDate}
                 type="date"
@@ -271,6 +280,7 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
                 required
                 autoComplete="given-name"
                 fullWidth
+                size="small"
                 id="heure_debut"
                 label="Heure debut"
                 type="time"
@@ -283,6 +293,7 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
                 required
                 autoComplete="given-name"
                 fullWidth
+                size="small"
                 id="date_fin"
                 label="Date fin"
                 defaultValue={defaultDate}
@@ -306,6 +317,7 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
                 required
                 autoComplete="given-name"
                 fullWidth
+                size="small"
                 id="heure_fin"
                 label="Heure fin"
                 type="time"
@@ -347,7 +359,7 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
               />{" "}
               {errors?.format_event && <Error text={errors.format_event.message} />}
             </div>
-            <div className="block">
+            <div className="block md:mt-4">
               <TextField
                 required
                 autoComplete="given-name"
@@ -355,6 +367,7 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
                 id="cible_participation"
                 label="Cible participation"
                 type="number"
+                size="small"
                 inputProps={{ min }}
                 {...register("cible_participation", {
                   required: true, min: {
@@ -366,7 +379,7 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
 
               {errors?.cible_participation && <Error text={errors.cible_participation.message} />}
             </div>
-            <div className="block">
+            <div className="block md:mt-4">
               <TextField
                 required
                 autoComplete="given-name"
@@ -374,6 +387,7 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
                 id="adr_email_event"
                 label="Email événement"
                 type="email"
+                size="small"
                 {...register("adr_email_event", {
                   required: true, pattern: {
                     value: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
@@ -384,7 +398,7 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
 
               {errors?.adr_email_event && <Error text={errors.adr_email_event.message} />}
             </div>
-            <div className="block">
+            <div className="block md:mt-4">
 
 
               <TextField
@@ -392,6 +406,7 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
                 autoComplete="given-name"
                 fullWidth
                 id="domaine_email"
+                size="small"
                 label="Domaine email"
                 type="url"
 
@@ -430,6 +445,7 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
                 autoComplete="given-name"
                 fullWidth
                 id="image_event"
+                size="small"
                 label="Image événement"
                 type="file"
                 inputProps={{ accept: "image/*" }}
@@ -451,11 +467,18 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
               modules={modules}
               theme="snow"
               placeholder="Text descriptif...*"
-              onChange={setValueText}
+               {...register('text_descriptif', { required: "Ce champ est obligatoire!" })}
+        onChange={handleQuillChange}
+              // onChange={e=>{
+              //   console.log(e.targe)
+              //   setValueText(e)
+              // }}
               value={valueText}
             />
 
             {responseError !== null && <Error text={responseError?.libelle} />}
+
+              {errors?.text_descriptif && <Error text={errors.text_descriptif.message} />}
           </div>
 
 
@@ -474,9 +497,9 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
           </Button>
 
           <Button
-            disabled={isSubmit || errorDate || valueTextError}
+            disabled={isSubmit || errorDate}
             type="submit"
-            className={`${isSubmit || errorDate || valueTextError ? 'bg-blue-300' : 'bg-blue-600 '} capitalize text-white flex items-center justify-center gap-x-2`}
+            className={`${isSubmit || errorDate ? 'bg-blue-300' : 'bg-blue-600 '} capitalize text-white flex items-center justify-center gap-x-2`}
             variant="contained"
           >
             {isSubmit && <CircularIndeterminate />} <span>{data_props === null ? 'Ajouter' : 'Modifier'}</span>

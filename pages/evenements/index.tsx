@@ -8,6 +8,7 @@ type Props = {
 }
 
 const Event: React.FC<Props> = ({ data }) => {
+
   return (
     <Layout>
       <Head>
