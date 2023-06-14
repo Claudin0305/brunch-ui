@@ -8,6 +8,7 @@ type Props = {
 }
 
 const LocalBrunch: React.FC<Props> = ({ data }) => {
+  console.log(data)
   return (
     <Layout>
       <Head>
@@ -26,7 +27,7 @@ const LocalBrunch: React.FC<Props> = ({ data }) => {
 }
 export async function getServerSideProps() {
   // Fetch data from external API
-  const res = await fetch(`${process.env.base_route}/locaux-brunch`)
+  const res = await fetch(`${process.env.base_route}/locaux`)
   const data = await res.json()
 
   // Pass data to the page via props

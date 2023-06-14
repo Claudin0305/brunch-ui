@@ -53,12 +53,12 @@ const AddLocalBrunch: React.FC<Props> = ({ data_props, pays, events, devises }) 
     setValue('nb_reservation', data_props.nb_reservation)
       setValue('montant_participation', data_props.montant_participation);
       setValue('seuil_alerte', data_props.seuil_alerte);
-      const ville = optionsVille?.filter(v=> v.id_ville === data_props.id_ville)?.[0];
-      setValue('id_ville', ville);
-      const devise = optionsDevise?.filter(v=> v.id_devise === data_props.id_devise)?.[0];
-      setValue('id_devise', devise);
-      const event = optionsEvent?.filter(v=> v.id_event === data_props.id_event)?.[0];
-      setValue('id_event', event);
+      const ville = optionsVille?.filter(v=> v.value === data_props.idVille);
+      setValue('id_ville', ville[0]);
+      const devise = optionsDevise?.filter(v=> v.value === data_props.idDevise);
+      setValue('id_devise', devise[0]);
+      const event = optionsEvent?.filter(v=> v.value === data_props.idEvent);
+      setValue('id_event', event[0]);
 
     }
   }, [optionsDevise])
@@ -144,7 +144,7 @@ const AddLocalBrunch: React.FC<Props> = ({ data_props, pays, events, devises }) 
 
   const updateLocalBrunch = (data: Inputs) => {
     axios
-      .put(`${process.env.base_route}/locaux-brunch/${data_props.id_local}`, data)
+      .put(`${process.env.base_route}/locaux/${data_props.id_local}`, data)
       .then((response) => {
         if (response.status === 200) {
 
@@ -173,7 +173,7 @@ const AddLocalBrunch: React.FC<Props> = ({ data_props, pays, events, devises }) 
   };
   const createLocalBrunch = (data: Inputs) => {
 
-    axios.post(`${process.env.base_route}/locaux-brunch`, data).then(response => {
+    axios.post(`${process.env.base_route}/locaux`, data).then(response => {
       console.log(response);
       if (response.status === 201) {
         Swal.fire({
@@ -195,6 +195,7 @@ const AddLocalBrunch: React.FC<Props> = ({ data_props, pays, events, devises }) 
       }
     }).catch(err => {
       setIsSubmit(false);
+      console.log(err)
       if (err.response.status === 400) {
         setResponseError(err.response.data);
         // console.log(responseError)
@@ -215,7 +216,6 @@ const AddLocalBrunch: React.FC<Props> = ({ data_props, pays, events, devises }) 
     formData.append('montant_participation', data.montant_participation)
     formData.append('email_responsable', data.email_responsable)
     formData.append('seuil_alerte', data.seuil_alerte)
-    formData.append('nb_reservation', data.nb_reservation)
     formData.append('adresse_no_rue', data.adresse_no_rue)
 
 
@@ -224,6 +224,7 @@ const AddLocalBrunch: React.FC<Props> = ({ data_props, pays, events, devises }) 
       formData.append('nb_reservation', 0)
       createLocalBrunch(formData);
     } else {
+      formData.append('nb_reservation', data_props.nb_reservation);
       updateLocalBrunch(formData)
     }
 

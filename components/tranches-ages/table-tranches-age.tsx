@@ -23,7 +23,7 @@ const TableTranchesAge: React.FC<Props> = ({ data }) => {
   };
 
   const getRowId = (row:any):GridRowId => {
-  return row.id_tranches_age;
+  return row.id_tranche_age;
 };
 
   const handleRowClick = (param: any, event: MouseEvent) => {

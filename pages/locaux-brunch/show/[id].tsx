@@ -17,7 +17,7 @@ type Props = {
 const Page: React.FC<Props> = ({ data }) => {
   const router = useRouter()
   const deleteLocalBrunch = (id: number) => {
-    fetch(`${process.env.base_route}/locaux-brunch/${id}`, {
+    fetch(`${process.env.base_route}/locaux/${id}`, {
       method: "DELETE",
 
       headers: {
@@ -96,7 +96,7 @@ const Page: React.FC<Props> = ({ data }) => {
             </div>
             <div className="flex justify-between">
 
-              <p>Ville</p><p>{data.ville.libelle}</p>
+              <p>Ville</p><p>{data.ville}</p>
             </div>
             <div className="flex justify-between">
 
@@ -151,7 +151,7 @@ const Page: React.FC<Props> = ({ data }) => {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   // ...
-  const res = await fetch(`${process.env.base_route}/locaux-brunch/${context?.params?.id}`)
+  const res = await fetch(`${process.env.base_route}/locaux/${context?.params?.id}`)
   //    console.log(res)
   const data = await res.json()
 

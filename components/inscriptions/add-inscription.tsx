@@ -22,7 +22,6 @@ type Inputs = {
   mode_participation: string;
   authorisation_liste: string;
   abonnement_newsletter: string;
-  adresse_no_rue: string;
   id_local: string | null;
   id_ville: string | null;
   id_civilite: string | null;
@@ -36,6 +35,7 @@ type Props = {
   civilites: any | null;
   event: any | null;
   locaux: any | null;
+  participants: any | null;
 }
 type option = {
   label: string;
@@ -56,7 +56,7 @@ const format_events: option[] = [
     label: "Distanciel"
   },
 ]
-const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civilites, event, locaux }) => {
+const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civilites, event, locaux, participants }) => {
   const router = useRouter()
   const min = 1;
   const { register, handleSubmit, watch, reset, setValue, control, formState: { errors } } = useForm<Inputs>();
@@ -70,6 +70,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
   const [selectedMode, setSelectedMode] = useState<option | null>(null);
   const [formatEventOptions, setFormatEventOptions]= useState<option[]|null>(null)
   const [errorEmail, setErrorEmail] = useState<boolean>(false);
+  const [existEmail, setExistEmail] = useState<boolean>(false);
   const [identiqueEmail, setIdentiqueEmail] = useState<boolean>(true);
   const [email, setEmail] = useState<String | null>(null)
 
@@ -176,6 +177,8 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
 
     setOptionsVille(tableOptions);
   }, []);
+
+  // console.log(participants)
 
 useEffect(()=>{
   if(event !== null){
@@ -301,7 +304,6 @@ useEffect(()=>{
     formData.append("nom", data.nom)
     formData.append("email", data.email)
     formData.append("tel_participant", data.tel_participant)
-    formData.append("adresse_no_rue", data.adresse_no_rue)
     formData.append("affiliation", data.affiliation)
     formData.append("abonnement_newsletter", data.abonnement_newsletter)
     formData.append("authorisation_liste", data.authorisation_liste)
@@ -428,11 +430,15 @@ useEffect(()=>{
                 setErrorEmail(!pattern.test(e?.target.value))
                 setEmail(e?.target.value);
                 setValue('email_confirmation', "")
+                const result = participants?.filter(p=> p.eventEvent.id_event === event.id_event && p.email === e?.target.value)
+                setExistEmail(result.length > 0);
+                // console.log(result.length)
                 register('email').onChange(e);
               }}
             />
             {/* {responseError !== null && <Error text={responseError?.libelle}/>} */}
             {errors?.email && <Error text={errors.email.message} />}
+            {existEmail && <Error text={"Email existe!"}/>}
           </div>
           <div className="block">
 
@@ -522,22 +528,7 @@ useEffect(()=>{
             />{" "}
             {errors?.id_ville && <Error text={errors.id_ville.message} />}
           </div>
-          <div className="block">
 
-            <TextField
-              required
-              autoComplete="given-name"
-              fullWidth
-              id="adresse_no_rue"
-              size="small"
-              type="text"
-              label="Adresse"
-              {...register("adresse_no_rue", { required: "Ce champ est obligatoire" })}
-              className="md:mt-3"
-            />
-            {/* {responseError !== null && <Error text={responseError?.libelle}/>} */}
-            {errors?.adresse_no_rue && <Error text={errors.adresse_no_rue.message} />}
-          </div>
           <div className="flex-col flex md:-mt-4 z-40">
             <label
               className="mb-2"

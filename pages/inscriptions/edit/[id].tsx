@@ -10,7 +10,6 @@ type Props = {
 }
 
 const Page: React.FC<Props> = ({ data }) => {
-  // console.log(data)
   return (
     <Layout>
       <Head>
@@ -28,7 +27,7 @@ const Page: React.FC<Props> = ({ data }) => {
 export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const [localRes, eventResp, deviseResp, paysResp] = await Promise.all([
-    fetch(`${process.env.base_route}/locaux-brunch/${context?.params?.id}`),
+    fetch(`${process.env.base_route}/locaux/${context?.params?.id}`),
     fetch(`${process.env.base_route}/events`),
     fetch(`${process.env.base_route}/devises`),
     fetch(`${process.env.base_route}/pays`),
