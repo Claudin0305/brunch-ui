@@ -13,6 +13,7 @@ import SettingsEthernetIcon from '@mui/icons-material/SettingsEthernet';
 import WcIcon from '@mui/icons-material/Wc';
 import EventIcon from '@mui/icons-material/Event';
 import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
+import EmailIcon from '@mui/icons-material/Email';
 type nav = {
   path: string;
   name: string;
@@ -72,9 +73,9 @@ const SideBare: React.FC = () => {
       name: "Villes",
     },
     {
-      path: "/link4",
-      icon: "icon",
-      name: "Link 4",
+      path: "/messages",
+      icon: <EmailIcon/>,
+      name: "Messages",
     },
   ];
   return (

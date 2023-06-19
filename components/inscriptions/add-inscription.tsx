@@ -124,9 +124,10 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
       tableOptions.push({
         label: `Local-${e.id_local}`,
         value: e.id_local,
-        id_ville: e?.ville?.id_ville
+        id_ville: e.idVille
       })
     })
+
 
     tableOptions?.sort((a, b) => {
       let fa = a.label,
@@ -270,6 +271,7 @@ useEffect(()=>{
           confirmButtonText: "Fermer",
         })
         setIsSubmit(false);
+        reset();
         setValue('id_event', "");
         setValue('id_tranche_age', "");
         setValue('id_ville', "");
@@ -281,10 +283,10 @@ useEffect(()=>{
 
         setSelectedVille(null)
         setSelectedMode(null)
-        reset();
       }
     }).catch(err => {
       setIsSubmit(false);
+      console.log(err)
       if (err.response.status === 400) {
         setResponseError(err.response.data);
         // console.log(responseError)
@@ -311,8 +313,12 @@ useEffect(()=>{
     formData.append("mode_participation", selectedMode?.value)
     formData.append("id_civilite", data.id_civilite?.value)
     formData.append("id_tranche_age", data.id_tranche_age?.value)
-    formData.append("id_local", data.id_local?.value)
+    if(data.id_local !== undefined){
+      formData.append("id_local", data.id_local?.value)
+    }else{
+      formData.append("id_local", 0)
 
+    }
 
 
     setIsSubmit(true);
@@ -326,13 +332,13 @@ useEffect(()=>{
 
   return (
     <div className="container">
-      <h1 className="font-bold text-sm md:text-lg capitalize mb-8">
-        {data_props === null ? 'Ajouter' : 'Modifier'} Inscription
+      <h1 className="font-bold text-md text-center md:text-left md:text-lg capitalize mb-8">
+        {data_props === null ? '' : 'Modifier'} Inscription Brunch'2023
       </h1>
       <form onSubmit={handleSubmit(onSubmit)} className="center">
         {/* register your input into the hook by invoking the "register" function */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="flex-col flex md:-mt-4 z-50">
+        <div className="flex flex-col md:grid md:grid-cols-3 gap-8">
+          <div className="flex-col flex md:-mt-4 z-30">
             <label
               className="mb-2"
               htmlFor={`id_civilite`}
@@ -417,11 +423,11 @@ useEffect(()=>{
               fullWidth
               id="email"
               type="email"
-              label="Email"
+              label="Courriel"
               {...register("email", {
                 required: "Ce champ est obligatoire", pattern: {
                   value: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-                  message: "L'email est invalide!"
+                  message: "Le format du courriel que vous avez spécifié incorrect.  Veuillez entrer un courriel valide."
                 }
               })}
               onChange={e=>{
@@ -430,8 +436,9 @@ useEffect(()=>{
                 setErrorEmail(!pattern.test(e?.target.value))
                 setEmail(e?.target.value);
                 setValue('email_confirmation', "")
-                const result = participants?.filter(p=> p.eventEvent.id_event === event.id_event && p.email === e?.target.value)
-                setExistEmail(result.length > 0);
+                console.log(participants)
+                // const result = participants?.filter(p=> p?.eventEvent.id_event === event.id_event && p.email === e?.target.value)
+                // setExistEmail(result.length > 0);
                 // console.log(result.length)
                 register('email').onChange(e);
               }}
@@ -450,7 +457,7 @@ useEffect(()=>{
               fullWidth
               id="email_confirmation"
               type="email"
-              label="Confirmation email"
+              label="Confirmation de courriel"
               {...register("email_confirmation", {
                 required: "Ce champ est obligatoire", pattern: {
                   value: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
@@ -465,9 +472,9 @@ useEffect(()=>{
             />
             {/* {responseError !== null && <Error text={responseError?.libelle}/>} */}
             {errors?.email_confirmation && <Error text={errors.email_confirmation.message} />}
-            {!identiqueEmail && <Error text={"Les emails ne sont pas indentiques!"}/>}
+            {!identiqueEmail && <Error text={"Le courriel que vous avez spécifié dans le champ \"Confirmation de courriel\" ne correspond pas à celui que vous avez indiqué dans le champ courriel.  Veuillez entrer la même valeur dans les 2 champs."}/>}
           </div>
-          <div className="flex-col flex md:-mt-4 z-50 ">
+          <div className="flex-col flex md:-mt-4 z-40">
             <label
               className="mb-2"
               htmlFor={`id_tranche_age`}
@@ -495,7 +502,7 @@ useEffect(()=>{
             />{" "}
             {errors?.id_tranche_age && <Error text={errors.id_tranche_age.message} />}
           </div>
-          <div className="flex-col flex md:-mt-4 z-50 ">
+          <div className="flex-col flex md:-mt-4 z-30 ">
             <label
               className="mb-2"
               htmlFor={`id_ville`}
@@ -529,7 +536,7 @@ useEffect(()=>{
             {errors?.id_ville && <Error text={errors.id_ville.message} />}
           </div>
 
-          <div className="flex-col flex md:-mt-4 z-40">
+          <div className="flex-col flex md:-mt-4 z-20">
             <label
               className="mb-2"
               htmlFor={`mode_participation`}
@@ -566,7 +573,7 @@ useEffect(()=>{
 
 
                   {selectedVille !== null  && selectedMode && selectedMode.value==="PRESENTIEL" &&
-<div className="flex-col flex md:-mt-4 z-40">
+<div className="flex-col flex md:-mt-4 z-10">
             <label
               className="mb-2"
               htmlFor={`id_local`}
@@ -659,7 +666,7 @@ useEffect(()=>{
             className={`bg-blue-600 capitalize text-white flex items-center justify-center gap-x-2 ${isSubmit || selectedMode === null ? "bg-blue-400" :""}`}
             variant="contained"
           >
-            {isSubmit && <CircularIndeterminate />} <span>{data_props === null ? 'Ajouter' : 'Modifier'}</span>
+            {isSubmit && <CircularIndeterminate />} <span>{data_props === null ? "S'inscrire" : 'Modifier'}</span>
           </Button>
         </div>
 

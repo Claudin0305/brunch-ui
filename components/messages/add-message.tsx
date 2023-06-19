@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -8,22 +8,39 @@ import Error from "@/components/core/error";
 import axios from 'axios';
 import { useRouter } from 'next/router'
 import Select from 'react-select';
+import dynamic from "next/dynamic";
+import 'react-quill/dist/quill.snow.css';
 
 type option = {
     label: string;
     value: string;
 }
 type Inputs = {
-    libelle: string;
-    id_departement: option | string | any;
+    libelle_texte: string;
+    message_type: option | string | any;
 };
 type Props = {
     data_props: any | null;
-    departements: any
 }
 
 
-const AddVille: React.FC<Props> = ({ data_props, departements }) => {
+const AddMessage: React.FC<Props> = ({data_props}) => {
+    const ReactQuill = useMemo(() => dynamic(() => import('react-quill'), { ssr: false }));
+  const [valueText, setValueText] = useState<String | null>("");
+    const modules = {
+    toolbar: [
+      [{ font: [] }],
+      [{ header: [1, 2, 3, 4, 5, 6, false] }],
+      ["bold", "italic", "underline", "strike"],
+      [{ color: [] }, { background: [] }],
+      [{ script: "sub" }, { script: "super" }],
+      ["blockquote", "code-block"],
+      [{ list: "ordered" }, { list: "bullet" }],
+      [{ indent: "-1" }, { indent: "+1" }, { align: [] }],
+      ["link", "image", "video"],
+      ["clean"],
+    ],
+  };
     const router = useRouter()
     const { register, handleSubmit, watch, reset, setValue, control, formState: { errors } } = useForm<Inputs>();
     const [isSubmit, setIsSubmit] = useState<boolean>(false);
@@ -33,17 +50,29 @@ const AddVille: React.FC<Props> = ({ data_props, departements }) => {
     useEffect(() => {
 
         if (data_props !== null) {
-            setValue('libelle', data_props?.libelle);
-            setValue('id_departement', {label: data_props?.libelleDepartement, value:data_props?.departementId})
+
+      setValue('libelle_texte', data_props.libelle_texte)
+            const result = options?.filter(o=>o.value === data_props.message_type)[0];
+            setValue('message_type', result);
+    setValueText(data.libelle_texte)
 
         }
-    }, [])
+    }, [options])
 
     useEffect(() => {
-        const tableOptions: option[] = [];
-        departements?.sort((a, b) => {
-            let fa = a.libelle.toLowerCase(),
-                fb = b.libelle.toLowerCase();
+        const tableOptions: option[] = [
+            {
+                label:'Inscription',
+                value:'INSCRIPTION'
+            },
+            {
+                label:'Paiement',
+                value:'PAIEMENT'
+            }
+        ];
+        tableOptions.sort((a, b) => {
+            let fa = a.label,
+                fb = b.label;
 
             if (fa < fb) {
                 return -1;
@@ -53,21 +82,20 @@ const AddVille: React.FC<Props> = ({ data_props, departements }) => {
             }
             return 0;
         });
-        departements?.forEach(p => {
-            tableOptions.push({
-                label: p.libelle,
-                value: p.id_departement
-            })
-        })
+
 
         setOptions(tableOptions);
     }, []);
 
+//ReactQuill
+   const handleQuillChange = (content, delta, source, editor) => {
+    //  setValueText(content)
+     setValue('libelle_texte', content);
+  };
 
-
-    const updateVille = (data: Inputs | FormData) => {
+    const updateMessage = (data: Inputs | FormData) => {
         axios
-            .put(`${process.env.base_route}/villes/${data_props.id_ville}`, data)
+            .put(`${process.env.base_route}/messages/${data_props.id}`, data)
             .then((response) => {
                 if (response.status === 200) {
 
@@ -80,7 +108,7 @@ const AddVille: React.FC<Props> = ({ data_props, departements }) => {
                         confirmButtonColor: "#2563eb",
                         confirmButtonText: "Fermer",
                     })
-                    router.push('/villes')
+                    router.push('/messages')
 
                     reset();
                 }
@@ -95,9 +123,9 @@ const AddVille: React.FC<Props> = ({ data_props, departements }) => {
 
 
     };
-    const createVille = (data: Inputs |FormData) => {
+    const createMessage = (data: Inputs |FormData) => {
 
-        axios.post(`${process.env.base_route}/villes`, data).then(response => {
+        axios.post(`${process.env.base_route}/messages`, data).then(response => {
             console.log(response);
             if (response.status === 201) {
                 Swal.fire({
@@ -113,7 +141,7 @@ const AddVille: React.FC<Props> = ({ data_props, departements }) => {
                 })
                 setIsSubmit(false);
                 reset();
-                setValue('id_departement', null)
+                setValue('message_type', null)
             }
         }).catch(err => {
             setIsSubmit(false);
@@ -130,14 +158,16 @@ const AddVille: React.FC<Props> = ({ data_props, departements }) => {
         // console.log(data)
 
         setIsSubmit(true);
-        data.id_departement = data.id_departement?.value
+        data.message_type = data.message_type?.value
         const formData = new FormData();
-        formData.append('libelle', data.libelle);
-        formData.append('id_departement', data.id_departement)
+        formData.append('libelle_texte', data.libelle_texte);
+        formData.append('message_type', data.message_type)
+
+    setValueText(data.libelle_texte)
         if (data_props === null) {
-            createVille(formData);
+            createMessage(formData);
         } else {
-            updateVille(formData)
+            updateMessage(formData)
         }
 
     };
@@ -145,36 +175,23 @@ const AddVille: React.FC<Props> = ({ data_props, departements }) => {
     return (
         <div className="container">
             <h1 className="font-bold text-sm md:text-lg capitalize mb-8">
-                {data_props === null ? 'Ajouter' : 'Modifier'} Ville
+                {data_props === null ? 'Ajouter' : 'Modifier'} Message
             </h1>
             <form onSubmit={handleSubmit(onSubmit)} className="center">
                 {/* register your input into the hook by invoking the "register" function */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div className="block">
 
-                        <TextField
-                            required
-                            autoComplete="given-name"
-                            fullWidth
-                            id="libelle"
-                            size="small"
-                            label="Libelle"
-                            {...register("libelle", { required: true })}
-                        />
-                        {responseError !== null && <Error text={responseError?.libelle} />}
-                    </div>
-
-
-                    <div className="flex-col flex md:-mt-8">
+                    <div className="row-span-4">
+            <div className="flex-col flex md:-mt-8">
                         <label
                             className="mb-2"
-                            htmlFor={`id_departement`}
+                            htmlFor={`message_type`}
                         >
                             {" "}
-                            Département*{" "}
+                            Type de message*{" "}
                         </label>
                         <Controller
-                            name={`id_departement`}
+                            name={`message_type`}
                             control={control}
                             rules={{
                                 required: true,
@@ -184,7 +201,7 @@ const AddVille: React.FC<Props> = ({ data_props, departements }) => {
                                 <Select
                                     {...field}
                                     placeholder={
-                                        "Choisir le département..."
+                                        "Choisir le type du message..."
                                     }
                                     isClearable
                                     options={options}
@@ -193,6 +210,26 @@ const AddVille: React.FC<Props> = ({ data_props, departements }) => {
                         />{" "}
 
                     </div>
+          </div>
+
+          <div className="row-span-5">
+             <ReactQuill
+              modules={modules}
+              theme="snow"
+              placeholder="contenu du message...*"
+               {...register('libelle_texte', { required: "Ce champ est obligatoire!" })}
+        onChange={handleQuillChange}
+              // onChange={e=>{
+              //   console.log(e.targe)
+              //   setValueText(e)
+              // }}
+              value={valueText}
+            />
+
+
+
+              {errors?.libelle_texte && <Error text={errors.libelle_texte.message} />}
+          </div>
 
                 </div>
                 <div className="flex justify-end flex-col mt-8 md:flex-row gap-8 mb-8">
@@ -219,4 +256,4 @@ const AddVille: React.FC<Props> = ({ data_props, departements }) => {
     );
 };
 
-export default AddVille;
+export default AddMessage;

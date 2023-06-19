@@ -5,7 +5,7 @@ import React, { MouseEvent } from "react";
 import Link from 'next/link'
 import Button from "@mui/material/Button";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import VilleLayout from "@/components/geographie/villes/ville-layout";
+import MessageLayout from "@/components/geographie/villes/ville-layout";
 import Swal from 'sweetalert2'
 import { useRouter } from 'next/router'
 
@@ -16,8 +16,8 @@ type Props = {
 
 const Page: React.FC<Props> = ({ data }) => {
   const router = useRouter()
-  const deleteVille = (id: number) => {
-    fetch(`${process.env.base_route}/villes/${id}`, {
+  const deleteMessage = (id: number) => {
+    fetch(`${process.env.base_route}/messages/${id}`, {
       method: "DELETE",
 
       headers: {
@@ -39,7 +39,7 @@ const Page: React.FC<Props> = ({ data }) => {
         })
 
 
-        router.push('/villes')
+        router.push('/messages')
 
       }
     }).catch((e) => {
@@ -55,7 +55,7 @@ const Page: React.FC<Props> = ({ data }) => {
   const handleDelete = (event: MouseEvent) => {
     Swal.fire({
       title: 'Etes-vous sûr?',
-      text: "Supprimer " + data.libelle,
+      text: "Supprimer ",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#2563eb',
@@ -70,7 +70,7 @@ const Page: React.FC<Props> = ({ data }) => {
         //   'Your file has been deleted.',
         //   'success'
         // )
-        deleteVille(data.id_ville)
+        deleteMessage(data.id)
       }
     })
 
@@ -81,28 +81,22 @@ const Page: React.FC<Props> = ({ data }) => {
   return (
     <Layout>
       <Head>
-        <title>Ville | Details</title>
+        <title>Message | Details</title>
       </Head>
-      <VilleLayout>
+      <MessageLayout>
         <div className="bg-white px-8 py-4 mb-4 shadow-md h-[calc(100vh_-_215px)] overflow-y-scroll">
 
           <div className="flex flex-col gap-y-4 w-1/2 mx-auto">
             <h1 className="font-bold text-sm md:text-lg capitalize bg-slate-100 text-center col-span-2">
-              Détails Ville
+              Détails Message
             </h1>
             <div className="flex justify-between">
 
-              <p>Libelle</p><p>{data.libelle}</p>
+              <p>Type de message</p><p>{data.message_type === 'INSCRIPTION' ? 'Inscription' : 'Paiement'}</p>
             </div>
-            {/* <div className="flex justify-between">
 
-              <p>Abréviation</p><p>{data.dept_abbreviation}</p>
-            </div> */}
-            {/* <div className="flex justify-between">
-
-              <p>Nombre departement</p><p>{data.departements.length}</p>
-            </div> */}
-
+<div dangerouslySetInnerHTML={{ __html: data.libelle_texte }}>
+            </div>
             <hr />
           </div>
           <div className={'flex flex-col gap-y-8 justify-center md:justify-end pt-4 mb-4 md:flex-row md:gap-x-8'}>
@@ -111,7 +105,7 @@ const Page: React.FC<Props> = ({ data }) => {
               Supprimer
             </Button>
 
-            <Link href={`/villes/edit/${data.id_ville}`}>
+            <Link href={`/messages/edit/${data.id}`}>
               <Button className="bg-blue-600 capitalize" variant="contained" startIcon={<EditIcon />}>
                 Editer
               </Button>
@@ -119,14 +113,14 @@ const Page: React.FC<Props> = ({ data }) => {
 
           </div>
         </div>
-      </VilleLayout>
+      </MessageLayout>
     </Layout>
   );
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   // ...
-  const res = await fetch(`${process.env.base_route}/villes/${context?.params?.id}`)
+  const res = await fetch(`${process.env.base_route}/messages/${context?.params?.id}`)
   //    console.log(res)
   const data = await res.json()
 

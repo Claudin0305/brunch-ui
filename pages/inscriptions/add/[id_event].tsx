@@ -1,26 +1,25 @@
-import Layout from "@/components/home/layout";
+
 import Head from "next/head";
 import React from "react";
 import { GetServerSideProps } from 'next'
-import InscriptionLayout from "@/components/inscriptions/inscription-layout";
+// import InscriptionLayout from "@/components/inscriptions/inscription-layout";
 // import AddP
+import HomeLayout from '@/components/core/home-layout'
 import AddInscription from "@/components/inscriptions/add-inscription";
 type Props = {
-  data:any;
+  data: any;
 }
-const Add:React.FC<Props> = ({data}) => {
-  console.log(data)
+const Add: React.FC<Props> = ({ data }) => {
   return (
-    <Layout>
+    <HomeLayout>
       <Head>
         <title>Inscription | Ajouter</title>
       </Head>
-      <InscriptionLayout>
-        <div className="bg-white px-8 py-4 shadow-md overflow-y-scroll h-[calc(100vh_-_200px)]">
-          <AddInscription data_props={null} pays={data?.pays} civilites={data?.civilites} tranche_ages={data?.trancheAges} locaux={data?.locaux} event={data?.event} participants={data?.participants}/>
-        </div>
-      </InscriptionLayout>
-    </Layout>
+
+      <AddInscription data_props={null} pays={data?.pays} civilites={data?.civilites} tranche_ages={data?.trancheAges} locaux={data?.locaux} event={data?.event} participants={data?.participants} />
+
+
+    </HomeLayout>
   );
 };
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -30,7 +29,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     fetch(`${process.env.base_route}/civilites`),
     fetch(`${process.env.base_route}/tranche-ages`),
     fetch(`${process.env.base_route}/pays`),
-    fetch(`${process.env.base_route}/locaux-brunch`),
+    fetch(`${process.env.base_route}/locaux`),
     fetch(`${process.env.base_route}/events/${context?.params?.id_event}`),
     fetch(`${process.env.base_route}/participants`),
   ]);
@@ -43,7 +42,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     respPart.json()
   ]);
 
-  const data = {trancheAges:trancheAges, pays:pays, civilites: civilites, locaux:locaux, event:event, participants:participants}
+  const data = { trancheAges: trancheAges, pays: pays, civilites: civilites, locaux: locaux, event: event, participants: participants }
   return { props: { data } }
 }
 export default Add;

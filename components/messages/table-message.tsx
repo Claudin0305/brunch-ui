@@ -17,21 +17,21 @@ import {
 type Props = {
   data: any;
 };
-const TableTranchesAge: React.FC<Props> = ({ data }) => {
+const TableMessage: React.FC<Props> = ({ data }) => {
    const handleCellClick = (param: any, event: MouseEvent) => {
     event.stopPropagation();
   };
 
-  const getRowId = (row:any):GridRowId => {
-  return row.id_tranche_age;
-};
+//   const getRowId = (row:any):GridRowId => {
+//   return row.id_ville;
+// };
 
   const handleRowClick = (param: any, event: MouseEvent) => {
     event.stopPropagation();
   };
-  //  const handlePageSizeChange = (params: GridPageChangeParams) => {
-  //   setPageSize(params.pageSize);
-  // };
+//    const handlePageSizeChange = (params: GridPageChangeParams) => {
+//     setPageSize(params.pageSize);
+//   };
  const [pageSize, setPageSize] = React.useState<number>(10);
   const actionSetting = {
     sortable: false,
@@ -42,7 +42,13 @@ const TableTranchesAge: React.FC<Props> = ({ data }) => {
   };
    const columns: GridColDef[] = [
     {
-      field: "libelle",
+      field: "message_type",
+      headerName: "Type Message",
+      renderCell: value => value.row.message_type === 'INSCRIPTION' ? "Inscription" : "Paiement",
+      flex:1,
+    },
+    {
+      field: "libelle_texte",
       headerName: "Libelle",
       // renderCell: (value) => <PersoToolTip value={value} />,
       // width:100,
@@ -67,8 +73,8 @@ const TableTranchesAge: React.FC<Props> = ({ data }) => {
         //   )}
         // </div>
         <MenuAction
-        path_details={`/tranches-age/show/${cellValues.id}`}
-        path_edit={`/tranches-age/edit/${cellValues.id}`}
+        path_details={`/messages/show/${cellValues.id}`}
+        path_edit={`/messages/edit/${cellValues.id}`}
         />
       ),
     },
@@ -80,7 +86,7 @@ const TableTranchesAge: React.FC<Props> = ({ data }) => {
       <DataGrid
         rows={data}
         columns={columns}
-        getRowId={getRowId}
+        // getRowId={getRowId}
         paginationMode="client"
         initialState={{
     pagination: {
@@ -119,4 +125,4 @@ const TableTranchesAge: React.FC<Props> = ({ data }) => {
   );
 };
 
-export default TableTranchesAge;
+export default TableMessage;

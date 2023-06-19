@@ -28,7 +28,7 @@ const HomeNavBar = ()=>{
       },
     ]
 return<div>
-    <nav className="w-full bg-white  fixed top-0 left-0 right-0 z-10 shadow-lg">
+    <nav className="w-full bg-white  fixed top-0 left-0 right-0 z-50 shadow-lg">
         <div className="px-4 py-4 flex justify-between mx-auto lg:max-w-7xl md:items-center md:px-8">
              <Link href="/">
                         <h2 className="text-2xl md:my-4 text-blue-500 font-bold">Logo</h2>

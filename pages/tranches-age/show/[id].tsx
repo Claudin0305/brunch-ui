@@ -17,7 +17,7 @@ type Props = {
 const Page: React.FC<Props> = ({ data }) => {
   const router = useRouter()
   const deleteTranchesAge = (id: number) => {
-    fetch(`${process.env.base_route}/tranches-ages/${id}`, {
+    fetch(`${process.env.base_route}/tranche-ages/${id}`, {
       method: "DELETE",
 
       headers: {
@@ -39,7 +39,7 @@ const Page: React.FC<Props> = ({ data }) => {
         })
 
 
-        router.push('/tranches-ages')
+        router.push('/tranches-age')
 
       }
     }).catch((e) => {
@@ -70,7 +70,7 @@ const Page: React.FC<Props> = ({ data }) => {
         //   'Your file has been deleted.',
         //   'success'
         // )
-        deleteTranchesAge(data.id_tranches_age)
+        deleteTranchesAge(data.id_tranche_age)
       }
     })
 
@@ -105,7 +105,7 @@ const Page: React.FC<Props> = ({ data }) => {
               Supprimer
             </Button>
 
-            <Link href={`/tranches-ages/edit/${data.id_statut}`}>
+            <Link href={`/tranches-age/edit/${data.id_statut}`}>
               <Button className="bg-blue-600 capitalize" variant="contained" startIcon={<EditIcon />}>
                 Editer
               </Button>
@@ -120,7 +120,7 @@ const Page: React.FC<Props> = ({ data }) => {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   // ...
-  const res = await fetch(`${process.env.base_route}/tranches-ages/${context?.params?.id}`)
+  const res = await fetch(`${process.env.base_route}/tranche-ages/${context?.params?.id}`)
   //    console.log(res)
   const data = await res.json()
 

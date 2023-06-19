@@ -113,8 +113,8 @@ const AddDepartement: React.FC<Props> = ({ data_props, pays }) => {
                     confirmButtonText: "Fermer",
                 })
                 setIsSubmit(false);
-                setValue('id_pays', null)
                 reset();
+                setValue('id_pays', null)
             }
         }).catch(err => {
             setIsSubmit(false);
@@ -172,7 +172,7 @@ const AddDepartement: React.FC<Props> = ({ data_props, pays }) => {
                         label="Abréviation du département"
                         {...register("dept_abbreviation", { required: true })}
                     />
-                    <div className="flex-col flex md:-mt-4 ">
+                    <div className="flex-col flex">
                         <label
                             className="mb-2"
                             htmlFor={`id_pays`}

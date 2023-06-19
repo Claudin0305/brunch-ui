@@ -10,9 +10,11 @@ type Props = {
 const HomeLayout: React.FC<Props> = ({ children }) => {
   return (
     <div className="relative">
-<HomeNavBar/>
+      <HomeNavBar />
+      <div className="px-16 md:px-32 mx-auto mt-24 shadow-md pb-4">
 
         {children}
+      </div>
 
     </div>
   );
