@@ -17,6 +17,7 @@ type option = {
 }
 type Inputs = {
     libelle_texte: string;
+    subject: string;
     message_type: option | string | any;
 };
 type Props = {
@@ -51,10 +52,11 @@ const AddMessage: React.FC<Props> = ({data_props}) => {
 
         if (data_props !== null) {
 
-      setValue('libelle_texte', data_props.libelle_texte)
-            const result = options?.filter(o=>o.value === data_props.message_type)[0];
+      setValue('subject', data_props.subject)
+      setValue('libelle_texte', data_props.libelleTexte)
+            const result = options?.filter(o=>o.value === data_props.messageType)[0];
             setValue('message_type', result);
-    setValueText(data.libelle_texte)
+    setValueText(data_props.libelleTexte)
 
         }
     }, [options])
@@ -95,7 +97,11 @@ const AddMessage: React.FC<Props> = ({data_props}) => {
 
     const updateMessage = (data: Inputs | FormData) => {
         axios
-            .put(`${process.env.base_route}/messages/${data_props.id}`, data)
+            .put(`${process.env.base_route}/messages/${data_props.id}`, data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
             .then((response) => {
                 if (response.status === 200) {
 
@@ -115,9 +121,10 @@ const AddMessage: React.FC<Props> = ({data_props}) => {
 
             })
             .catch((err) => {
-                if (err.response.status === 400) {
-                    setResponseError(err.response.data);
-                }
+                console.log(err)
+                // if (err.response.status === 400) {
+                //     setResponseError(err.response.data);
+                // }
                 setIsSubmit(false);
             });
 
@@ -125,8 +132,11 @@ const AddMessage: React.FC<Props> = ({data_props}) => {
     };
     const createMessage = (data: Inputs |FormData) => {
 
-        axios.post(`${process.env.base_route}/messages`, data).then(response => {
-            console.log(response);
+        axios.post(`${process.env.base_route}/messages`, data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }).then(response => {
             if (response.status === 201) {
                 Swal.fire({
                     // position: 'top-end',
@@ -142,6 +152,8 @@ const AddMessage: React.FC<Props> = ({data_props}) => {
                 setIsSubmit(false);
                 reset();
                 setValue('message_type', null)
+                setValueText("");
+                setValue("libelle_text", "")
             }
         }).catch(err => {
             setIsSubmit(false);
@@ -160,8 +172,9 @@ const AddMessage: React.FC<Props> = ({data_props}) => {
         setIsSubmit(true);
         data.message_type = data.message_type?.value
         const formData = new FormData();
-        formData.append('libelle_texte', data.libelle_texte);
-        formData.append('message_type', data.message_type)
+        formData.append('libelleTexte', data.libelle_texte);
+        formData.append('messageType', data.message_type)
+        formData.append('subject', data.subject)
 
     setValueText(data.libelle_texte)
         if (data_props === null) {
@@ -181,7 +194,20 @@ const AddMessage: React.FC<Props> = ({data_props}) => {
                 {/* register your input into the hook by invoking the "register" function */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
 
-                    <div className="row-span-4">
+                     <div className="block">
+
+                        <TextField
+                            required
+                            autoComplete="given-name"
+                            fullWidth
+                            id="subject"
+                            size="small"
+                            label="Sujet du message"
+                            {...register("subject", { required: "Ce champ est obligatoire" })}
+                        />
+                        {responseError !== null && <Error text={responseError?.subject} />}
+                        {errors?.subject && <Error text={errors.subject.message} />}
+                    </div>
             <div className="flex-col flex md:-mt-8">
                         <label
                             className="mb-2"
@@ -210,7 +236,7 @@ const AddMessage: React.FC<Props> = ({data_props}) => {
                         />{" "}
 
                     </div>
-          </div>
+
 
           <div className="row-span-5">
              <ReactQuill

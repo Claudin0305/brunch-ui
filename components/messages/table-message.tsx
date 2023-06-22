@@ -44,16 +44,22 @@ const TableMessage: React.FC<Props> = ({ data }) => {
     {
       field: "message_type",
       headerName: "Type Message",
-      renderCell: value => value.row.message_type === 'INSCRIPTION' ? "Inscription" : "Paiement",
+      renderCell: value => value.row.messageType === 'INSCRIPTION' ? "Inscription" : "Paiement"
+      ,
       flex:1,
     },
     {
-      field: "libelle_texte",
-      headerName: "Libelle",
-      // renderCell: (value) => <PersoToolTip value={value} />,
-      // width:100,
+      field:"subject",
       flex:1,
+      headerName:"Sujet du message"
     },
+    // {
+    //   field: "libelle_texte",
+    //   headerName: "Contenu",
+    //   // renderCell: (value) => <PersoToolTip value={value} />,
+    //   // width:100,
+    //   flex:1,
+    // },
 
 
 

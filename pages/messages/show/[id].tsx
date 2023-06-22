@@ -92,10 +92,14 @@ const Page: React.FC<Props> = ({ data }) => {
             </h1>
             <div className="flex justify-between">
 
-              <p>Type de message</p><p>{data.message_type === 'INSCRIPTION' ? 'Inscription' : 'Paiement'}</p>
+              <p>Type de message</p><p>{data.messageType === 'INSCRIPTION' ? 'Inscription' : 'Paiement'}</p>
+            </div>
+            <div className="flex justify-between">
+
+              <p>Sujet du message</p><p>{data.subject}</p>
             </div>
 
-<div dangerouslySetInnerHTML={{ __html: data.libelle_texte }}>
+<div dangerouslySetInnerHTML={{ __html: data.libelleTexte }}>
             </div>
             <hr />
           </div>

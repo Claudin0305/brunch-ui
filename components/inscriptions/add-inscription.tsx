@@ -436,16 +436,15 @@ useEffect(()=>{
                 setErrorEmail(!pattern.test(e?.target.value))
                 setEmail(e?.target.value);
                 setValue('email_confirmation', "")
-                console.log(participants)
-                // const result = participants?.filter(p=> p?.eventEvent.id_event === event.id_event && p.email === e?.target.value)
-                // setExistEmail(result.length > 0);
-                // console.log(result.length)
+                // console.log(participants)
+                const result = participants?.filter(p=> p.email === e.target.value && p.idEvent === event.id_event)
+                setExistEmail(result.length > 0);
                 register('email').onChange(e);
               }}
             />
             {/* {responseError !== null && <Error text={responseError?.libelle}/>} */}
             {errors?.email && <Error text={errors.email.message} />}
-            {existEmail && <Error text={"Email existe!"}/>}
+            {existEmail && <Error text={"Ce courriel existe déjà dans notre système!"}/>}
           </div>
           <div className="block">
 
@@ -661,7 +660,7 @@ useEffect(()=>{
           </Button>
 
           <Button
-            disabled={isSubmit || selectedMode === null || !identiqueEmail}
+            disabled={isSubmit || selectedMode === null || !identiqueEmail || !existEmail}
             type="submit"
             className={`bg-blue-600 capitalize text-white flex items-center justify-center gap-x-2 ${isSubmit || selectedMode === null ? "bg-blue-400" :""}`}
             variant="contained"

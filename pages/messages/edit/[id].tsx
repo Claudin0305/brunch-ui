@@ -2,8 +2,8 @@ import Layout from "@/components/home/layout";
 import Head from "next/head";
 import React from "react";
 import { GetServerSideProps } from 'next'
-import MessageLayout from "@/components/geographie/villes/ville-layout";
-import AddMessage from "@/components/geographie/villes/add-ville";
+import MessageLayout from "@/components/messages/message-layout";
+import AddMessage from "@/components/messages/add-message";
 import axios from 'axios';
 type Props = {
   data: any;

@@ -83,7 +83,6 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
 
   const [responseError, setResponseError] = useState<any>(null);
   useEffect(() => {
-
     if (data_props !== null) {
       setValue('domaine_email', data_props.domaine_email);
       setValue('adr_email_event', data_props.adr_email_event);
@@ -135,7 +134,7 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
 
   const updateEvent = (data: FormData) => {
     axios
-      .put(`${process.env.base_route}/events/${data_props.id_event}`, data, {
+      .put(`${process.env.base_route}/events`, data, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -158,9 +157,10 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
 
       })
       .catch((err) => {
-        if (err.response.status === 400) {
-          setResponseError(err.response.data);
-        }
+        console.log(err)
+        // if (err.response.status === 400) {
+        //   setResponseError(err.response.data);
+        // }
         setIsSubmit(false);
       });
 
@@ -220,17 +220,29 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
     formData.append('heure_fin', data.heure_fin)
     formData.append('domaine_email', data.domaine_email)
     formData.append('adr_email_event', data.adr_email_event)
-    formData.append('image', data.image_event[0])
     formData.append('format_event', data.format_event?.value)
     formData.append('cible_participation', data.cible_participation)
     formData.append('text_descriptif', data.text_descriptif);
     setValueText(data.text_descriptif)
 
     if (data_props === null) {
-
+    formData.append('image', data.image_event[0])
       createEvent(formData);
     } else {
+      // if(data.image_event)
+      formData.append('id_event', data_props.id_event)
+      if(typeof(data.image_event) !=='string'){
+        // console.log(data.image_event);
+        formData.append('image', data.image_event[0])
+        formData.append('image_change', true);
+      }else{
+        formData.append('image_change', false);
+
+      }
       updateEvent(formData)
+      console.log(formData)
+      // console.log(typeof(data.image_event));
+
     }
 
 
@@ -433,30 +445,83 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
                   color="error"
                   className="hover:bg-red-600 hover:text-white mt-8"
                   onClick={e => {
-                    setValue('image_event', null);
-                    setPreviewImage("");
+                    if(data_props === null){
+                      setValue('image_event', null);
+                      setPreviewImage("");
+                    }else{
+                       const image = data_props.eventImages?.filter(img=> img.active === true)?.[0]
+      setPreviewImage(`${process.env.base_route}/events/images/${image?.name}`)
+      setValue('image_event', image.name)
+                    }
                   }}
                 >
                   Effacer
                 </Button>
               </div>}
-              <TextField
-                required
+<div>
+  <div className="-mt-4">
+  <label
+    htmlFor="image_event"
+    className="mb-2 inline-block text-neutral-700 dark:text-neutral-200"
+    >Image Evènement{data_props === null && "*"} </label
+  >
+  <input
+    className="relative m-0 block w-full min-w-0 flex-auto cursor-pointer rounded border border-solid border-neutral-300 bg-clip-padding px-3 py-[0.32rem] font-normal leading-[2.15] text-neutral-700 transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:cursor-pointer file:overflow-hidden file:rounded-none file:border-0 file:border-solid file:border-inherit file:bg-neutral-100 file:px-3 file:mr-1 file:py-[0.32rem] file:text-neutral-700 file:transition file:duration-150 file:ease-in-out file:[border-inline-end-width:1px] file:[margin-inline-end:0.75rem] hover:file:bg-neutral-200 focus:border-primary focus:text-neutral-700 focus:shadow-te-primary focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:file:bg-neutral-700 dark:file:text-neutral-100 dark:focus:border-primary"
+    id="image_event"
+    type="file"
+    accept="image/png, image/jpeg"
+required={data_props===null}
+ {...register("image_event", { required: {
+                  value: data_props===null,
+                  message: "Ce champ est obligatoire!"
+                } })}
+                onChange={e => {
+                  setCurrentImage(e.target.files?.[0]);
+                  setPreviewImage(URL?.createObjectURL(e.target?.files?.[0]));
+                  register("image_event").onChange(e)
+                }}
+     />
+</div>
+</div>
+
+{/* <input
+className="block w-full mb-5 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+id="default_size"
+type="file"
+accept="image/*"
+required={data_props===null}
+ {...register("image_event", { required: {
+                  value: data_props===null,
+                  message: "Ce champ est obligatoire!"
+                } })}
+                onChange={e => {
+                  setCurrentImage(e.target.files?.[0]);
+                  setPreviewImage(URL?.createObjectURL(e.target?.files?.[0]));
+                  register("image_event").onChange(e)
+                }}
+/> */}
+              {/* <TextField
+                required={data_props===null}
                 autoComplete="given-name"
                 fullWidth
                 id="image_event"
                 size="small"
                 label="Image événement"
                 type="file"
-                inputProps={{ accept: "image/*" }}
+                inputProps={{ accept: "image/*" , autoFocus: true}}
 
-                {...register("image_event", { required: "Ce champ est obligatoire!" })}
+                {...register("image_event", { required: {
+                  value: data_props===null,
+                  message: "Ce champ est obligatoire!"
+                } })}
                 onChange={e => {
                   setCurrentImage(e.target.files?.[0]);
                   setPreviewImage(URL?.createObjectURL(e.target?.files?.[0]));
                   register("image_event").onChange(e)
                 }}
-              />
+
+  // className={classes.sCommentTextField}
+              /> */}
               {errors?.image_event && <Error text={errors.image_event.message} />}
               {responseError !== null && <Error text={responseError?.libelle} />}
             </div>

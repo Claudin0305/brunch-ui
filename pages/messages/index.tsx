@@ -7,7 +7,7 @@ type Props = {
   data: any
 }
 
-const Ville: React.FC<Props> = ({ data }) => {
+const Message: React.FC<Props> = ({ data }) => {
   return (
     <Layout>
       <Head>
