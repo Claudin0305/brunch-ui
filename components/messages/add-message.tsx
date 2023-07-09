@@ -10,6 +10,10 @@ import { useRouter } from 'next/router'
 import Select from 'react-select';
 import dynamic from "next/dynamic";
 import 'react-quill/dist/quill.snow.css';
+const QuillNoSSRWrapper = dynamic(import('react-quill'), {
+  ssr: false,
+  loading: () => <p>chargement ...</p>,
+});
 
 type option = {
     label: string;
@@ -26,7 +30,7 @@ type Props = {
 
 
 const AddMessage: React.FC<Props> = ({data_props}) => {
-    const ReactQuill = useMemo(() => dynamic(() => import('react-quill'), { ssr: false }));
+    // const ReactQuill = useMemo(() => dynamic(() => import('react-quill'), { ssr: false }));
   const [valueText, setValueText] = useState<String | null>("");
     const modules = {
     toolbar: [
@@ -90,10 +94,15 @@ const AddMessage: React.FC<Props> = ({data_props}) => {
     }, []);
 
 //ReactQuill
-   const handleQuillChange = (content, delta, source, editor) => {
-    //  setValueText(content)
-     setValue('libelle_texte', content);
-  };
+//    const handleQuillChange = (content, delta, source, editor) => {
+//     //  setValueText(content)
+//     try{
+
+//         setValue('libelle_texte', content);
+//     }catch(e){
+//         console.log(e);
+//     }
+//   };
 
     const updateMessage = (data: Inputs | FormData) => {
         axios
@@ -202,7 +211,7 @@ const AddMessage: React.FC<Props> = ({data_props}) => {
                             fullWidth
                             id="subject"
                             size="small"
-                            label="Sujet du message"
+                            label="Objet du message"
                             {...register("subject", { required: "Ce champ est obligatoire" })}
                         />
                         {responseError !== null && <Error text={responseError?.subject} />}
@@ -239,20 +248,19 @@ const AddMessage: React.FC<Props> = ({data_props}) => {
 
 
           <div className="row-span-5">
-             <ReactQuill
+             <QuillNoSSRWrapper
               modules={modules}
               theme="snow"
               placeholder="contenu du message...*"
-               {...register('libelle_texte', { required: "Ce champ est obligatoire!" })}
-        onChange={handleQuillChange}
-              // onChange={e=>{
-              //   console.log(e.targe)
-              //   setValueText(e)
-              // }}
+            //    {...register('libelle_texte', { required: "Ce champ est obligatoire!" })}
+        // onChange={handleQuillChange}
+              onChange={e=>{
+                // console.log(e)
+                setValueText(e)
+                setValue('libelle_texte', e);
+              }}
               value={valueText}
             />
-
-
 
               {errors?.libelle_texte && <Error text={errors.libelle_texte.message} />}
           </div>

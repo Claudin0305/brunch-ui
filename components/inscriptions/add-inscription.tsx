@@ -10,6 +10,12 @@ import Error from "@/components/core/error";
 import axios from 'axios';
 import { useRouter } from 'next/router'
 import Select from 'react-select';
+import FormStepper from "./form-stepper";
+
+import { useTheme } from '@mui/material/styles';
+import MobileStepper from '@mui/material/MobileStepper';
+import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
+import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 
 
 type Inputs = {
@@ -40,7 +46,8 @@ type Props = {
 type option = {
   label: string;
   value: string | number | undefined;
-  id_ville? : string | number | null;
+  id_ville?: string | number | null;
+  data?: any | null
 }
 const format_events: option[] = [
   {
@@ -57,9 +64,10 @@ const format_events: option[] = [
   },
 ]
 const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civilites, event, locaux, participants }) => {
+  const { register, handleSubmit, watch, reset, setValue, getValues, control, formState: { errors } } = useForm<Inputs>();
+
   const router = useRouter()
   const min = 1;
-  const { register, handleSubmit, watch, reset, setValue, control, formState: { errors } } = useForm<Inputs>();
   const [isSubmit, setIsSubmit] = useState<boolean>(false);
   const [optionsCivilite, setOptionsCivilite] = useState<option[] | null>(null);
   const [optionsVille, setOptionsVille] = useState<option[] | null>(null);
@@ -68,7 +76,10 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
   const [capaciteTable, setCapaciteTable] = useState<number>(10)
   const [selectedVille, setSelectedVille] = useState<option | null>(null);
   const [selectedMode, setSelectedMode] = useState<option | null>(null);
-  const [formatEventOptions, setFormatEventOptions]= useState<option[]|null>(null)
+  const [selectCivilite, setSelectCivilite] = useState<option | null>(null);
+  const [selectTrangeAge, setSelectTrangeAge] = useState<option | null>(null);
+  const [selectLocal, setSelectLocal] = useState<option | null>(null);
+  const [formatEventOptions, setFormatEventOptions] = useState<option[] | null>(null)
   const [errorEmail, setErrorEmail] = useState<boolean>(false);
   const [existEmail, setExistEmail] = useState<boolean>(false);
   const [identiqueEmail, setIdentiqueEmail] = useState<boolean>(true);
@@ -124,7 +135,8 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
       tableOptions.push({
         label: `Local-${e.id_local}`,
         value: e.id_local,
-        id_ville: e.idVille
+        id_ville: e.idVille,
+        data: e
       })
     })
 
@@ -141,10 +153,10 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
       }
       return 0;
     });
-    if(selectedVille !== null){
-      const result = tableOptions?.filter(o=> o.id_ville===selectedVille?.value)
+    if (selectedVille !== null) {
+      const result = tableOptions?.filter(o => o.id_ville === selectedVille?.value)
       setOptionsLocal(result);
-    }else{
+    } else {
       setOptionsLocal([])
     }
   }, [selectedVille]);
@@ -181,28 +193,28 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
 
   // console.log(participants)
 
-useEffect(()=>{
-  if(event !== null){
-    //do something
-    if(event.format_event === 'HYBRIDE'){
-      const tableOptions: option[] = [{
-    value: "PRESENTIEL",
-    label: "Présentiel"
-  },
-  {
-    value: "DISTANCIEL",
-    label: "Distanciel"
-  },];
-  setFormatEventOptions(tableOptions)
-    }else{
-      const result = format_events.filter(f=> f.value === event.format_event);
-      setFormatEventOptions(result)
+  useEffect(() => {
+    if (event !== null) {
+      //do something
+      if (event.format_event === 'HYBRIDE') {
+        const tableOptions: option[] = [{
+          value: "PRESENTIEL",
+          label: "Présentiel"
+        },
+        {
+          value: "DISTANCIEL",
+          label: "Distanciel"
+        },];
+        setFormatEventOptions(tableOptions)
+      } else {
+        const result = format_events.filter(f => f.value === event.format_event);
+        setFormatEventOptions(result)
+      }
     }
-  }
-},[event])
+  }, [event])
 
-useEffect(()=>{
-  const tableOptions: option[] = [];
+  useEffect(() => {
+    const tableOptions: option[] = [];
     civilites?.sort((a, b) => {
       let fa = a.libelle,
         fb = b.libelle;
@@ -223,7 +235,7 @@ useEffect(()=>{
     })
 
     setOptionsCivilite(tableOptions);
-}, [])
+  }, [])
 
   const updateInscription = (data: Inputs | FormData) => {
     axios
@@ -240,7 +252,7 @@ useEffect(()=>{
             confirmButtonColor: "#2563eb",
             confirmButtonText: "Fermer",
           })
-          router.push('/locaux-brunch')
+          // router.push('/locaux-brunch')
           reset();
         }
 
@@ -278,8 +290,8 @@ useEffect(()=>{
         setValue('id_local', "");
         setValue('id_civilite', "");
 
-    setValue("abonnement_newsletter", "0")
-    setValue("authorisation_liste", "0")
+        setValue("abonnement_newsletter", "0")
+        setValue("authorisation_liste", "0")
 
         setSelectedVille(null)
         setSelectedMode(null)
@@ -299,23 +311,25 @@ useEffect(()=>{
 
 
   const onSubmit: SubmitHandler<Inputs> = data => {
-    // console.log(data)
     let formData = new FormData()
     formData.append("id_event", event.id_event)
     formData.append("prenom", data.prenom)
     formData.append("nom", data.nom)
     formData.append("email", data.email)
     formData.append("tel_participant", data.tel_participant)
-    formData.append("affiliation", data.affiliation)
+    if (data.affiliation !== undefined) {
+
+      formData.append("affiliation", data.affiliation)
+    }
     formData.append("abonnement_newsletter", data.abonnement_newsletter)
-    formData.append("authorisation_liste", data.authorisation_liste)
+    formData.append("authorisationListe", data.authorisation_liste)
     formData.append("id_ville", selectedVille?.value)
     formData.append("mode_participation", selectedMode?.value)
     formData.append("id_civilite", data.id_civilite?.value)
     formData.append("id_tranche_age", data.id_tranche_age?.value)
-    if(data.id_local !== undefined){
+    if (data.id_local.value !== undefined) {
       formData.append("id_local", data.id_local?.value)
-    }else{
+    } else {
       formData.append("id_local", 0)
 
     }
@@ -329,250 +343,250 @@ useEffect(()=>{
     }
 
   };
+  console.log(errors)
+  const steps = [
+    {
+      label: 'Informations personnelles',
+      description: <div className="flex flex-col md:grid md:grid-cols-3 gap-8">
+        <div className="flex-col flex md:-mt-4 z-30">
+          <label
+            className="mb-2"
+            htmlFor={`id_civilite`}
+          >
+            {" "}
+            Civilité*{" "}
+          </label>
+          <Controller
+            name={`id_civilite`}
+            control={control}
+            rules={{
+              required: "Ce champ est obligatoire",
+            }}
 
-  return (
-    <div className="container">
-      <h1 className="font-bold text-md text-center md:text-left md:text-lg capitalize mb-8">
-        {data_props === null ? '' : 'Modifier'} Inscription Brunch'2023
-      </h1>
-      <form onSubmit={handleSubmit(onSubmit)} className="center">
-        {/* register your input into the hook by invoking the "register" function */}
-        <div className="flex flex-col md:grid md:grid-cols-3 gap-8">
-          <div className="flex-col flex md:-mt-4 z-30">
-            <label
-              className="mb-2"
-              htmlFor={`id_civilite`}
-            >
-              {" "}
-              Civilité*{" "}
-            </label>
-            <Controller
-              name={`id_civilite`}
-              control={control}
-              rules={{
-                required: "Ce champ est obligatoire",
-              }}
-
-              render={({ field }) => (
-                <Select
-                  {...field}
-                  placeholder={
-                    "Choisir civilité..."
-                  }
-                  isClearable
-                  options={optionsCivilite}
-                />
-              )}
-            />{" "}
-            {errors?.id_civilite && <Error text={errors.id_civilite.message} />}
-          </div>
-          <div className="block">
-
-            <TextField
-              required
-              autoComplete="given-name"
-              fullWidth
-              id="nom"
-              size="small"
-              type="text"
-              label="Nom"
-              {...register("nom", { required: "Ce champ est obligatoire" })}
-              className="md:mt-3"
-            />
-            {/* {responseError !== null && <Error text={responseError?.libelle}/>} */}
-            {errors?.nom && <Error text={errors.nom.message} />}
-          </div>
-          <div className="block">
-
-            <TextField
-              required
-              autoComplete="given-name"
-              fullWidth
-              id="prenom"
-              size="small"
-              type="text"
-              label="Prenom"
-              {...register("prenom", { required: "Ce champ est obligatoire" })}
-              className="md:mt-3"
-            />
-            {/* {responseError !== null && <Error text={responseError?.libelle}/>} */}
-            {errors?.prenom && <Error text={errors.prenom.message} />}
-          </div>
-          <div className="block">
-
-            <TextField
-              required
-              autoComplete="given-name"
-              fullWidth
-              id="tel_participant"
-              size="small"
-              type="text"
-              label="Téléphone"
-              {...register("tel_participant", { required: "Ce champ est obligatoire" })}
-              className=""
-            />
-            {/* {responseError !== null && <Error text={responseError?.libelle}/>} */}
-            {errors?.tel_participant && <Error text={errors.tel_participant.message} />}
-          </div>
-          <div className="block">
-
-            <TextField
-              required
-              autoComplete="given-name"
-              size="small"
-              fullWidth
-              id="email"
-              type="email"
-              label="Courriel"
-              {...register("email", {
-                required: "Ce champ est obligatoire", pattern: {
-                  value: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-                  message: "Le format du courriel que vous avez spécifié incorrect.  Veuillez entrer un courriel valide."
+            render={({ field }) => (
+              <Select
+                {...field}
+                placeholder={
+                  "Choisir civilité..."
                 }
-              })}
-              onChange={e=>{
-                //do something
-                let pattern = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
-                setErrorEmail(!pattern.test(e?.target.value))
-                setEmail(e?.target.value);
-                setValue('email_confirmation', "")
-                // console.log(participants)
-                const result = participants?.filter(p=> p.email === e.target.value && p.idEvent === event.id_event)
-                setExistEmail(result.length > 0);
-                register('email').onChange(e);
-              }}
-            />
-            {/* {responseError !== null && <Error text={responseError?.libelle}/>} */}
-            {errors?.email && <Error text={errors.email.message} />}
-            {existEmail && <Error text={"Ce courriel existe déjà dans notre système!"}/>}
-          </div>
-          <div className="block">
+                isClearable
+                options={optionsCivilite}
+              />
+            )}
+          />{" "}
+          {errors?.id_civilite && <Error text={errors.id_civilite.message} />}
+        </div>
+        <div className="block">
 
-            <TextField
-              required
-              autoComplete="given-name"
-              size="small"
-              disabled={errorEmail}
-              fullWidth
-              id="email_confirmation"
-              type="email"
-              label="Confirmation de courriel"
-              {...register("email_confirmation", {
-                required: "Ce champ est obligatoire", pattern: {
-                  value: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-                  message: "L'email est invalide!"
+          <TextField
+            required
+            autoComplete="given-name"
+            fullWidth
+            id="nom"
+            size="small"
+            type="text"
+            label="Nom"
+            {...register("nom", { required: "Ce champ est obligatoire" })}
+            className="md:mt-3"
+          />
+          {/* {responseError !== null && <Error text={responseError?.libelle}/>} */}
+          {errors?.nom && <Error text={errors.nom.message} />}
+        </div>
+        <div className="block">
+
+          <TextField
+            required
+            autoComplete="given-name"
+            fullWidth
+            id="prenom"
+            size="small"
+            type="text"
+            label="Prenom"
+            {...register("prenom", { required: "Ce champ est obligatoire" })}
+            className="md:mt-3"
+          />
+          {/* {responseError !== null && <Error text={responseError?.libelle}/>} */}
+          {errors?.prenom && <Error text={errors.prenom.message} />}
+        </div>
+        <div className="block">
+
+          <TextField
+            required
+            autoComplete="given-name"
+            fullWidth
+            id="tel_participant"
+            size="small"
+            type="text"
+            label="Téléphone"
+            {...register("tel_participant", { required: "Ce champ est obligatoire" })}
+            className=""
+          />
+          {/* {responseError !== null && <Error text={responseError?.libelle}/>} */}
+          {errors?.tel_participant && <Error text={errors.tel_participant.message} />}
+        </div>
+        <div className="block">
+
+          <TextField
+            required
+            autoComplete="given-name"
+            size="small"
+            fullWidth
+            id="email"
+            type="email"
+            label="Courriel"
+            {...register("email", {
+              required: "Ce champ est obligatoire", pattern: {
+                value: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+                message: "Le format du courriel que vous avez spécifié incorrect.  Veuillez entrer un courriel valide."
+              }
+            })}
+            onChange={e => {
+              //do something
+              let pattern = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+              setErrorEmail(!pattern.test(e?.target.value))
+              setEmail(e?.target.value);
+              setValue('email_confirmation', "")
+              // console.log(participants)
+              const result = participants?.filter(p => p.email === e.target.value && p.idEvent === event.id_event)
+              setExistEmail(result.length > 0);
+              register('email').onChange(e);
+            }}
+          />
+          {/* {responseError !== null && <Error text={responseError?.libelle}/>} */}
+          {errors?.email && <Error text={errors.email.message} />}
+          {existEmail && <Error text={"Ce courriel existe déjà dans notre système!"} />}
+        </div>
+        <div className="block">
+
+          <TextField
+            required
+            autoComplete="given-name"
+            size="small"
+            disabled={errorEmail}
+            fullWidth
+            id="email_confirmation"
+            type="email"
+            label="Confirmation de courriel"
+            {...register("email_confirmation", {
+              required: "Ce champ est obligatoire", pattern: {
+                value: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+                message: "L'email est invalide!"
+              }
+            })}
+            onChange={e => {
+              setIdentiqueEmail(e?.target?.value === email);
+              register('email_confirmation').onChange(e);
+            }}
+
+          />
+          {/* {responseError !== null && <Error text={responseError?.libelle}/>} */}
+          {errors?.email_confirmation && <Error text={errors.email_confirmation.message} />}
+          {!identiqueEmail && <Error text={"Le courriel que vous avez spécifié dans le champ \"Confirmation de courriel\" ne correspond pas à celui que vous avez indiqué dans le champ courriel.  Veuillez entrer la même valeur dans les 2 champs."} />}
+        </div>
+        <div className="flex-col flex md:-mt-4 z-40">
+          <label
+            className="mb-2"
+            htmlFor={`id_tranche_age`}
+          >
+            {" "}
+            Tranche d'âge{" "}
+          </label>
+          <Controller
+            name={`id_tranche_age`}
+            control={control}
+            // rules={{
+            //   required: "Ce champ est obligatoire",
+            // }}
+
+            render={({ field }) => (
+              <Select
+                {...field}
+                placeholder={
+                  "Choisir tranche d'âge..."
                 }
-              })}
-              onChange={e=>{
-                setIdentiqueEmail(e?.target?.value === email);
-                register('email_confirmation').onChange(e);
-              }}
+                isClearable
+                options={optionsTrancheAge}
+              />
+            )}
+          />{" "}
+          {errors?.id_tranche_age && <Error text={errors.id_tranche_age.message} />}
+        </div>
+        <div className="flex-col flex md:-mt-4 z-30 ">
+          <label
+            className="mb-2"
+            htmlFor={`id_ville`}
+          >
+            {" "}
+            Ville*{" "}
+          </label>
+          <Controller
+            name={`id_ville`}
+            control={control}
+            rules={{
+              required: "Ce champ est obligatoire",
+            }}
 
-            />
-            {/* {responseError !== null && <Error text={responseError?.libelle}/>} */}
-            {errors?.email_confirmation && <Error text={errors.email_confirmation.message} />}
-            {!identiqueEmail && <Error text={"Le courriel que vous avez spécifié dans le champ \"Confirmation de courriel\" ne correspond pas à celui que vous avez indiqué dans le champ courriel.  Veuillez entrer la même valeur dans les 2 champs."}/>}
-          </div>
-          <div className="flex-col flex md:-mt-4 z-40">
-            <label
-              className="mb-2"
-              htmlFor={`id_tranche_age`}
-            >
-              {" "}
-              Tranche d'âge{" "}
-            </label>
-            <Controller
-              name={`id_tranche_age`}
-              control={control}
-              // rules={{
-              //   required: "Ce champ est obligatoire",
-              // }}
-
-              render={({ field }) => (
-                <Select
-                  {...field}
-                  placeholder={
-                    "Choisir tranche d'âge..."
-                  }
-                  isClearable
-                  options={optionsTrancheAge}
-                />
-              )}
-            />{" "}
-            {errors?.id_tranche_age && <Error text={errors.id_tranche_age.message} />}
-          </div>
-          <div className="flex-col flex md:-mt-4 z-30 ">
-            <label
-              className="mb-2"
-              htmlFor={`id_ville`}
-            >
-              {" "}
-              Ville*{" "}
-            </label>
-            <Controller
-              name={`id_ville`}
-              control={control}
-              rules={{
-                required: "Ce champ est obligatoire",
-              }}
-
-              render={({ field }) => (
-                <Select
-                  {...field}
-                  placeholder={
-                    "Choisir ville..."
-                  }
-                  isClearable
-                  options={optionsVille}
-                  value={selectedVille}
-                 onChange={e=>{
+            render={({ field }) => (
+              <Select
+                {...field}
+                placeholder={
+                  "Choisir ville..."
+                }
+                isClearable
+                options={optionsVille}
+                value={selectedVille}
+                onChange={e => {
                   setSelectedVille(e)
                   setValue('id_ville', e)
-                 }}
-                />
-              )}
-            />{" "}
-            {errors?.id_ville && <Error text={errors.id_ville.message} />}
-          </div>
+                }}
+              />
+            )}
+          />{" "}
+          {errors?.id_ville && <Error text={errors.id_ville.message} />}
+        </div>
+      </div>,
+    },
+    {
+      label: 'Mode de participation',
+      description: <div className="flex flex-col md:grid md:grid-cols-3 gap-8">
+        <div className="flex-col flex md:-mt-4 z-20">
+          <label
+            className="mb-2"
+            htmlFor={`mode_participation`}
+          >
+            {" "}
+            Mode participation*{" "}
+          </label>
+          <Controller
+            name={`mode_participation`}
+            control={control}
+            // rules={{
+            //   required: "Ce champ est obligatoire",
+            // }}
 
-          <div className="flex-col flex md:-mt-4 z-20">
-            <label
-              className="mb-2"
-              htmlFor={`mode_participation`}
-            >
-              {" "}
-              Mode participation*{" "}
-            </label>
-            <Controller
-              name={`mode_participation`}
-              control={control}
-              // rules={{
-              //   required: "Ce champ est obligatoire",
-              // }}
+            render={({ field }) => (
+              <Select
+                {...field}
+                placeholder={
+                  "Choisir mode participation..."
+                }
+                isClearable
+                options={formatEventOptions}
+                value={selectedMode}
+                onChange={e => {
+                  setSelectedMode(e);
 
-              render={({ field }) => (
-                <Select
-                  {...field}
-                  placeholder={
-                    "Choisir mode participation..."
-                  }
-                  isClearable
-                  options={formatEventOptions}
-                  value={selectedMode}
-                  onChange={e=>{
-                    setSelectedMode(e);
-
-                  }}
-                />
-              )}
-            />{" "}
-            {errors?.mode_participation && <Error text={errors.mode_participation.message} />}
-          </div>
+                }}
+              />
+            )}
+          />{" "}
+          {errors?.mode_participation && <Error text={errors.mode_participation.message} />}
+        </div>
 
 
 
-                  {selectedVille !== null  && selectedMode && selectedMode.value==="PRESENTIEL" &&
-<div className="flex-col flex md:-mt-4 z-10">
+        {selectedVille !== null && selectedMode && selectedMode.value === "PRESENTIEL" &&
+          <div className="flex-col flex md:-mt-4 z-10">
             <label
               className="mb-2"
               htmlFor={`id_local`}
@@ -584,9 +598,10 @@ useEffect(()=>{
               name={`id_local`}
               control={control}
               rules={{
-                required: {message:"Ce champ est obligatoire",
-                value:selectedMode?.value === 'PRESENTIEL'
-              },
+                required: {
+                  message: "Ce champ est obligatoire",
+                  value: selectedMode?.value === 'PRESENTIEL'
+                },
               }}
 
               render={({ field }) => (
@@ -596,60 +611,91 @@ useEffect(()=>{
                     "Choisir local..."
                   }
                   isClearable
+                  value={selectLocal}
+                  onChange={e => {
+                    setValue('id_local', e);
+                    setSelectLocal(e)
+                  }}
                   options={optionsLocal}
                 />
               )}
             />{" "}
             {errors?.id_local && <Error text={errors.id_local.message} />}
+            {selectLocal && <p className="mt-2"><span className="font-bold">Montant participation:</span> {`${selectLocal?.data?.montant_participation} ${selectLocal?.data?.codeDevise}`}</p>}
           </div>}
- <div className="block">
+        {/* <div className="block">
 
-            <TextField
-              required
-              autoComplete="given-name"
-              fullWidth
-              id="affiliation"
-              size="small"
-              type="text"
-              label="Affiliation"
-              {...register("affiliation", { required: "Ce champ est obligatoire" })}
-              className="md:mt-3"
+          <TextField
+            autoComplete="given-name"
+            fullWidth
+            id="affiliation"
+            size="small"
+            type="text"
+            label="Affiliation"
+            // {...register("affiliation")}
+            className="md:mt-3"
+            onChange={e=>{
+
+              setDataForm({...dataForm, affiliation:e?.target.value})
+              register('affiliation').onChange(e);
+            }}
+          />
+          {errors?.affiliation && <Error text={errors.affiliation.message} />}
+        </div> */}
+        <div className="col-span-3">
+
+          <div className="block">
+
+            <Controller
+              name='authorisation_liste'
+              control={control}
+              defaultValue={false}
+              render={({ field }) => (
+                <FormControlLabel
+                  control={<Checkbox {...field} />}
+                  label={`J'autorise GRAHN-Monde à afficher mon nom dans le tableau des inscrits au Brunch'${new Date().getFullYear()}`}
+                />
+              )}
             />
-            {/* {responseError !== null && <Error text={responseError?.libelle}/>} */}
-            {errors?.affiliation && <Error text={errors.affiliation.message} />}
           </div>
-          <div className="col-span-3">
+          <div className="block">
 
- <div className="block">
-
-         <Controller
-        name='authorisation_liste'
-        control={control}
-        defaultValue={false}
-        render={({ field }) => (
-            <FormControlLabel
-                control={<Checkbox {...field} />}
-                label={`J'autorise GRAHN-Monde à afficher mon nom dans le tableau des inscrits au Brunch'${new Date().getFullYear()}`}
+            <Controller
+              name='abonnement_newsletter'
+              control={control}
+              defaultValue={false}
+              render={({ field }) => (
+                <FormControlLabel
+                  control={<Checkbox {...field} />}
+                  label="Je souhaite recevoir les communications de GRAHN-Monde"
+                />
+              )}
             />
-        )}
-    />
           </div>
- <div className="block">
-
-         <Controller
-        name='abonnement_newsletter'
-        control={control}
-        defaultValue={false}
-        render={({ field }) => (
-            <FormControlLabel
-                control={<Checkbox {...field} />}
-                label="Je souhaite recevoir les communications de GRAHN-Monde"
-            />
-        )}
-    />
+        </div>
+      </div>,
+    },
+    {
+      label: 'resumé',
+      description: <div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {getValues('nom') && <div className="flex justify-between">
+            <p>Nom:</p> <p>{getValues('nom')}</p>
           </div>
+          }
+          {getValues('prenom') && <div className="flex justify-between">
+            <p>Prenom:</p> <p>{getValues('prenom')}</p>
           </div>
-         </div>
+          }
+          {getValues('email') && <div className="flex justify-between">
+            <p>Email:</p> <p>{getValues('email')}</p>
+          </div>
+          }
+          {getValues('tel_participant') && <div className="flex justify-between">
+            <p>Téléphone:</p> <p>{getValues('tel_participant')}</p>
+          </div>
+          }
+        </div>
         <div className="flex justify-end flex-col mt-8 md:flex-row gap-8 mb-8">
           <Button
             type="reset"
@@ -660,14 +706,81 @@ useEffect(()=>{
           </Button>
 
           <Button
-            disabled={isSubmit || selectedMode === null || !identiqueEmail || !existEmail}
+            disabled={isSubmit || existEmail || !identiqueEmail || selectedMode === null}
             type="submit"
-            className={`bg-blue-600 capitalize text-white flex items-center justify-center gap-x-2 ${isSubmit || selectedMode === null ? "bg-blue-400" :""}`}
+            className={`bg-blue-600 capitalize text-white flex items-center justify-center gap-x-2 ${isSubmit || selectedMode === null ? "bg-blue-400" : ""}`}
             variant="contained"
+
           >
             {isSubmit && <CircularIndeterminate />} <span>{data_props === null ? "S'inscrire" : 'Modifier'}</span>
           </Button>
-        </div>
+        </div>,
+      </div>
+    },
+  ];
+  const theme = useTheme();
+  const [activeStep, setActiveStep] = React.useState(0);
+  const maxSteps = steps.length;
+
+  const handleNext = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  };
+
+  const handleBack = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
+
+
+  return (
+    <div className="container">
+      <h1 className="font-bold text-md text-center md:text-left md:text-lg capitalize mb-4">
+        {data_props === null ? '' : 'Modifier'} Inscription Brunch'2023
+      </h1>
+      <hr />
+      <form onSubmit={handleSubmit(onSubmit)} className="center">
+        {/* register your input into the hook by invoking the "register" function */}
+        <section>
+          <header
+            className='py-2 text-center md:text-left mb-4'
+          >
+            <h1 className='uppercase font-semibold text-blue-500'>{steps[activeStep].label}</h1>
+          </header>
+          <div >
+            {steps[activeStep].description}
+          </div>
+          <div className="mt-8">
+            <MobileStepper
+              variant="text"
+              steps={maxSteps}
+              position="static"
+              activeStep={activeStep}
+              nextButton={
+                <Button
+                  size="small"
+                  onClick={handleNext}
+                  disabled={activeStep === maxSteps - 1}
+                >
+                  Suivant
+                  {theme.direction === 'rtl' ? (
+                    <KeyboardArrowLeft />
+                  ) : (
+                    <KeyboardArrowRight />
+                  )}
+                </Button>
+              }
+              backButton={
+                <Button size="small" onClick={handleBack} disabled={activeStep === 0}>
+                  {theme.direction === 'rtl' ? (
+                    <KeyboardArrowRight />
+                  ) : (
+                    <KeyboardArrowLeft />
+                  )}
+                  Retour
+                </Button>
+              }
+            />
+          </div>
+        </section>
 
       </form>
     </div>

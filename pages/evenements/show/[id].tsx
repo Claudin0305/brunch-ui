@@ -157,7 +157,7 @@ const Page: React.FC<Props> = ({ data }) => {
             </div>
             <div className="flex justify-between">
 
-              <p>Domaine email</p><p>{data.domaine_email}</p>
+              <p>Site web</p><p>{data.url}</p>
             </div>
 
 

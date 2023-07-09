@@ -12,7 +12,10 @@ import 'react-quill/dist/quill.snow.css';
 import Select from 'react-select';
 import Image from "next/image"
 import dynamic from "next/dynamic";
-
+const QuillNoSSRWrapper = dynamic(import('react-quill'), {
+  ssr: false,
+  loading: () => <p>chargement ...</p>,
+});
 
 type Inputs = {
   date_debut: String;
@@ -22,7 +25,7 @@ type Inputs = {
   format_event: String;
   text_descriptif: String;
   adr_email_event: String;
-  domaine_email: String;
+  url: String;
   cible_participation: number;
   image_event: any
 
@@ -50,9 +53,27 @@ const format_events: option[] = [
     label: "Distanciel"
   },
 ]
+const type_events: option[] = [
+  {
+    value: "AUTRE",
+    label: "Autre"
+  },
+  {
+    value: "ASSEMBLEE_GENERALE",
+    label: "Assemblée Générale"
+  },
+  {
+    value: "BRUNCH",
+    label: "Brunch"
+  },
+  {
+    value: "CONFERENCE",
+    label: "Conférence"
+  },
+]
 
 const AddEvent: React.FC<Props> = ({ data_props }) => {
-  const ReactQuill = useMemo(() => dynamic(() => import('react-quill'), { ssr: false }));
+  // const ReactQuill = useMemo(() => dynamic(() => import('react-quill'), { ssr: false }));
   const [valueText, setValueText] = useState<String | null>("");
   const [errorDate, setErrorDate] = useState<boolean>(false);
   const [dateFin, setDateFin] = useState<String>("")
@@ -84,13 +105,15 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
   const [responseError, setResponseError] = useState<any>(null);
   useEffect(() => {
     if (data_props !== null) {
-      setValue('domaine_email', data_props.domaine_email);
+      setValue('url', data_props.url);
       setValue('adr_email_event', data_props.adr_email_event);
       setValueText(data_props.text_descriptif);
       setValue('text_descriptif', data_props.text_descriptif)
       setValue('cible_participation', data_props.cible_participation);
       const result:String | null = format_events.filter(e=> e.value === data_props.format_event)[0]
       setValue('format_event', result);
+      const resultType:String | null = type_events.filter(e=> e.value === data_props.eventType)[0]
+      setValue('format_event', resultType);
       const date_debut = data_props.date_debut.split("T")[0]
       setValue('date_debut', date_debut)
       const date_fin = data_props.date_fin.split("T")[0]
@@ -218,9 +241,10 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
     formData.append('date_fin', data.date_fin)
     formData.append('heure_debut', data.heure_debut)
     formData.append('heure_fin', data.heure_fin)
-    formData.append('domaine_email', data.domaine_email)
+    formData.append('url', data.url)
     formData.append('adr_email_event', data.adr_email_event)
     formData.append('format_event', data.format_event?.value)
+    formData.append('eventType', data.event_type?.value)
     formData.append('cible_participation', data.cible_participation)
     formData.append('text_descriptif', data.text_descriptif);
     setValueText(data.text_descriptif)
@@ -342,6 +366,8 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
             </div>
           </div>
           <div className="grid grid-cols-1 col-span-1 md:col-span-2 md:grid-cols-4 gap-8">
+
+
             <div className="flex-col flex md:-mt-4 ">
               <label
                 className="mb-2"
@@ -371,6 +397,36 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
               />{" "}
               {errors?.format_event && <Error text={errors.format_event.message} />}
             </div>
+            <div className="flex-col flex md:-mt-4 ">
+              <label
+                className="mb-2"
+                htmlFor={`event_type`}
+              >
+                {" "}
+                Type événement*{" "}
+              </label>
+              <Controller
+                name={`event_type`}
+                control={control}
+                rules={{
+                  required: "Ce champ est obligatoire",
+                }}
+
+                render={({ field }) => (
+                  <Select
+                    {...field}
+                    placeholder={
+                      "Choisir le type..."
+                    }
+                    isClearable
+                    options={type_events}
+                    className="z-50"
+                  />
+                )}
+              />{" "}
+              {errors?.format_event && <Error text={errors.event_type.message} />}
+            </div>
+
             <div className="block md:mt-4">
               <TextField
                 required
@@ -410,19 +466,19 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
 
               {errors?.adr_email_event && <Error text={errors.adr_email_event.message} />}
             </div>
-            <div className="block md:mt-4">
+            <div className="block">
 
 
               <TextField
                 required
                 autoComplete="given-name"
                 fullWidth
-                id="domaine_email"
+                id="url"
                 size="small"
                 label="Domaine email"
                 type="url"
 
-                {...register("domaine_email", { required: true })}
+                {...register("url", { required: true })}
               />
 
               {responseError !== null && <Error text={responseError?.libelle} />}
@@ -484,60 +540,23 @@ required={data_props===null}
 </div>
 </div>
 
-{/* <input
-className="block w-full mb-5 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-id="default_size"
-type="file"
-accept="image/*"
-required={data_props===null}
- {...register("image_event", { required: {
-                  value: data_props===null,
-                  message: "Ce champ est obligatoire!"
-                } })}
-                onChange={e => {
-                  setCurrentImage(e.target.files?.[0]);
-                  setPreviewImage(URL?.createObjectURL(e.target?.files?.[0]));
-                  register("image_event").onChange(e)
-                }}
-/> */}
-              {/* <TextField
-                required={data_props===null}
-                autoComplete="given-name"
-                fullWidth
-                id="image_event"
-                size="small"
-                label="Image événement"
-                type="file"
-                inputProps={{ accept: "image/*" , autoFocus: true}}
-
-                {...register("image_event", { required: {
-                  value: data_props===null,
-                  message: "Ce champ est obligatoire!"
-                } })}
-                onChange={e => {
-                  setCurrentImage(e.target.files?.[0]);
-                  setPreviewImage(URL?.createObjectURL(e.target?.files?.[0]));
-                  register("image_event").onChange(e)
-                }}
-
-  // className={classes.sCommentTextField}
-              /> */}
               {errors?.image_event && <Error text={errors.image_event.message} />}
               {responseError !== null && <Error text={responseError?.libelle} />}
             </div>
           </div>
 
           <div className="row-span-5">
-             <ReactQuill
+             <QuillNoSSRWrapper
               modules={modules}
               theme="snow"
               placeholder="Text descriptif...*"
-               {...register('text_descriptif', { required: "Ce champ est obligatoire!" })}
-        onChange={handleQuillChange}
-              // onChange={e=>{
-              //   console.log(e.targe)
-              //   setValueText(e)
-              // }}
+              //  {...register('text_descriptif', { required: "Ce champ est obligatoire!" })}
+        // onChange={handleQuillChange}
+              onChange={e=>{
+                // console.log(e.targe)
+                setValueText(e)
+                setValue('text_descriptif', e);
+              }}
               value={valueText}
             />
 

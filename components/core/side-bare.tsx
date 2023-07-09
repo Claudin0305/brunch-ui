@@ -14,6 +14,8 @@ import WcIcon from '@mui/icons-material/Wc';
 import EventIcon from '@mui/icons-material/Event';
 import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
 import EmailIcon from '@mui/icons-material/Email';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
 type nav = {
   path: string;
   name: string;
@@ -77,11 +79,21 @@ const SideBare: React.FC = () => {
       icon: <EmailIcon/>,
       name: "Messages",
     },
+    {
+      path: "/utilisateurs",
+      icon: <AdminPanelSettingsIcon/>,
+      name: "Utilisateurs",
+    },
+    {
+      path: "/roles",
+      icon: <VerifiedUserIcon />,
+      name: "Roles",
+    },
   ];
   return (
     <div className="h-screen flex flex-col w-72 shadow-lg bg-white overflow-y-scrol">
       <div className="flex">
-        <h1 className="text-2xl uppercase px-4 py-4">brunch ui</h1>
+        <h1 className="text-2xl uppercase px-4 py-4">Administration</h1>
       </div>
       <div className="flex flex-col">
         {navigation.map(({ path, icon, name }) => (

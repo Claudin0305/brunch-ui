@@ -5,7 +5,7 @@ import React, { MouseEvent } from "react";
 import Link from 'next/link'
 import Button from "@mui/material/Button";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import LocalBrunchLayout from "@/components/local-brunch/local-brunch-layout";
+import RoleLayout from "@/components/roles/role-layout";
 import Swal from 'sweetalert2'
 import { useRouter } from 'next/router'
 
@@ -16,8 +16,8 @@ type Props = {
 
 const Page: React.FC<Props> = ({ data }) => {
   const router = useRouter()
-  const deleteLocalBrunch = (id: number) => {
-    fetch(`${process.env.base_route}/locaux/${id}`, {
+  const deleteRole = (id: number) => {
+    fetch(`${process.env.base_route}/roles/${id}`, {
       method: "DELETE",
 
       headers: {
@@ -39,7 +39,7 @@ const Page: React.FC<Props> = ({ data }) => {
         })
 
 
-        router.push('/locaux-brunch')
+        router.push('/roles')
 
       }
     }).catch((e) => {
@@ -55,7 +55,7 @@ const Page: React.FC<Props> = ({ data }) => {
   const handleDelete = (event: MouseEvent) => {
     Swal.fire({
       title: 'Etes-vous sûr?',
-      text: "Supprimer " + data.libelle,
+      text: "Supprimer " + data.authority,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#2563eb',
@@ -70,7 +70,7 @@ const Page: React.FC<Props> = ({ data }) => {
         //   'Your file has been deleted.',
         //   'success'
         // )
-        deleteLocalBrunch(data.id_local)
+        deleteRole(data.roleId)
       }
     })
 
@@ -81,54 +81,18 @@ const Page: React.FC<Props> = ({ data }) => {
   return (
     <Layout>
       <Head>
-        <title>Local Brunch | Details</title>
+        <title>Role | Details</title>
       </Head>
-      <LocalBrunchLayout>
+      <RoleLayout>
         <div className="bg-white px-8 py-4 mb-4 shadow-md h-[calc(100vh_-_215px)] overflow-y-scroll">
 
           <div className="flex flex-col gap-y-4 w-1/2 mx-auto">
             <h1 className="font-bold text-sm md:text-lg capitalize bg-slate-100 text-center col-span-2">
-              Détails LocalBrunch
+              Détails Role
             </h1>
             <div className="flex justify-between">
 
-              <p>Identifiant</p><p>{`Local-${data.id_local}`}</p>
-            </div>
-            <div className="flex justify-between">
-
-              <p>Pays</p><p>{data.pays}</p>
-            </div>
-            <div className="flex justify-between">
-
-              <p>Ville</p><p>{data.ville}</p>
-            </div>
-            <div className="flex justify-between">
-
-              <p>Adresse</p><p>{data.adresse_no_rue}</p>
-            </div>
-            <div className="flex justify-between">
-
-              <p>Email resp.</p><p>{data.email_responsable}</p>
-            </div>
-            <div className="flex justify-between">
-
-              <p>Capacité tot.</p><p>{data.capacite_totale}</p>
-            </div>
-            <div className="flex justify-between">
-
-              <p>Capacité tab.</p><p>{data.capacite_table}</p>
-            </div>
-            <div className="flex justify-between">
-
-              <p>Seuil alerte</p><p>{data.seuil_alerte}</p>
-            </div>
-            <div className="flex justify-between">
-
-              <p>Nb Réservation</p><p>{data.nb_reservation}</p>
-            </div>
-            <div className="flex justify-between">
-
-              <p>Montant part.</p><p>{`${data.montant_participation} ${data.codeDevise}`}</p>
+              <p>Role</p><p>{data.authority}</p>
             </div>
 
 
@@ -140,7 +104,7 @@ const Page: React.FC<Props> = ({ data }) => {
               Supprimer
             </Button>
 
-            <Link href={`/locaux-brunch/edit/${data.id_local}`}>
+            <Link href={`/roles/edit/${data.roleId}`}>
               <Button className="bg-blue-600 capitalize" variant="contained" startIcon={<EditIcon />}>
                 Editer
               </Button>
@@ -148,14 +112,14 @@ const Page: React.FC<Props> = ({ data }) => {
 
           </div>
         </div>
-      </LocalBrunchLayout>
+      </RoleLayout>
     </Layout>
   );
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   // ...
-  const res = await fetch(`${process.env.base_route}/locaux/${context?.params?.id}`)
+  const res = await fetch(`${process.env.base_route}/roles/${context?.params?.id}`)
   //    console.log(res)
   const data = await res.json()
 
