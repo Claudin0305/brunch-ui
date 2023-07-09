@@ -33,6 +33,8 @@ type Inputs = {
   id_civilite: string | null;
   id_event: string | null;
   id_tranche_age: string | null;
+  id_pays: string | null;
+  id_departement: string | null;
 };
 type Props = {
   data_props: any | null;
@@ -71,11 +73,15 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
   const [isSubmit, setIsSubmit] = useState<boolean>(false);
   const [optionsCivilite, setOptionsCivilite] = useState<option[] | null>(null);
   const [optionsVille, setOptionsVille] = useState<option[] | null>(null);
+  const [optionsDepartement, setOptionsDepartement] = useState<option[] | null>(null);
+  const [optionsPays, setOptionsPays] = useState<option[] | null>(null);
   const [optionsLocal, setOptionsLocal] = useState<option[] | null>(null);
   const [optionsTrancheAge, setOptionsTrancheAge] = useState<option[] | null>(null);
   const [capaciteTable, setCapaciteTable] = useState<number>(10)
   const [selectedVille, setSelectedVille] = useState<option | null>(null);
   const [selectedMode, setSelectedMode] = useState<option | null>(null);
+  const [selectedPays, setSelectedPays] = useState<option | null>(null);
+  const [selectedDepartement, setSelectedDepartement] = useState<option | null>(null);
   const [selectCivilite, setSelectCivilite] = useState<option | null>(null);
   const [selectTrangeAge, setSelectTrangeAge] = useState<option | null>(null);
   const [selectLocal, setSelectLocal] = useState<option | null>(null);
@@ -161,20 +167,43 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
     }
   }, [selectedVille]);
   useEffect(() => {
-    const tableOptions: option[] = [];
-    pays?.forEach(p => {
-      p?.departements?.forEach(d => {
-        d?.villes?.forEach(v => {
-          tableOptions.push(
-            {
-              label: `${v.libelle} (${d.libelle}, ${p.libelle})`,
-              value: v.id_ville
-            }
-          )
-        })
+    const tableOptions: option[] = [],
+          tablePays: option[] = [],
+          tableDepartements: option[] = [],
+          tableVilles: option[] = [];
+    pays?.forEach(p=>{
+      tablePays.push({
+        label:p.libelle,
+        value:p.id_pays,
+        data:p.departements
       })
     })
-    tableOptions?.sort((a, b) => {
+    // pays?.forEach(p => {
+    //   p?.departements?.forEach(d => {
+    //     d?.villes?.forEach(v => {
+    //       tableOptions.push(
+    //         {
+    //           label: `${v.libelle} (${d.libelle}, ${p.libelle})`,
+    //           value: v.id_ville
+    //         }
+    //       )
+    //     })
+    //   })
+    // })
+    // tableOptions?.sort((a, b) => {
+    //   let fa = a.label,
+    //     fb = b.label;
+
+    //   if (fa < fb) {
+    //     return -1;
+    //   }
+    //   if (fa > fb) {
+    //     return 1;
+    //   }
+    //   return 0;
+    // });
+
+    tablePays?.sort((a, b)=>{
       let fa = a.label,
         fb = b.label;
 
@@ -185,10 +214,12 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
         return 1;
       }
       return 0;
-    });
+    })
+
+    setOptionsPays(tablePays);
 
 
-    setOptionsVille(tableOptions);
+    // setOptionsVille(tableOptions);
   }, []);
 
   // console.log(participants)
@@ -212,7 +243,21 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
       }
     }
   }, [event])
+const sorter = (table:option[])=>{
+  table?.sort((a, b) => {
+    let fa = a.label,
+      fb = b.label;
 
+    if (fa < fb) {
+      return -1;
+    }
+    if (fa > fb) {
+      return 1;
+    }
+    return 0;
+  });
+  return table;
+}
   useEffect(() => {
     const tableOptions: option[] = [];
     civilites?.sort((a, b) => {
@@ -401,7 +446,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
             id="prenom"
             size="small"
             type="text"
-            label="Prenom"
+            label="Prénom"
             {...register("prenom", { required: "Ce champ est obligatoire" })}
             className="md:mt-3"
           />
@@ -514,6 +559,92 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
         <div className="flex-col flex md:-mt-4 z-30 ">
           <label
             className="mb-2"
+            htmlFor={`id_pays`}
+          >
+            {" "}
+            Pays*{" "}
+          </label>
+          <Controller
+            name={`id_pays`}
+            control={control}
+            rules={{
+              required: "Ce champ est obligatoire",
+            }}
+
+            render={({ field }) => (
+              <Select
+                {...field}
+                placeholder={
+                  "Choisir pays..."
+                }
+                isClearable
+                options={optionsPays}
+                value={selectedPays}
+                onChange={e => {
+                  setSelectedPays(e)
+                  setSelectedDepartement(null);
+                  setSelectedVille(null);
+                  const tableDept: option[] = [];
+                  e?.data.forEach(d=>{
+                    tableDept.push({
+                      label: d.libelle,
+                      value: d.id_departement,
+                      data: d.villes
+                    })
+                  })
+                  setOptionsDepartement(sorter(tableDept));
+                  setValue('id_pays', e)
+                }}
+              />
+            )}
+          />{" "}
+          {errors?.id_pays && <Error text={errors.id_pays.message} />}
+        </div>
+        {selectedPays && <div className="flex-col flex md:-mt-4 z-30 ">
+          <label
+            className="mb-2"
+            htmlFor={`id_departement`}
+          >
+            {" "}
+            Département*{" "}
+          </label>
+          <Controller
+            name={`id_departement`}
+            control={control}
+            rules={{
+              required: "Ce champ est obligatoire",
+            }}
+
+            render={({ field }) => (
+              <Select
+                {...field}
+                placeholder={
+                  "Choisir département..."
+                }
+                isClearable
+                options={optionsDepartement}
+                value={selectedDepartement}
+                onChange={e => {
+                  setSelectedVille(null)
+                  setSelectedDepartement(e)
+                  setValue('id_departement', e)
+                  const tableVille: option[] = [];
+                  e?.data.forEach(v => {
+                    tableVille.push({
+                      label: v.libelle,
+                      value: v.id_ville,
+                    })
+                  })
+                  setOptionsVille(sorter(tableVille))
+                }}
+              />
+            )}
+          />{" "}
+          {errors?.id_departement && <Error text={errors.id_departement.message} />}
+        </div>}
+        {selectedDepartement && <div className="flex-col flex md:-mt-4 z-30 ">
+          <label
+            className="mb-2"
             htmlFor={`id_ville`}
           >
             {" "}
@@ -543,7 +674,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
             )}
           />{" "}
           {errors?.id_ville && <Error text={errors.id_ville.message} />}
-        </div>
+        </div>}
       </div>,
     },
     {
