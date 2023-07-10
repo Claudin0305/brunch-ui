@@ -2,8 +2,8 @@ import Layout from "@/components/home/layout";
 import Head from "next/head";
 import React from "react";
 import { GetServerSideProps } from 'next'
-import MessageLayout from "@/components/messages/message-layout";
-import AddMessage from "@/components/messages/add-message";
+import UtilisateurLayout from "@/components/utilisateurs/utilisateur-layout";
+import AddUtilisateur from "@/components/utilisateurs/add-utilisateur";
 import axios from 'axios';
 type Props = {
   data: any;
@@ -14,24 +14,24 @@ const Page: React.FC<Props> = ({ data }) => {
   return (
     <Layout>
       <Head>
-        <title>Messages | Edit</title>
+        <title>Utilisateurs | Edit</title>
       </Head>
-      <MessageLayout>
+      <UtilisateurLayout>
         <div className="bg-white px-8 py-4 mb-4 shadow-md h-[calc(100vh_-_215px)] overflow-y-scroll">
-          <AddMessage data_props={data} />
+          <AddUtilisateur data_props={data} />
         </div>
-      </MessageLayout>
+      </UtilisateurLayout>
     </Layout>
   );
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
 
-  const [messagesRes] = await Promise.all([
-    fetch(`${process.env.base_route}/messages/${context?.params?.id}`)
+  const [utilisateursRes] = await Promise.all([
+    fetch(`${process.env.base_route}/users/${context?.params?.id}`)
   ]);
-  const [message] = await Promise.all([
-    messagesRes.json()
+  const [utilisateur] = await Promise.all([
+    utilisateursRes.json()
   ]);
   // ...
   // const res = await fetch(`${process.env.base_route}/departements/${context?.params?.id}`)
@@ -42,7 +42,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   // console.log(data_)
 
   // Pass data to the page via props
-  const data = {...message}
+  const data = {...utilisateur}
   // console.log(data)
   return { props: { data } }
 }

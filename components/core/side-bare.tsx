@@ -32,7 +32,7 @@ const SideBare: React.FC = () => {
     {
       path: "/evenements",
       icon: <EventIcon />,
-      name: "Evénements",
+      name: "Evènements",
     },
     {
       path: "/locaux-brunch",

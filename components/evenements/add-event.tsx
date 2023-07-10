@@ -23,6 +23,7 @@ type Inputs = {
   heure_debut: String;
   heure_fin: String;
   format_event: String;
+  event_type: String|any;
   text_descriptif: String;
   adr_email_event: String;
   url: String;
@@ -113,7 +114,7 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
       const result:String | null = format_events.filter(e=> e.value === data_props.format_event)[0]
       setValue('format_event', result);
       const resultType:String | null = type_events.filter(e=> e.value === data_props.eventType)[0]
-      setValue('format_event', resultType);
+      setValue('event_type', resultType);
       const date_debut = data_props.date_debut.split("T")[0]
       setValue('date_debut', date_debut)
       const date_fin = data_props.date_fin.split("T")[0]

@@ -15,8 +15,7 @@ const Utilisateur: React.FC<Props> = ({ data }) => {
       </Head>
       <UtilisateurLayout>
         <div className="bg-white px-8 py-4 shadow-md h-[calc(100vh_-_200px)]">
-          {/* <TableUser data={data}/> */}
-          {/* <TableUtilisateur data={data} /> */}
+          <TableUtilisateur data={data} />
         </div>
       </UtilisateurLayout>
 
@@ -27,7 +26,7 @@ const Utilisateur: React.FC<Props> = ({ data }) => {
 }
 export async function getServerSideProps() {
   // Fetch data from external API
-  const res = await fetch(`${process.env.base_route}/utilisateurs`)
+  const res = await fetch(`${process.env.base_route}/users`)
   const data = await res.json()
 
   // Pass data to the page via props

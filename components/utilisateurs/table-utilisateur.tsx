@@ -17,14 +17,14 @@ import {
 type Props = {
   data: any;
 };
-const TableMessage: React.FC<Props> = ({ data }) => {
+const TableUtilisateur: React.FC<Props> = ({ data }) => {
    const handleCellClick = (param: any, event: MouseEvent) => {
     event.stopPropagation();
   };
 
-//   const getRowId = (row:any):GridRowId => {
-//   return row.id_ville;
-// };
+  const getRowId = (row:any):GridRowId => {
+  return row.userId;
+};
 
   const handleRowClick = (param: any, event: MouseEvent) => {
     event.stopPropagation();
@@ -41,17 +41,21 @@ const TableMessage: React.FC<Props> = ({ data }) => {
     flex: 1,
   };
    const columns: GridColDef[] = [
+
     {
-      field: "message_type",
-      headerName: "Type Message",
-      renderCell: value => value.row.messageType === 'INSCRIPTION' ? "Inscription" : "Paiement"
-      ,
+      field:"username",
       flex:1,
+      headerName:"Nom utilisateur"
     },
     {
-      field:"subject",
+      field:"name",
       flex:1,
-      headerName:"Sujet du message"
+      headerName:"Nom complet"
+    },
+    {
+      field:"email",
+      flex:1,
+      headerName:"Courriel"
     },
     // {
     //   field: "libelle_texte",
@@ -79,8 +83,8 @@ const TableMessage: React.FC<Props> = ({ data }) => {
         //   )}
         // </div>
         <MenuAction
-        path_details={`/messages/show/${cellValues.id}`}
-        path_edit={`/messages/edit/${cellValues.id}`}
+        path_details={`/utilisateurs/show/${cellValues.id}`}
+        path_edit={`/utilisateurs/edit/${cellValues.id}`}
         />
       ),
     },
@@ -92,7 +96,7 @@ const TableMessage: React.FC<Props> = ({ data }) => {
       <DataGrid
         rows={data}
         columns={columns}
-        // getRowId={getRowId}
+        getRowId={getRowId}
         paginationMode="client"
         initialState={{
     pagination: {
@@ -131,4 +135,4 @@ const TableMessage: React.FC<Props> = ({ data }) => {
   );
 };
 
-export default TableMessage;
+export default TableUtilisateur;

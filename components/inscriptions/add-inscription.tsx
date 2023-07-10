@@ -16,6 +16,8 @@ import { useTheme } from '@mui/material/styles';
 import MobileStepper from '@mui/material/MobileStepper';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
+import ModalRecap from "@/components/core/modal-recap";
+import ModalAddVille from "../core/modal-add-ville";
 
 
 type Inputs = {
@@ -35,6 +37,7 @@ type Inputs = {
   id_tranche_age: string | null;
   id_pays: string | null;
   id_departement: string | null;
+  mode_paiement: string | null;
 };
 type Props = {
   data_props: any | null;
@@ -65,11 +68,21 @@ const format_events: option[] = [
     label: "Distanciel"
   },
 ]
+const mode_paiements: option[] = [
+  {
+    value: "PAIEMENT_DIFFERE",
+    label: "Paiement Différé"
+  },
+  {
+    value: "PAYPAL",
+    label: "PayPal"
+  },
+]
 const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civilites, event, locaux, participants }) => {
   const { register, handleSubmit, watch, reset, setValue, getValues, control, formState: { errors } } = useForm<Inputs>();
-
+  const [show, setShow] = useState<boolean>(false);
+  const [showModalVille, setShowModalVille] = useState<boolean>(false);
   const router = useRouter()
-  const min = 1;
   const [isSubmit, setIsSubmit] = useState<boolean>(false);
   const [optionsCivilite, setOptionsCivilite] = useState<option[] | null>(null);
   const [optionsVille, setOptionsVille] = useState<option[] | null>(null);
@@ -85,6 +98,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
   const [selectCivilite, setSelectCivilite] = useState<option | null>(null);
   const [selectTrangeAge, setSelectTrangeAge] = useState<option | null>(null);
   const [selectLocal, setSelectLocal] = useState<option | null>(null);
+  const [selectModePaiement, setSelectModePaiement] = useState<option | null>(null);
   const [formatEventOptions, setFormatEventOptions] = useState<option[] | null>(null)
   const [errorEmail, setErrorEmail] = useState<boolean>(false);
   const [existEmail, setExistEmail] = useState<boolean>(false);
@@ -168,14 +182,14 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
   }, [selectedVille]);
   useEffect(() => {
     const tableOptions: option[] = [],
-          tablePays: option[] = [],
-          tableDepartements: option[] = [],
-          tableVilles: option[] = [];
-    pays?.forEach(p=>{
+      tablePays: option[] = [],
+      tableDepartements: option[] = [],
+      tableVilles: option[] = [];
+    pays?.forEach(p => {
       tablePays.push({
-        label:p.libelle,
-        value:p.id_pays,
-        data:p.departements
+        label: p.libelle,
+        value: p.id_pays,
+        data: p.departements
       })
     })
     // pays?.forEach(p => {
@@ -203,7 +217,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
     //   return 0;
     // });
 
-    tablePays?.sort((a, b)=>{
+    tablePays?.sort((a, b) => {
       let fa = a.label,
         fb = b.label;
 
@@ -243,21 +257,21 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
       }
     }
   }, [event])
-const sorter = (table:option[])=>{
-  table?.sort((a, b) => {
-    let fa = a.label,
-      fb = b.label;
+  const sorter = (table: option[]) => {
+    table?.sort((a, b) => {
+      let fa = a.label,
+        fb = b.label;
 
-    if (fa < fb) {
-      return -1;
-    }
-    if (fa > fb) {
-      return 1;
-    }
-    return 0;
-  });
-  return table;
-}
+      if (fa < fb) {
+        return -1;
+      }
+      if (fa > fb) {
+        return 1;
+      }
+      return 0;
+    });
+    return table;
+  }
   useEffect(() => {
     const tableOptions: option[] = [];
     civilites?.sort((a, b) => {
@@ -378,7 +392,9 @@ const sorter = (table:option[])=>{
       formData.append("id_local", 0)
 
     }
-
+if(selectModePaiement !== null){
+  formData.append("modePaiement", selectModePaiement?.value);
+}
 
     setIsSubmit(true);
     if (data_props === null) {
@@ -585,7 +601,7 @@ const sorter = (table:option[])=>{
                   setSelectedDepartement(null);
                   setSelectedVille(null);
                   const tableDept: option[] = [];
-                  e?.data.forEach(d=>{
+                  e?.data.forEach(d => {
                     tableDept.push({
                       label: d.libelle,
                       value: d.id_departement,
@@ -629,6 +645,10 @@ const sorter = (table:option[])=>{
                   setSelectedDepartement(e)
                   setValue('id_departement', e)
                   const tableVille: option[] = [];
+                  tableVille.push({
+                    label:"Autre",
+                    value:"0"
+                  })
                   e?.data.forEach(v => {
                     tableVille.push({
                       label: v.libelle,
@@ -667,8 +687,13 @@ const sorter = (table:option[])=>{
                 options={optionsVille}
                 value={selectedVille}
                 onChange={e => {
-                  setSelectedVille(e)
-                  setValue('id_ville', e)
+                  if(e?.value == "0"){
+                    setShowModalVille(!showModalVille)
+                  }else{
+                    setSelectedVille(e)
+                    setValue('id_ville', e)
+
+                  }
                 }}
               />
             )}
@@ -753,7 +778,60 @@ const sorter = (table:option[])=>{
             />{" "}
             {errors?.id_local && <Error text={errors.id_local.message} />}
             {selectLocal && <p className="mt-2"><span className="font-bold">Montant participation:</span> {`${selectLocal?.data?.montant_participation} ${selectLocal?.data?.codeDevise}`}</p>}
-          </div>}
+          </div>
+
+
+        }
+        {selectLocal && selectLocal?.data?.montant_participation > 0 &&
+          <div className="flex-col flex md:-mt-4 z-10">
+            <label
+              className="mb-2"
+              htmlFor={`mode_paiement`}
+            >
+              {" "}
+              Mode paiement*{" "}
+            </label>
+            <Controller
+              name={`mode_paiement`}
+              control={control}
+              rules={{
+                required: "Ce champ est obligatoire"
+              }
+
+              }
+
+              render={({ field }) => (
+                <Select
+                  {...field}
+                  placeholder={
+                    "Choisir mode..."
+                  }
+                  isClearable
+                  value={selectModePaiement}
+                  onChange={e => {
+                    if(e?.value === "PAYPAL"){
+                      Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Ce module est en cours de développement!',
+                        confirmButtonColor: "#2563eb",
+                        confirmButtonText: "Fermer",
+                      })
+
+                    }else{
+
+                      setValue('mode_paiement', e);
+                      setSelectModePaiement(e);
+                    }
+                  }}
+                  options={mode_paiements}
+                />
+              )}
+            />{" "}
+            {errors?.mode_paiement && <Error text={errors.mode_paiement.message} />}
+            {/* {selectLocal && <p className="mt-2"><span className="font-bold">Montant participation:</span> {`${selectLocal?.data?.montant_participation} ${selectLocal?.data?.codeDevise}`}</p>} */}
+          </div>
+        }
         {/* <div className="block">
 
           <TextField
@@ -914,6 +992,13 @@ const sorter = (table:option[])=>{
         </section>
 
       </form>
+      <ModalRecap show={show} setShow={setShow}/>
+      <ModalAddVille
+      show={showModalVille}
+      setShow={setShowModalVille}
+      selectedDept={selectedDepartement}
+      setSelectedVille={setSelectedVille}
+      />
     </div>
   );
 };

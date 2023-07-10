@@ -5,7 +5,7 @@ import React, { MouseEvent } from "react";
 import Link from 'next/link'
 import Button from "@mui/material/Button";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import MessageLayout from "@/components/messages/message-layout";
+import UtilisateurLayout from "@/components/utilisateurs/utilisateur-layout";
 import Swal from 'sweetalert2'
 import { useRouter } from 'next/router'
 
@@ -16,8 +16,8 @@ type Props = {
 
 const Page: React.FC<Props> = ({ data }) => {
   const router = useRouter()
-  const deleteMessage = (id: number) => {
-    fetch(`${process.env.base_route}/messages/${id}`, {
+  const deleteUtilisateur = (id: number) => {
+    fetch(`${process.env.base_route}/users/${id}`, {
       method: "DELETE",
 
       headers: {
@@ -39,7 +39,7 @@ const Page: React.FC<Props> = ({ data }) => {
         })
 
 
-        router.push('/messages')
+        router.push('/utilisateurs')
 
       }
     }).catch((e) => {
@@ -55,7 +55,7 @@ const Page: React.FC<Props> = ({ data }) => {
   const handleDelete = (event: MouseEvent) => {
     Swal.fire({
       title: 'Etes-vous sûr?',
-      text: "Supprimer ",
+      text: "Supprimer " + data.username,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#2563eb',
@@ -70,7 +70,7 @@ const Page: React.FC<Props> = ({ data }) => {
         //   'Your file has been deleted.',
         //   'success'
         // )
-        deleteMessage(data.id)
+        deleteUtilisateur(data.id)
       }
     })
 
@@ -81,26 +81,29 @@ const Page: React.FC<Props> = ({ data }) => {
   return (
     <Layout>
       <Head>
-        <title>Message | Details</title>
+        <title>Utilisateur | Details</title>
       </Head>
-      <MessageLayout>
+      <UtilisateurLayout>
         <div className="bg-white px-8 py-4 mb-4 shadow-md h-[calc(100vh_-_215px)] overflow-y-scroll">
 
           <div className="flex flex-col gap-y-4 w-1/2 mx-auto">
             <h1 className="font-bold text-sm md:text-lg capitalize bg-slate-100 text-center col-span-2">
-              Détails Message
+              Détails Utilisateur
             </h1>
+
             <div className="flex justify-between">
 
-              <p>Type de message</p><p>{data.messageType === 'INSCRIPTION' ? 'Inscription' : 'Paiement'}</p>
+              <p>Nom utilisateur</p><p>{data.username}</p>
             </div>
             <div className="flex justify-between">
 
-              <p>Sujet du message</p><p>{data.subject}</p>
+              <p>Nom complet</p><p>{data.name}</p>
+            </div>
+            <div className="flex justify-between">
+
+              <p>Courriel</p><p>{data.email}</p>
             </div>
 
-<div dangerouslySetInnerHTML={{ __html: data.libelleTexte }}>
-            </div>
             <hr />
           </div>
           <div className={'flex flex-col gap-y-8 justify-center md:justify-end pt-4 mb-4 md:flex-row md:gap-x-8'}>
@@ -109,7 +112,7 @@ const Page: React.FC<Props> = ({ data }) => {
               Supprimer
             </Button>
 
-            <Link href={`/messages/edit/${data.id}`}>
+            <Link href={`/utilisateurs/edit/${data.id}`}>
               <Button className="bg-blue-600 capitalize" variant="contained" startIcon={<EditIcon />}>
                 Editer
               </Button>
@@ -117,14 +120,14 @@ const Page: React.FC<Props> = ({ data }) => {
 
           </div>
         </div>
-      </MessageLayout>
+      </UtilisateurLayout>
     </Layout>
   );
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   // ...
-  const res = await fetch(`${process.env.base_route}/messages/${context?.params?.id}`)
+  const res = await fetch(`${process.env.base_route}/users/${context?.params?.id}`)
   //    console.log(res)
   const data = await res.json()
 
