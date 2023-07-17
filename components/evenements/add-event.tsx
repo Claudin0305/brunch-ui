@@ -75,7 +75,7 @@ const type_events: option[] = [
 
 const AddEvent: React.FC<Props> = ({ data_props }) => {
   // const ReactQuill = useMemo(() => dynamic(() => import('react-quill'), { ssr: false }));
-  const [valueText, setValueText] = useState<string | null>("");
+  const [valueText, setValueText] = useState<string | any>("");
   const [errorDate, setErrorDate] = useState<boolean>(false);
   const [dateFin, setDateFin] = useState<string | any>("")
   const [dateDebut, setDateDebut] = useState<string | any>("")
@@ -121,7 +121,7 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
       setValue('date_fin', date_fin)
       setValue('heure_debut', data_props.heure_debut)
       setValue('heure_fin', data_props.heure_fin)
-      const image = data_props.eventImages?.filter((img: any) => img.active === true)?.[0]
+      const image = data_props.imageDatas?.filter((img: any) => img.active === true)?.[0]
       setPreviewImage(`${process.env.base_route}/events/images/${image?.name}`)
       setValue('image_event', image.name)
 
@@ -280,19 +280,15 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
   }, [dateDebut, dateFin])
   // console.log(previewImage)
   return (
-
+    <>
       <div className="container">
         <h1 className="font-bold text-sm md:text-lg capitalize mb-8">
           {data_props === null ? 'Ajouter' : 'Modifier'} Evènement
         </h1>
+
         <form onSubmit={handleSubmit(onSubmit)} className="center">
-
-
-          {/* register your input into the hook by invoking the "register" function */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-
             <div className="grid col-span-1 md:col-span-2 grid-cols-1 md:grid-cols-4 gap-8">
-
               <div className="block">
                 <TextField
                   required
@@ -370,8 +366,6 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
               </div>
             </div>
             <div className="grid grid-cols-1 col-span-1 md:col-span-2 md:grid-cols-4 gap-8">
-
-
               <div className="flex-col flex md:-mt-4 ">
                 <label
                   className="mb-2"
@@ -430,7 +424,6 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
                 />{" "}
                 {errors?.format_event && <Error text={errors.event_type?.message} />}
               </div>
-
               <div className="block md:mt-4">
                 <TextField
                   required
@@ -470,6 +463,7 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
 
                 {errors?.adr_email_event && <Error text={errors.adr_email_event.message} />}
               </div>
+
               <div className="block">
 
 
@@ -488,6 +482,7 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
                 {responseError !== null && <Error text={responseError?.libelle} />}
               </div>
             </div>
+            {/* debut */}
             <div className="row-span-4">
               <div className="block">
                 {previewImage !== "" && <div className="mb-8 text-center">
@@ -509,7 +504,7 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
                         setValue('image_event', null);
                         setPreviewImage("");
                       } else {
-                        const image = data_props.eventImages?.filter((img: any) => img.active === true)?.[0]
+                        const image = data_props.imageDatas?.filter((img: any) => img.active === true)?.[0]
                         setPreviewImage(`${process.env.base_route}/events/images/${image?.name}`)
                         setValue('image_event', image.name)
                       }
@@ -518,89 +513,93 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
                     Effacer
                   </Button>
                 </div>}
-                <div className="-mt-4">
-                  <label
-                    htmlFor="image_event"
-                    className="mb-2 inline-block text-neutral-700 dark:text-neutral-200"
-                  >Image Evènement{data_props === null && "*"} </label
-                  >
-                  <input
-                    className="relative m-0 block w-full min-w-0 flex-auto cursor-pointer rounded border border-solid border-neutral-300 bg-clip-padding px-3 py-[0.32rem] font-normal leading-[2.15] text-neutral-700 transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:cursor-pointer file:overflow-hidden file:rounded-none file:border-0 file:border-solid file:border-inherit file:bg-neutral-100 file:px-3 file:mr-1 file:py-[0.32rem] file:text-neutral-700 file:transition file:duration-150 file:ease-in-out file:[border-inline-end-width:1px] file:[margin-inline-end:0.75rem] hover:file:bg-neutral-200 focus:border-primary focus:text-neutral-700 focus:shadow-te-primary focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:file:bg-neutral-700 dark:file:text-neutral-100 dark:focus:border-primary"
-                    id="image_event"
-                    type="file"
-                    accept="image/png, image/jpeg"
-                    required={data_props === null}
-                    {...register("image_event", {
-                      required: {
-                        value: data_props === null,
-                        message: "Ce champ est obligatoire!"
-                      }
-                    })}
-                    onChange={e => {
-                      // setCurrentImage(e.target.files?.[0]);
-                      if (e !== undefined && e !== null) {
-                        if (e.target !== undefined && e.target !== null) {
-                          if (e.target.files !== undefined && e.target.files !== null) {
-                            setPreviewImage(URL?.createObjectURL(e.target.files.[0]));
-                          }
+              </div>
+              <div className="-mt-4">
+                <label
+                  htmlFor="image_event"
+                  className="mb-2 inline-block text-neutral-700 dark:text-neutral-200"
+                >Image Evènement{data_props === null && "*"} </label
+                >
+                <input
+                  className="relative m-0 block w-full min-w-0 flex-auto cursor-pointer rounded border border-solid border-neutral-300 bg-clip-padding px-3 py-[0.32rem] font-normal leading-[2.15] text-neutral-700 transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:cursor-pointer file:overflow-hidden file:rounded-none file:border-0 file:border-solid file:border-inherit file:bg-neutral-100 file:px-3 file:mr-1 file:py-[0.32rem] file:text-neutral-700 file:transition file:duration-150 file:ease-in-out file:[border-inline-end-width:1px] file:[margin-inline-end:0.75rem] hover:file:bg-neutral-200 focus:border-primary focus:text-neutral-700 focus:shadow-te-primary focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:file:bg-neutral-700 dark:file:text-neutral-100 dark:focus:border-primary"
+                  id="image_event"
+                  type="file"
+                  accept="image/png, image/jpeg"
+                  required={data_props === null}
+                  {...register("image_event", {
+                    required: {
+                      value: data_props === null,
+                      message: "Ce champ est obligatoire!"
+                    }
+                  })}
+                  onChange={e => {
+                    // setCurrentImage(e.target.files?.[0]);
+                    if (e !== undefined && e !== null) {
+                      if (e.target !== undefined && e.target !== null) {
+                        if (e.target.files !== undefined && e.target.files !== null) {
+                          setPreviewImage(URL?.createObjectURL(e.target.files[0]));
                         }
                       }
-                      register("image_event").onChange(e)
-                    }}
-                  />
-                </div>
+                    }
+                    register("image_event").onChange(e)
+                  }}
+                />
               </div>
+              {/* </div> */}
 
               {errors?.image_event && <Error text={errors.image_event.message} />}
               {responseError !== null && <Error text={responseError?.libelle} />}
             </div>
+            {/* Fin */}
+            <div className="row-span-5">
+              <QuillNoSSRWrapper
+                modules={modules}
+                theme="snow"
+                placeholder="Text descriptif...*"
+                onChange={e => {
+                  // console.log(e.targe)
+                  if (e !== null) {
+                    setValueText(e)
+
+                  }
+                  if(e !== undefined && e !== null){
+                    setValue('text_descriptif', e);
+                  }
+                }}
+                value={valueText}
+              />
+
+              {responseError !== null && <Error text={responseError?.libelle} />}
+
+              {errors?.text_descriptif && <Error text={errors.text_descriptif.message} />}
+            </div>
+
+
+
+            <div className="flex justify-end flex-col mt-8 md:flex-row gap-8 mb-8">
+              <Button
+                type="reset"
+                className="text-blue-600 border-blue-600 capitalize"
+                variant="outlined"
+              >
+                Reinitialiser
+              </Button>
+
+              <Button
+                disabled={isSubmit || errorDate}
+                type="submit"
+                className={`${isSubmit || errorDate ? 'bg-blue-300' : 'bg-blue-600 '} capitalize text-white flex items-center justify-center gap-x-2`}
+                variant="contained"
+              >
+                {isSubmit && <CircularIndeterminate />} <span>{data_props === null ? 'Ajouter' : 'Modifier'}</span>
+              </Button>
+            </div>
           </div>
-
-          <div className="row-span-5">
-            <QuillNoSSRWrapper
-              modules={modules}
-              theme="snow"
-              placeholder="Text descriptif...*"
-              onChange={e => {
-                // console.log(e.targe)
-                if (e !== null) {
-                  setValueText(e)
-                }
-                setValue('text_descriptif', e);
-              }}
-              value={valueText}
-            />
-
-            {responseError !== null && <Error text={responseError?.libelle} />}
-
-            {errors?.text_descriptif && <Error text={errors.text_descriptif.message} />}
-          </div>
-
-
-
-      </div>
-      <div className="flex justify-end flex-col mt-8 md:flex-row gap-8 mb-8">
-        <Button
-          type="reset"
-          className="text-blue-600 border-blue-600 capitalize"
-          variant="outlined"
-        >
-          Reinitialiser
-        </Button>
-
-        <Button
-          disabled={isSubmit || errorDate}
-          type="submit"
-          className={`${isSubmit || errorDate ? 'bg-blue-300' : 'bg-blue-600 '} capitalize text-white flex items-center justify-center gap-x-2`}
-          variant="contained"
-        >
-          {isSubmit && <CircularIndeterminate />} <span>{data_props === null ? 'Ajouter' : 'Modifier'}</span>
-        </Button>
-      </div>
-
         </form>
-    </div>
 
+
+      </div>
+    </>
   );
 };
 

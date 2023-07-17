@@ -5,7 +5,7 @@ import React, { MouseEvent } from "react";
 import Link from 'next/link'
 import Button from "@mui/material/Button";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import RoleLayout from "@/components/roles/role-layout";
+import AffiliationLayout from "@/components/affiliations/affiliation-layout";
 import Swal from 'sweetalert2'
 import { useRouter } from 'next/router'
 
@@ -16,8 +16,8 @@ type Props = {
 
 const Page: React.FC<Props> = ({ data }) => {
   const router = useRouter()
-  const deleteRole = (id: number) => {
-    fetch(`${process.env.base_route}/roles/${id}`, {
+  const deleteAffiliation = (id: number) => {
+    fetch(`${process.env.base_route}/affiliations/${id}`, {
       method: "DELETE",
 
       headers: {
@@ -39,7 +39,7 @@ const Page: React.FC<Props> = ({ data }) => {
         })
 
 
-        router.push('/roles')
+        router.push('/affiliations')
 
       }
     }).catch((e) => {
@@ -55,7 +55,7 @@ const Page: React.FC<Props> = ({ data }) => {
   const handleDelete = (event: MouseEvent) => {
     Swal.fire({
       title: 'Etes-vous sûr?',
-      text: "Supprimer " + data.authority,
+      text: "Supprimer " + data.nom_affiliation,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#2563eb',
@@ -70,7 +70,7 @@ const Page: React.FC<Props> = ({ data }) => {
         //   'Your file has been deleted.',
         //   'success'
         // )
-        deleteRole(data.roleId)
+        deleteAffiliation(data.affiliationId)
       }
     })
 
@@ -81,18 +81,18 @@ const Page: React.FC<Props> = ({ data }) => {
   return (
     <Layout>
       <Head>
-        <title>Role | Details</title>
+        <title>Affiliation | Details</title>
       </Head>
-      <RoleLayout>
+      <AffiliationLayout>
         <div className="bg-white px-8 py-4 mb-4 shadow-md h-[calc(100vh_-_215px)] overflow-y-scroll">
 
           <div className="flex flex-col gap-y-4 w-1/2 mx-auto">
             <h1 className="font-bold text-sm md:text-lg capitalize bg-slate-100 text-center col-span-2">
-              Détails Role
+              Détails Affiliation
             </h1>
             <div className="flex justify-between">
 
-              <p>Role</p><p>{data.authority}</p>
+              <p>Nom affiliation</p><p>{data.nom_affiliation}</p>
             </div>
 
 
@@ -104,7 +104,7 @@ const Page: React.FC<Props> = ({ data }) => {
               Supprimer
             </Button>
 
-            <Link href={`/roles/edit/${data.roleId}`}>
+            <Link href={`/affiliations/edit/${data.affiliationId}`}>
               <Button className="bg-blue-600 capitalize" variant="contained" startIcon={<EditIcon />}>
                 Editer
               </Button>
@@ -112,14 +112,14 @@ const Page: React.FC<Props> = ({ data }) => {
 
           </div>
         </div>
-      </RoleLayout>
+      </AffiliationLayout>
     </Layout>
   );
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   // ...
-  const res = await fetch(`${process.env.base_route}/roles/${context?.params?.id}`)
+  const res = await fetch(`${process.env.base_route}/affiliations/${context?.params?.id}`)
   //    console.log(res)
   const data = await res.json()
 

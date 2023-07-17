@@ -29,7 +29,7 @@ const AddDepartement: React.FC<Props> = ({ data_props, pays }) => {
     const { register, handleSubmit, watch, reset, setValue, control, formState: { errors } } = useForm<Inputs>();
     const [isSubmit, setIsSubmit] = useState<boolean>(false);
     const [responseError, setResponseError] = useState<any>(null);
-    const [options, setOptions] = useState<option[] | null>(null);
+    const [options, setOptions] = useState<option[] | null | any>();
 
     useEffect(() => {
 
@@ -43,7 +43,7 @@ const AddDepartement: React.FC<Props> = ({ data_props, pays }) => {
 
     useEffect(() => {
         const tableOptions: option[] = [];
-        pays?.sort((a, b) => {
+        pays?.sort((a:any, b:any) => {
             let fa = a.libelle.toLowerCase(),
                 fb = b.libelle.toLowerCase();
 
@@ -55,7 +55,7 @@ const AddDepartement: React.FC<Props> = ({ data_props, pays }) => {
             }
             return 0;
         });
-        pays?.forEach(p => {
+        pays?.forEach((p:any )=> {
             tableOptions.push({
                 label: p.libelle,
                 value: p.id_pays

@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link"
 type Props = {
     show: boolean;
     setShow: any;
@@ -6,6 +7,7 @@ type Props = {
 
 }
 const ModalRecap: React.FC<Props> = ({ show, setShow, data }) => {
+    console.log(data)
 
     return (
         <>
@@ -38,7 +40,15 @@ const ModalRecap: React.FC<Props> = ({ show, setShow, data }) => {
                                 </div>{" "}
                                 {/*body*/}
                                 <div className="relative p-6 flex-auto">
-                                    recap
+                                     <p className="uppercase">merci pour votre inscription</p>
+                                     <p>Numéro de confirmation: <span>{data?.data?.username}</span></p>
+                                     <p> Nous enverrons prochainement un accusé de réception au(x) courriel(s) que vous avez spécifié(s).</p>
+                                     {/* <Récapitulatif> */}
+<Link
+className="text-blue-500 hover:text-blue-300"
+href={`liste-participants/${data?.idEvent}`}
+>Tableau des inscrits</Link>
+       {/* (hyperlien) Faire un don */}
                                 </div>
                             </div>{" "}
                         </div>{" "}

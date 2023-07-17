@@ -28,7 +28,7 @@ const AddVille: React.FC<Props> = ({ data_props, departements }) => {
     const { register, handleSubmit, watch, reset, setValue, control, formState: { errors } } = useForm<Inputs>();
     const [isSubmit, setIsSubmit] = useState<boolean>(false);
     const [responseError, setResponseError] = useState<any>(null);
-    const [options, setOptions] = useState<option[] | null>(null);
+    const [options, setOptions] = useState<option[] | any>();
 
     useEffect(() => {
 
@@ -41,7 +41,7 @@ const AddVille: React.FC<Props> = ({ data_props, departements }) => {
 
     useEffect(() => {
         const tableOptions: option[] = [];
-        departements?.sort((a, b) => {
+        departements?.sort((a:any, b:any) => {
             let fa = a.libelle.toLowerCase(),
                 fb = b.libelle.toLowerCase();
 
@@ -53,7 +53,7 @@ const AddVille: React.FC<Props> = ({ data_props, departements }) => {
             }
             return 0;
         });
-        departements?.forEach(p => {
+        departements?.forEach((p:any) => {
             tableOptions.push({
                 label: p.libelle,
                 value: p.id_departement

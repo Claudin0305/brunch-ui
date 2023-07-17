@@ -16,6 +16,7 @@ import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
 import EmailIcon from '@mui/icons-material/Email';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
+import AttachFileIcon from '@mui/icons-material/AttachFile';
 type nav = {
   path: string;
   name: string;
@@ -85,9 +86,9 @@ const SideBare: React.FC = () => {
       name: "Utilisateurs",
     },
     {
-      path: "/roles",
-      icon: <VerifiedUserIcon />,
-      name: "Roles",
+      path: "/affiliations",
+      icon: <AttachFileIcon />,
+      name: "Affiliations",
     },
   ];
   return (

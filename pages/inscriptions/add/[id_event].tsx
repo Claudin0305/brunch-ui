@@ -16,7 +16,7 @@ const Add: React.FC<Props> = ({ data }) => {
         <title>Inscription | Ajouter</title>
       </Head>
       <div className="px-4 md:px-32 mx-auto md:mt-32 mt-16">
-        <AddInscription data_props={null} pays={data?.pays} civilites={data?.civilites} tranche_ages={data?.trancheAges} locaux={data?.locaux} event={data?.event} participants={data?.participants} />
+        <AddInscription data_props={null} pays={data?.pays} civilites={data?.civilites} tranche_ages={data?.trancheAges} locaux={data?.locaux} event={data?.event} participants={data?.participants} affiliations={data?.affiliations} />
       </div>
 
 
@@ -26,24 +26,26 @@ const Add: React.FC<Props> = ({ data }) => {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   // Fetch data from external API
 
-  const [civiliteResp, trancheAgeResp, paysResp, locauxResp, eventResp, respPart] = await Promise.all([
+  const [civiliteResp, trancheAgeResp, paysResp, locauxResp, eventResp, respPart, respAff] = await Promise.all([
     fetch(`${process.env.base_route}/civilites`),
     fetch(`${process.env.base_route}/tranche-ages`),
     fetch(`${process.env.base_route}/pays`),
     fetch(`${process.env.base_route}/locaux`),
     fetch(`${process.env.base_route}/events/${context?.params?.id_event}`),
     fetch(`${process.env.base_route}/participants`),
+    fetch(`${process.env.base_route}/affiliations`),
   ]);
-  const [civilites, trancheAges, pays, locaux, event, participants] = await Promise.all([
+  const [civilites, trancheAges, pays, locaux, event, participants, affiliations] = await Promise.all([
     civiliteResp.json(),
     trancheAgeResp.json(),
     paysResp.json(),
     locauxResp.json(),
     eventResp.json(),
-    respPart.json()
+    respPart.json(),
+    respAff.json()
   ]);
 
-  const data = { trancheAges: trancheAges, pays: pays, civilites: civilites, locaux: locaux, event: event, participants: participants }
+  const data = { trancheAges: trancheAges, pays: pays, civilites: civilites, locaux: locaux, event: event, participants: participants, affiliations: affiliations }
   return { props: { data } }
 }
 export default Add;

@@ -1,24 +1,24 @@
 import React from 'react'
 import Layout from '@/components/home/layout'
 import Head from 'next/head'
-import RoleLayout from '@/components/roles/role-layout';
-import TableRole from '@/components/roles/table-role';
+import AffiliationLayout from '@/components/affiliations/affiliation-layout';
+import TableAffiliation from '@/components/affiliations/table-affiliation';
 type Props = {
   data: any
 }
 
-const Role: React.FC<Props> = ({ data }) => {
+const Affiliation: React.FC<Props> = ({ data }) => {
   return (
     <Layout>
       <Head>
-        <title>Role | Liste</title>
+        <title>Affiliation | Liste</title>
       </Head>
-      <RoleLayout>
+      <AffiliationLayout>
         <div className="bg-white px-8 py-4 shadow-md h-[calc(100vh_-_200px)]">
           {/* <TableUser data={data}/> */}
-          <TableRole data={data} />
+          <TableAffiliation data={data} />
         </div>
-      </RoleLayout>
+      </AffiliationLayout>
 
 
 
@@ -27,10 +27,10 @@ const Role: React.FC<Props> = ({ data }) => {
 }
 export async function getServerSideProps() {
   // Fetch data from external API
-  const res = await fetch(`${process.env.base_route}/roles`)
+  const res = await fetch(`${process.env.base_route}/affiliations`)
   const data = await res.json()
 
   // Pass data to the page via props
   return { props: { data } }
 }
-export default Role
+export default Affiliation

@@ -18,7 +18,7 @@ type Inputs = {
   name: string;
   email: string;
   password: string;
-  role: option | string | null;
+  role: option | string | null |any;
   username: string;
   c_email: string;
   c_password: string;
@@ -41,7 +41,7 @@ const AddUtilisateur: React.FC<Props> = ({data_props}) => {
   const [identiquePassword, setIdentiquePassword] = useState<boolean>(true);
   const [email, setEmail] = useState<null | string>(null)
   const [password, setPassword] = useState<null | string>(null)
-  const [options, setOptions] = useState<null|option[]>(null);
+  const [options, setOptions] = useState<null|option[]|any>(null);
 
     useEffect(() => {
 
@@ -52,7 +52,7 @@ const AddUtilisateur: React.FC<Props> = ({data_props}) => {
       setValue('username', data_props.username);
       setValue('email', data_props.email);
       setValue('c_email', data_props.email);
-      const result: option = options?.filter(r => r.value === data_props.role)[0];
+      const result = options?.filter((r:any) => r.value === data_props.role)[0];
       setValue('role', result);
 
         }
@@ -73,7 +73,7 @@ const AddUtilisateur: React.FC<Props> = ({data_props}) => {
     label: "Invité"
   },
         ];
-        tableOptions.sort((a, b) => {
+        tableOptions.sort((a:any, b:any) => {
             let fa = a.label,
                 fb = b.label;
 

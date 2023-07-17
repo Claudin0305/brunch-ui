@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   env: {
-    base_route: "http://localhost:8080/api",
+    base_route: "http://localhost:8080",
   },
   images: {
     domains: ['localhost'],

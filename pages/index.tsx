@@ -28,7 +28,7 @@ const Home: React.FC<Props> = ({ data }) => {
 
         <main className={`bg-white`}>
           <section id="event_home" className="text-white bg-white text-center flex z-40 mb-4 md:mb-8">
-            <h1 className="m-auto font-waterfall text-5xl text-white font-bold">{`${data?.[0].eventType.replace("_", " ")}&apos;${data?.[0].createdAt.split("-")[0]}`}</h1>
+            <h1 className="m-auto font-waterfall text-5xl text-white font-bold">{`${data?.[0].eventType.replace("_", " ")}`}<span>&#x27;</span>{`${data?.[0].createdAt.split("-")[0]}`}</h1>
           </section>
           <div className='px-8 md:px-32 mb-4 md:mb-8 container mx-auto flex flex-col w-full space-y-4'>
             <h3 className='uppercase text-gray-400 text-lg flex items-center'>a venir <span className='w-32 h-1 ml-2 border-t-2 border-t-blue-400 border border-b-0 border-r-0 border-l-0'></span> </h3>
@@ -49,7 +49,7 @@ const Home: React.FC<Props> = ({ data }) => {
             </div>
             <div className='w-2/3'>
               <Image
-                src={`${process.env.base_route}/events/images/${data?.[0].eventImages?.filter(img => img.active === true)[0]?.name}`}
+                src={`${process.env.base_route}/events/images/${data?.[0].imageDatas?.filter((img:any) => img.active === true)[0]?.name}`}
                 width={400}
                 height={400}
                 alt={'logo évènement'}

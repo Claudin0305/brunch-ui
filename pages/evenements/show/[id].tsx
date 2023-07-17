@@ -38,7 +38,7 @@ const format_events: option[] = [
 
 const Page: React.FC<Props> = ({ data }) => {
   const router = useRouter()
-  console.log(data.eventImages[0])
+  console.log(data.imageDatas[0])
   const deleteEvent = (id: number) => {
     fetch(`${process.env.base_route}/events/${id}`, {
       method: "DELETE",
@@ -115,7 +115,7 @@ const Page: React.FC<Props> = ({ data }) => {
             </h1>
             <div className="block mx-auto">
               <Image
-              src={`${process.env.base_route}/events/images/${data?.eventImages?.filter(img=>img.active===true)[0]?.name}`}
+              src={`${process.env.base_route}/events/images/${data?.imageDatas?.filter((img:any)=>img.active===true)[0]?.name}`}
               width={300}
               height={300}
               alt={'logo évènement'}

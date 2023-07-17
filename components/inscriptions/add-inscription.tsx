@@ -30,14 +30,14 @@ type Inputs = {
   mode_participation: string;
   authorisation_liste: string;
   abonnement_newsletter: string;
-  id_local: string | null;
-  id_ville: string | null;
-  id_civilite: string | null;
-  id_event: string | null;
-  id_tranche_age: string | null;
-  id_pays: string | null;
-  id_departement: string | null;
-  mode_paiement: string | null;
+  id_local: string | null | any;
+  id_ville: string | null | any;
+  id_civilite: string | null | any;
+  id_event: string | null | any;
+  id_tranche_age: string | null | any;
+  id_pays: string | null | any;
+  id_departement: string | null | any;
+  mode_paiement: string | null | any;
 };
 type Props = {
   data_props: any | null;
@@ -47,6 +47,7 @@ type Props = {
   event: any | null;
   locaux: any | null;
   participants: any | null;
+  affiliations: any | null;
 }
 type option = {
   label: string;
@@ -78,32 +79,34 @@ const mode_paiements: option[] = [
     label: "PayPal"
   },
 ]
-const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civilites, event, locaux, participants }) => {
+const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civilites, event, locaux, participants, affiliations }) => {
   const { register, handleSubmit, watch, reset, setValue, getValues, control, formState: { errors } } = useForm<Inputs>();
   const [show, setShow] = useState<boolean>(false);
   const [showModalVille, setShowModalVille] = useState<boolean>(false);
   const router = useRouter()
   const [isSubmit, setIsSubmit] = useState<boolean>(false);
-  const [optionsCivilite, setOptionsCivilite] = useState<option[] | null>(null);
-  const [optionsVille, setOptionsVille] = useState<option[] | null>(null);
-  const [optionsDepartement, setOptionsDepartement] = useState<option[] | null>(null);
-  const [optionsPays, setOptionsPays] = useState<option[] | null>(null);
-  const [optionsLocal, setOptionsLocal] = useState<option[] | null>(null);
-  const [optionsTrancheAge, setOptionsTrancheAge] = useState<option[] | null>(null);
+  const [optionsCivilite, setOptionsCivilite] = useState<option[] | any>();
+  const [optionsAffiliation, setOptionsAffiliation] = useState<option[] | any>();
+  const [optionsVille, setOptionsVille] = useState<option[] | any>();
+  const [optionsDepartement, setOptionsDepartement] = useState<option[] | any>();
+  const [optionsPays, setOptionsPays] = useState<option[] | any>();
+  const [optionsLocal, setOptionsLocal] = useState<option[] | any>();
+  const [optionsTrancheAge, setOptionsTrancheAge] = useState<option[] | any>();
   const [capaciteTable, setCapaciteTable] = useState<number>(10)
-  const [selectedVille, setSelectedVille] = useState<option | null>(null);
-  const [selectedMode, setSelectedMode] = useState<option | null>(null);
-  const [selectedPays, setSelectedPays] = useState<option | null>(null);
-  const [selectedDepartement, setSelectedDepartement] = useState<option | null>(null);
+  const [selectedVille, setSelectedVille] = useState<option | any>();
+  const [selectedMode, setSelectedMode] = useState<option | any>();
+  const [selectedPays, setSelectedPays] = useState<option | any>();
+  const [selectedDepartement, setSelectedDepartement] = useState<option | any>();
   const [selectCivilite, setSelectCivilite] = useState<option | null>(null);
   const [selectTrangeAge, setSelectTrangeAge] = useState<option | null>(null);
-  const [selectLocal, setSelectLocal] = useState<option | null>(null);
-  const [selectModePaiement, setSelectModePaiement] = useState<option | null>(null);
-  const [formatEventOptions, setFormatEventOptions] = useState<option[] | null>(null)
+  const [selectLocal, setSelectLocal] = useState<option | any>();
+  const [selectModePaiement, setSelectModePaiement] = useState<option | any>(null);
+  const [formatEventOptions, setFormatEventOptions] = useState<option[] | any>()
   const [errorEmail, setErrorEmail] = useState<boolean>(false);
   const [existEmail, setExistEmail] = useState<boolean>(false);
   const [identiqueEmail, setIdentiqueEmail] = useState<boolean>(true);
   const [email, setEmail] = useState<String | null>(null)
+  const [responseData, setResponseData] = useState<any>(null)
 
   const [responseError, setResponseError] = useState<any>(null);
   useEffect(() => {
@@ -127,7 +130,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
 
   useEffect(() => {
     const tableOptions: option[] = [];
-    tranche_ages?.sort((a, b) => {
+    tranche_ages?.sort((a:any, b:any) => {
       let fa = a.libelle,
         fb = b.libelle;
 
@@ -139,7 +142,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
       }
       return 0;
     });
-    tranche_ages?.forEach(p => {
+    tranche_ages?.forEach((p:any) => {
       tableOptions.push({
         label: p.libelle,
         value: p.id_tranche_age
@@ -151,7 +154,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
   useEffect(() => {
     const tableOptions: option[] = [];
 
-    locaux?.forEach(e => {
+    locaux?.forEach((e:any) => {
       tableOptions.push({
         label: `Local-${e.id_local}`,
         value: e.id_local,
@@ -161,7 +164,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
     })
 
 
-    tableOptions?.sort((a, b) => {
+    tableOptions?.sort((a:any, b:any) => {
       let fa = a.label,
         fb = b.label;
 
@@ -185,7 +188,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
       tablePays: option[] = [],
       tableDepartements: option[] = [],
       tableVilles: option[] = [];
-    pays?.forEach(p => {
+    pays?.forEach((p:any) => {
       tablePays.push({
         label: p.libelle,
         value: p.id_pays,
@@ -217,7 +220,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
     //   return 0;
     // });
 
-    tablePays?.sort((a, b) => {
+    tablePays?.sort((a:any, b:any) => {
       let fa = a.label,
         fb = b.label;
 
@@ -236,7 +239,29 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
     // setOptionsVille(tableOptions);
   }, []);
 
-  // console.log(participants)
+  useEffect(()=>{
+    const tableOptions: option[] = [];
+    affiliations?.sort((a:any, b:any) => {
+      let fa = a.nom_affiliation,
+        fb = b.nom_affiliation;
+
+      if (fa < fb) {
+        return -1;
+      }
+      if (fa > fb) {
+        return 1;
+      }
+      return 0;
+    });
+    affiliations?.forEach((p:any) => {
+      tableOptions.push({
+        label: p.nom_affiliation,
+        value: p.affiliationId
+      })
+    })
+
+    setOptionsAffiliation(tableOptions);
+  }, [])
 
   useEffect(() => {
     if (event !== null) {
@@ -258,7 +283,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
     }
   }, [event])
   const sorter = (table: option[]) => {
-    table?.sort((a, b) => {
+    table?.sort((a:any, b:any) => {
       let fa = a.label,
         fb = b.label;
 
@@ -274,7 +299,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
   }
   useEffect(() => {
     const tableOptions: option[] = [];
-    civilites?.sort((a, b) => {
+    civilites?.sort((a:any, b:any) => {
       let fa = a.libelle,
         fb = b.libelle;
 
@@ -286,7 +311,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
       }
       return 0;
     });
-    civilites?.forEach(e => {
+    civilites?.forEach((e:any) => {
       tableOptions.push({
         label: e.libelle,
         value: e.id_civilite
@@ -341,7 +366,9 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
           confirmButtonColor: "#2563eb",
           confirmButtonText: "Fermer",
         })
+        setResponseData(response.data)
         setIsSubmit(false);
+        setShow(true)
         reset();
         setValue('id_event', "");
         setValue('id_tranche_age', "");
@@ -380,16 +407,16 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
 
       formData.append("affiliation", data.affiliation)
     }
-    formData.append("abonnement_newsletter", data.abonnement_newsletter)
-    formData.append("authorisationListe", data.authorisation_liste)
+    formData.append("abonnement_newsletter", ""+data.abonnement_newsletter)
+    formData.append("authorisationListe", ""+data.authorisation_liste)
     formData.append("id_ville", selectedVille?.value)
     formData.append("mode_participation", selectedMode?.value)
     formData.append("id_civilite", data.id_civilite?.value)
     formData.append("id_tranche_age", data.id_tranche_age?.value)
-    if (data.id_local.value !== undefined) {
+    if (data?.id_local?.value !== undefined) {
       formData.append("id_local", data.id_local?.value)
     } else {
-      formData.append("id_local", 0)
+      formData.append("id_local", '0')
 
     }
 if(selectModePaiement !== null){
@@ -508,7 +535,7 @@ if(selectModePaiement !== null){
               setEmail(e?.target.value);
               setValue('email_confirmation', "")
               // console.log(participants)
-              const result = participants?.filter(p => p.email === e.target.value && p.idEvent === event.id_event)
+              const result = participants?.filter((p:any) => p.email === e.target.value && p.idEvent === event.id_event)
               setExistEmail(result.length > 0);
               register('email').onChange(e);
             }}
@@ -601,7 +628,7 @@ if(selectModePaiement !== null){
                   setSelectedDepartement(null);
                   setSelectedVille(null);
                   const tableDept: option[] = [];
-                  e?.data.forEach(d => {
+                  e?.data.forEach((d:any) => {
                     tableDept.push({
                       label: d.libelle,
                       value: d.id_departement,
@@ -649,7 +676,7 @@ if(selectModePaiement !== null){
                     label:"Autre",
                     value:"0"
                   })
-                  e?.data.forEach(v => {
+                  e?.data.forEach((v:any) => {
                     tableVille.push({
                       label: v.libelle,
                       value: v.id_ville,
@@ -858,7 +885,7 @@ if(selectModePaiement !== null){
             <Controller
               name='authorisation_liste'
               control={control}
-              defaultValue={false}
+              defaultValue={'0'}
               render={({ field }) => (
                 <FormControlLabel
                   control={<Checkbox {...field} />}
@@ -872,7 +899,7 @@ if(selectModePaiement !== null){
             <Controller
               name='abonnement_newsletter'
               control={control}
-              defaultValue={false}
+              defaultValue={'0'}
               render={({ field }) => (
                 <FormControlLabel
                   control={<Checkbox {...field} />}
@@ -882,30 +909,7 @@ if(selectModePaiement !== null){
             />
           </div>
         </div>
-      </div>,
-    },
-    {
-      label: 'resumé',
-      description: <div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {getValues('nom') && <div className="flex justify-between">
-            <p>Nom:</p> <p>{getValues('nom')}</p>
-          </div>
-          }
-          {getValues('prenom') && <div className="flex justify-between">
-            <p>Prenom:</p> <p>{getValues('prenom')}</p>
-          </div>
-          }
-          {getValues('email') && <div className="flex justify-between">
-            <p>Email:</p> <p>{getValues('email')}</p>
-          </div>
-          }
-          {getValues('tel_participant') && <div className="flex justify-between">
-            <p>Téléphone:</p> <p>{getValues('tel_participant')}</p>
-          </div>
-          }
-        </div>
-        <div className="flex justify-end flex-col mt-8 md:flex-row gap-8 mb-8">
+         <div className="flex justify-end flex-col mt-8 md:flex-row gap-8 mb-8 col-span-3">
           <Button
             type="reset"
             className="text-blue-600 border-blue-600 capitalize"
@@ -924,8 +928,50 @@ if(selectModePaiement !== null){
             {isSubmit && <CircularIndeterminate />} <span>{data_props === null ? "S'inscrire" : 'Modifier'}</span>
           </Button>
         </div>,
-      </div>
+      </div>,
     },
+    // {
+    //   label: 'resumé',
+    //   description: <div>
+    //     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+    //       {getValues('nom') && <div className="flex justify-between">
+    //         <p>Nom:</p> <p>{getValues('nom')}</p>
+    //       </div>
+    //       }
+    //       {getValues('prenom') && <div className="flex justify-between">
+    //         <p>Prenom:</p> <p>{getValues('prenom')}</p>
+    //       </div>
+    //       }
+    //       {getValues('email') && <div className="flex justify-between">
+    //         <p>Email:</p> <p>{getValues('email')}</p>
+    //       </div>
+    //       }
+    //       {getValues('tel_participant') && <div className="flex justify-between">
+    //         <p>Téléphone:</p> <p>{getValues('tel_participant')}</p>
+    //       </div>
+    //       }
+    //     </div>
+    //     <div className="flex justify-end flex-col mt-8 md:flex-row gap-8 mb-8">
+    //       <Button
+    //         type="reset"
+    //         className="text-blue-600 border-blue-600 capitalize"
+    //         variant="outlined"
+    //       >
+    //         Reinitialiser
+    //       </Button>
+
+    //       <Button
+    //         disabled={isSubmit || existEmail || !identiqueEmail || selectedMode === null}
+    //         type="submit"
+    //         className={`bg-blue-600 capitalize text-white flex items-center justify-center gap-x-2 ${isSubmit || selectedMode === null ? "bg-blue-400" : ""}`}
+    //         variant="contained"
+
+    //       >
+    //         {isSubmit && <CircularIndeterminate />} <span>{data_props === null ? "S'inscrire" : 'Modifier'}</span>
+    //       </Button>
+    //     </div>,
+    //   </div>
+    // },
   ];
   const theme = useTheme();
   const [activeStep, setActiveStep] = React.useState(0);
@@ -992,7 +1038,7 @@ if(selectModePaiement !== null){
         </section>
 
       </form>
-      <ModalRecap show={show} setShow={setShow}/>
+      <ModalRecap show={show} setShow={setShow} data={responseData}/>
       <ModalAddVille
       show={showModalVille}
       setShow={setShowModalVille}

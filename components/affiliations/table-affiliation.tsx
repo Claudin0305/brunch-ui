@@ -17,13 +17,13 @@ import {
 type Props = {
   data: any;
 };
-const TableRole: React.FC<Props> = ({ data }) => {
+const TableAffiliation: React.FC<Props> = ({ data }) => {
    const handleCellClick = (param: any, event: MouseEvent) => {
     event.stopPropagation();
   };
 
   const getRowId = (row:any):GridRowId => {
-  return row.roleId;
+  return row.affiliationId;
 };
 
   const handleRowClick = (param: any, event: MouseEvent) => {
@@ -42,8 +42,8 @@ const TableRole: React.FC<Props> = ({ data }) => {
   };
    const columns: GridColDef[] = [
     {
-       field: "authority",
-      headerName: "Role",
+       field: "nom_affiliation",
+      headerName: "Nom affiliation",
       // renderCell: (value) => <PersoToolTip value={value} />,
       // width:100,
       flex:1,
@@ -63,8 +63,8 @@ const TableRole: React.FC<Props> = ({ data }) => {
         //   )}
         // </div>
         <MenuAction
-        path_details={`/roles/show/${cellValues.id}`}
-        path_edit={`/roles/edit/${cellValues.id}`}
+        path_details={`/affiliations/show/${cellValues.id}`}
+        path_edit={`/affiliations/edit/${cellValues.id}`}
         />
       ),
     },
@@ -115,4 +115,4 @@ const TableRole: React.FC<Props> = ({ data }) => {
   );
 };
 
-export default TableRole;
+export default TableAffiliation;

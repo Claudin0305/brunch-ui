@@ -1,4 +1,4 @@
-import React, {ReactNode} from 'react';
+import React, {Key, ReactNode} from 'react';
 import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
@@ -9,7 +9,7 @@ import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 
 type step = {
-    label: String;
+    label: string | Key;
     description: ReactNode;
 }
 const steps:step[] = [

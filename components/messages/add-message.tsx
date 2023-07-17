@@ -31,7 +31,7 @@ type Props = {
 
 const AddMessage: React.FC<Props> = ({data_props}) => {
     // const ReactQuill = useMemo(() => dynamic(() => import('react-quill'), { ssr: false }));
-  const [valueText, setValueText] = useState<String | null>("");
+  const [valueText, setValueText] = useState<string | any>("");
     const modules = {
     toolbar: [
       [{ font: [] }],
@@ -50,7 +50,7 @@ const AddMessage: React.FC<Props> = ({data_props}) => {
     const { register, handleSubmit, watch, reset, setValue, control, formState: { errors } } = useForm<Inputs>();
     const [isSubmit, setIsSubmit] = useState<boolean>(false);
     const [responseError, setResponseError] = useState<any>(null);
-    const [options, setOptions] = useState<option[] | null>(null);
+    const [options, setOptions] = useState<option[] | any>(null);
 
     useEffect(() => {
 
@@ -58,7 +58,7 @@ const AddMessage: React.FC<Props> = ({data_props}) => {
 
       setValue('subject', data_props.subject)
       setValue('libelle_texte', data_props.libelleTexte)
-            const result = options?.filter(o=>o.value === data_props.messageType)[0];
+            const result = options?.filter((o:any)=>o.value === data_props.messageType)[0];
             setValue('message_type', result);
     setValueText(data_props.libelleTexte)
 
@@ -162,7 +162,7 @@ const AddMessage: React.FC<Props> = ({data_props}) => {
                 reset();
                 setValue('message_type', null)
                 setValueText("");
-                setValue("libelle_text", "")
+                // setValue('libelle_text', null)
             }
         }).catch(err => {
             setIsSubmit(false);

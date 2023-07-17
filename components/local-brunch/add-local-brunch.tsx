@@ -9,17 +9,22 @@ import axios from 'axios';
 import { useRouter } from 'next/router'
 import Select from 'react-select';
 
+type option = {
+  label: String;
+  value: String | number;
+}
 
 type Inputs = {
-  email_responsable: String;
+  email_responsable: string;
   seuil_alerte: number;
   montant_participation: number;
-  adresse_no_rue: String;
-  id_devise: number;
-  id_ville: number;
-  id_event: number;
+  adresse_no_rue: string;
+  id_devise: number | option | any;
+  id_ville: number | option | any;
+  id_event: number | option | any;
   capacite_totale: number;
   capacite_table: number;
+  nb_reservation: number;
 };
 type Props = {
   data_props: any | null;
@@ -27,20 +32,16 @@ type Props = {
   events: any | null;
   devises: any | null;
 }
-type option = {
-  label: String;
-  value: String | number;
-}
 
 const AddLocalBrunch: React.FC<Props> = ({ data_props, pays, events, devises }) => {
   const router = useRouter()
   const min = 1;
   const { register, handleSubmit, watch, reset, setValue, control, formState: { errors } } = useForm<Inputs>();
   const [isSubmit, setIsSubmit] = useState<boolean>(false);
-  const [optionsEvent, setOptionsEvent] = useState<option[] | null>(null);
-  const [optionsVille, setOptionsVille] = useState<option[] | null>(null);
-  const [optionsDevise, setOptionsDevise] = useState<option[] | null>(null);
-  const [capaciteTable, setCapaciteTable] = useState<number>(10)
+  const [optionsEvent, setOptionsEvent] = useState<option[] | any>(null);
+  const [optionsVille, setOptionsVille] = useState<option[] | any>(null);
+  const [optionsDevise, setOptionsDevise] = useState<option[] | any>(null);
+  const [capaciteTable, setCapaciteTable] = useState<number|string>(10)
 
   const [responseError, setResponseError] = useState<any>(null);
   useEffect(() => {
@@ -53,19 +54,19 @@ const AddLocalBrunch: React.FC<Props> = ({ data_props, pays, events, devises }) 
     setValue('nb_reservation', data_props.nb_reservation)
       setValue('montant_participation', data_props.montant_participation);
       setValue('seuil_alerte', data_props.seuil_alerte);
-      const ville = optionsVille?.filter(v=> v.value === data_props.idVille);
-      setValue('id_ville', ville[0]);
-      const devise = optionsDevise?.filter(v=> v.value === data_props.idDevise);
-      setValue('id_devise', devise[0]);
-      const event = optionsEvent?.filter(v=> v.value === data_props.idEvent);
-      setValue('id_event', event[0]);
+      const ville = optionsVille?.filter((v:any)=> v.value === data_props.idVille)[0];
+      setValue('id_ville', ville);
+      const devise = optionsDevise?.filter((v:any)=> v.value === data_props.idDevise)[0];
+      setValue('id_devise', devise);
+      const event = optionsEvent?.filter((v:any)=> v.value === data_props.idEvent)[0];
+      setValue('id_event', event);
 
     }
   }, [optionsDevise])
 
   useEffect(() => {
     const tableOptions: option[] = [];
-    devises?.sort((a, b) => {
+    devises?.sort((a:any, b:any) => {
       let fa = a.code_devise,
         fb = b.code_devise;
 
@@ -77,7 +78,7 @@ const AddLocalBrunch: React.FC<Props> = ({ data_props, pays, events, devises }) 
       }
       return 0;
     });
-    devises?.forEach(p => {
+    devises?.forEach((p:any) => {
       tableOptions.push({
         label: `${p.code_devise} (${p.devise})`,
         value: p.id_devise
@@ -88,7 +89,7 @@ const AddLocalBrunch: React.FC<Props> = ({ data_props, pays, events, devises }) 
   }, []);
   useEffect(() => {
     const tableOptions: option[] = [];
-    events?.sort((a, b) => {
+    events?.sort((a:any, b:any) => {
       let fa = a.id_event,
         fb = b.id_event;
 
@@ -100,7 +101,7 @@ const AddLocalBrunch: React.FC<Props> = ({ data_props, pays, events, devises }) 
       }
       return 0;
     });
-    events?.forEach(p => {
+    events?.forEach((p:any) => {
       tableOptions.push({
         label: `évènement-${p.id_event}`,
         value: p.id_event
@@ -111,9 +112,9 @@ const AddLocalBrunch: React.FC<Props> = ({ data_props, pays, events, devises }) 
   }, []);
   useEffect(() => {
     const tableOptions: option[] = [];
-    pays?.forEach(p => {
-      p?.departements?.forEach(d => {
-        d?.villes?.forEach(v => {
+    pays?.forEach((p:any) => {
+      p?.departements?.forEach((d:any) => {
+        d?.villes?.forEach((v:any) => {
           tableOptions.push(
             {
               label: `${v.libelle} (${d.libelle}, ${p.libelle})`,
@@ -123,7 +124,7 @@ const AddLocalBrunch: React.FC<Props> = ({ data_props, pays, events, devises }) 
         })
       })
     })
-    tableOptions?.sort((a, b) => {
+    tableOptions?.sort((a:any, b:any) => {
       let fa = a.label,
         fb = b.label;
 
@@ -136,13 +137,12 @@ const AddLocalBrunch: React.FC<Props> = ({ data_props, pays, events, devises }) 
       return 0;
     });
 
-
     setOptionsVille(tableOptions);
-  }, []);
+  }, [pays]);
 
 
 
-  const updateLocalBrunch = (data: Inputs) => {
+  const updateLocalBrunch = (data: Inputs | FormData) => {
     axios
       .put(`${process.env.base_route}/locaux/${data_props.id_local}`, data)
       .then((response) => {
@@ -171,7 +171,7 @@ const AddLocalBrunch: React.FC<Props> = ({ data_props, pays, events, devises }) 
 
 
   };
-  const createLocalBrunch = (data: Inputs) => {
+  const createLocalBrunch = (data: Inputs | FormData) => {
 
     axios.post(`${process.env.base_route}/locaux`, data).then(response => {
       console.log(response);
@@ -211,20 +211,20 @@ const AddLocalBrunch: React.FC<Props> = ({ data_props, pays, events, devises }) 
     formData.append('id_devise', data.id_devise?.value)
     formData.append('id_ville', data.id_ville?.value)
     formData.append('id_event', data.id_event?.value)
-    formData.append('capacite_totale', data.capacite_totale)
-    formData.append('capacite_table', data.capacite_table)
-    formData.append('montant_participation', data.montant_participation)
+    formData.append('capacite_totale', ""+data.capacite_totale)
+    formData.append('capacite_table', ""+data.capacite_table)
+    formData.append('montant_participation', ""+data.montant_participation)
     formData.append('email_responsable', data.email_responsable)
-    formData.append('seuil_alerte', data.seuil_alerte)
+    formData.append('seuil_alerte', ""+data.seuil_alerte)
     formData.append('adresse_no_rue', data.adresse_no_rue)
 
 
     setIsSubmit(true);
     if (data_props === null) {
-      formData.append('nb_reservation', 0)
+      formData.append('nb_reservation', "0")
       createLocalBrunch(formData);
     } else {
-      formData.append('nb_reservation', data_props.nb_reservation);
+      formData.append('nb_reservation', ""+data_props.nb_reservation);
       updateLocalBrunch(formData)
     }
 

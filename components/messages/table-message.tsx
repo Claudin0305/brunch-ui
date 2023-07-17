@@ -51,7 +51,7 @@ const TableMessage: React.FC<Props> = ({ data }) => {
     {
       field:"subject",
       flex:1,
-      headerName:"Sujet du message"
+      headerName:"Objet du message"
     },
     // {
     //   field: "libelle_texte",

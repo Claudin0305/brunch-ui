@@ -10,13 +10,13 @@ import { useRouter } from 'next/router'
 
 
 type Inputs = {
-  authority:String;
+  nom_affiliation:string;
 };
 type Props = {
 data_props: any | null;
 }
 
-const AddRole: React.FC<Props> = ({data_props}) => {
+const AddAffiliation: React.FC<Props> = ({data_props}) => {
   const router = useRouter()
   const { register, handleSubmit, watch, reset, setValue, control, formState: { errors } } = useForm<Inputs>();
   const [isSubmit, setIsSubmit] = useState<boolean>(false);
@@ -25,16 +25,16 @@ const AddRole: React.FC<Props> = ({data_props}) => {
   useEffect(()=>{
 
     if(data_props !== null){
-      setValue('authority', data_props.authority);
+      setValue('nom_affiliation', data_props.nom_affiliation);
 
     }
   },[])
 
 
 
-   const updateRole = (data:Inputs) => {
+   const updateAffiliation = (data:Inputs) => {
     axios
-        .put(`${process.env.base_route}/roles/${data_props.roleId}`, data)
+        .put(`${process.env.base_route}/affiliations/${data_props.affiliationId}`, data)
         .then((response) => {
           if (response.status === 200) {
 
@@ -47,7 +47,7 @@ const AddRole: React.FC<Props> = ({data_props}) => {
            confirmButtonColor: "#2563eb",
             confirmButtonText: "Fermer",
         })
-        router.push('/roles')
+        router.push('/affiliations')
         reset();
           }
 
@@ -61,9 +61,9 @@ const AddRole: React.FC<Props> = ({data_props}) => {
 
 
    };
-   const createRole =  (data:Inputs) => {
+   const createAffiliation =  (data:Inputs) => {
 
-  axios.post(`${process.env.base_route}/roles`, data).then(response=>{
+  axios.post(`${process.env.base_route}/affiliations`, data).then(response=>{
 console.log(response);
 if(response.status === 201){
         Swal.fire({
@@ -96,9 +96,9 @@ if(response.status === 201){
 
     setIsSubmit(true);
     if(data_props === null){
-      createRole(data);
+      createAffiliation(data);
     }else{
-      updateRole(data)
+      updateAffiliation(data)
     }
 
   };
@@ -106,7 +106,7 @@ if(response.status === 201){
   return (
     <div className="container">
       <h1 className="font-bold text-sm md:text-lg capitalize mb-8">
-        {data_props === null ? 'Ajouter':'Modifier'} Role
+        {data_props === null ? 'Ajouter':'Modifier'} Affiliation
       </h1>
       <form onSubmit={handleSubmit(onSubmit)} className="center">
         {/* register your input into the hook by invoking the "register" function */}
@@ -118,11 +118,12 @@ if(response.status === 201){
             autoComplete="given-name"
             fullWidth
             size="small"
-            id="Role"
-            label="Role"
-              {...register("authority", { required: true })}
+            id="nom_affiliation"
+            label="Nom affiliation"
+              {...register("nom_affiliation", { required: 'Ce champ est obligatoire' })}
           />
-            {responseError !== null && <Error text={responseError?.authority}/>}
+            {responseError !== null && <Error text={responseError?.nom_affiliation}/>}
+            {errors?.nom_affiliation && <Error text={errors.nom_affiliation.message} />}
           </div>
 
 
@@ -152,4 +153,4 @@ if(response.status === 201){
   );
 };
 
-export default AddRole;
+export default AddAffiliation;
