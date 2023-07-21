@@ -125,7 +125,7 @@ const AddUtilisateur: React.FC<Props> = ({data_props}) => {
     const createUtilisateur = (data: Inputs |FormData) => {
 
       axios.post(`${process.env.base_route}/auth/signup`, data).then(response => {
-            if (response.status === 201) {
+            if (response.status === 200) {
                 Swal.fire({
                     // position: 'top-end',
                     icon: 'success',
@@ -152,18 +152,19 @@ const AddUtilisateur: React.FC<Props> = ({data_props}) => {
 
     };
     const onSubmit: SubmitHandler<Inputs> = data => {
-        const role = [];
+        const role:string[]  = [];
 
         data?.role.forEach((r:any)=>{
-          role.push(r.value)
+          role.push(r?.value)
         })
-        data?.role = role;
+        console.log({...data, "role": role})
+
         setIsSubmit(true);
 
         if (data_props === null) {
-            createUtilisateur(data);
+            createUtilisateur({...data, "role": role});
         } else {
-            updateUtilisateur(data)
+            updateUtilisateur({...data, "role":role})
         }
 
     };

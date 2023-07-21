@@ -22,9 +22,9 @@ const TableUtilisateur: React.FC<Props> = ({ data }) => {
     event.stopPropagation();
   };
 
-  const getRowId = (row:any):GridRowId => {
-  return row.userId;
-};
+//   const getRowId = (row:any):GridRowId => {
+//   return row.userId;
+// };
 
   const handleRowClick = (param: any, event: MouseEvent) => {
     event.stopPropagation();
@@ -96,7 +96,7 @@ const TableUtilisateur: React.FC<Props> = ({ data }) => {
       <DataGrid
         rows={data}
         columns={columns}
-        getRowId={getRowId}
+        // getRowId={getRowId}
         paginationMode="client"
         initialState={{
     pagination: {
