@@ -67,7 +67,11 @@ const AddVille: React.FC<Props> = ({ data_props, departements }) => {
 
     const updateVille = (data: Inputs | FormData) => {
         axios
-            .put(`${process.env.base_route}/villes/${data_props.id_ville}`, data)
+            .put(`${process.env.base_route}/villes/${data_props.id_ville}`, data, {
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+          },
+        })
             .then((response) => {
                 if (response.status === 200) {
 
@@ -97,7 +101,11 @@ const AddVille: React.FC<Props> = ({ data_props, departements }) => {
     };
     const createVille = (data: Inputs |FormData) => {
 
-        axios.post(`${process.env.base_route}/villes`, data).then(response => {
+        axios.post(`${process.env.base_route}/villes`, data, {
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+          },
+        }).then(response => {
             console.log(response);
             if (response.status === 201) {
                 Swal.fire({

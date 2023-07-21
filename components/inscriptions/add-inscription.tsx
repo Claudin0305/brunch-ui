@@ -324,7 +324,11 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
 
   const updateInscription = (data: Inputs | FormData) => {
     axios
-      .put(`${process.env.base_route}/participants/${data_props.id_participant}`, data)
+      .put(`${process.env.base_route}/participants/${data_props.id_participant}`, data, {
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+          },
+        })
       .then((response) => {
         if (response.status === 200) {
 
@@ -353,7 +357,11 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
   };
   const createInscription = (data: Inputs | FormData) => {
 
-    axios.post(`${process.env.base_route}/participants`, data).then(response => {
+    axios.post(`${process.env.base_route}/participants`, data, {
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+          },
+        }).then(response => {
       console.log(response);
       if (response.status === 201) {
         Swal.fire({
