@@ -12,7 +12,7 @@ const LocalBrunch: React.FC<Props> = ({ data }) => {
   return (
     <Layout>
       <Head>
-        <title>Locaux Brunch | Liste</title>
+        <title>Locaux Evénement | Liste</title>
       </Head>
       <LocalBrunchLayout>
         <div className="bg-white px-8 py-4 shadow-md h-[calc(100vh_-_200px)]">

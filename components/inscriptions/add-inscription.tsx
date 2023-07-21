@@ -31,6 +31,7 @@ type Inputs = {
   authorisation_liste: string;
   abonnement_newsletter: string;
   id_local: string | null | any;
+  id_affiliation: string | null | any;
   id_ville: string | null | any;
   id_civilite: string | null | any;
   id_event: string | null | any;
@@ -374,6 +375,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
         setValue('id_tranche_age', "");
         setValue('id_ville', "");
         setValue('id_local', "");
+        setValue('id_affiliation', "");
         setValue('id_civilite', "");
 
         setValue("abonnement_newsletter", "0")
@@ -417,6 +419,12 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
       formData.append("id_local", data.id_local?.value)
     } else {
       formData.append("id_local", '0')
+
+    }
+    if (data?.id_affiliation?.value !== undefined) {
+      formData.append("id_affiliation", data.id_affiliation?.value)
+    } else {
+      formData.append("id_affiliation", '0')
 
     }
 if(selectModePaiement !== null){
@@ -732,6 +740,44 @@ if(selectModePaiement !== null){
     {
       label: 'Mode de participation',
       description: <div className="flex flex-col md:grid md:grid-cols-3 gap-8">
+        <input type="hidden" name=""/>
+        <div className="flex-col flex md:-mt-4 z-10">
+            <label
+              className="mb-2"
+              htmlFor={`id_affiliation`}
+            >
+              {" "}
+              Affiliation{" "}
+            </label>
+            <Controller
+              name={`id_affiliation`}
+              control={control}
+              rules={{
+                required: {
+                  message: "Ce champ est obligatoire",
+                  value: false
+                },
+              }}
+
+              render={({ field }) => (
+                <Select
+                  {...field}
+                  placeholder={
+                    "Choisir affiliation..."
+                  }
+                  isClearable
+                  // value={selectLocal}
+                  // onChange={e => {
+                  //   setValue('id_affiliation', e);
+                  //   setSelectLocal(e)
+                  // }}
+                  options={optionsAffiliation}
+                />
+              )}
+            />{" "}
+            {errors?.id_affiliation && <Error text={errors.id_affiliation.message} />}
+
+          </div>
         <div className="flex-col flex md:-mt-4 z-20">
           <label
             className="mb-2"

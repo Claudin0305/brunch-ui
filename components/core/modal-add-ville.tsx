@@ -108,7 +108,7 @@ const ModalAddVille: React.FC<Props> = ({ show, setShow, selectedDept, setSelect
                                                     fullWidth
                                                     id="libelle"
                                                     size="small"
-                                                    label="Libelle"
+                                                    label="Libelle ville"
                                                     {...register("libelle", { required: true })}
                                                 />
                                                 {responseError !== null && <Error text={responseError?.libelle} />}

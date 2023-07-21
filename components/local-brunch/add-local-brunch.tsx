@@ -244,7 +244,7 @@ const AddLocalBrunch: React.FC<Props> = ({ data_props, pays, events, devises }) 
               htmlFor={`id_event`}
             >
               {" "}
-              Evènement*{" "}
+              Evénement*{" "}
             </label>
             <Controller
               name={`id_event`}

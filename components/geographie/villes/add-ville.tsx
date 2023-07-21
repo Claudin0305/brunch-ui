@@ -158,7 +158,7 @@ const AddVille: React.FC<Props> = ({ data_props, departements }) => {
                             fullWidth
                             id="libelle"
                             size="small"
-                            label="Libelle"
+                            label="Libelle ville"
                             {...register("libelle", { required: true })}
                         />
                         {responseError !== null && <Error text={responseError?.libelle} />}

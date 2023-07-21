@@ -41,12 +41,18 @@ const ModalRecap: React.FC<Props> = ({ show, setShow, data }) => {
                                 {/*body*/}
                                 <div className="relative p-6 flex-auto">
                                      <p className="uppercase">merci pour votre inscription</p>
-                                     <p>Numéro de confirmation: <span>{data?.data?.username}</span></p>
+                                     <p>Numéro de confirmation: <span className="font-semibold">{data?.username}</span></p>
                                      <p> Nous enverrons prochainement un accusé de réception au(x) courriel(s) que vous avez spécifié(s).</p>
                                      {/* <Récapitulatif> */}
+                                     <p>Mode participation: <span className="font-semibold">{data?.mode_participation}</span></p>
+                                     {data?.mode_participation !== 'DISTANCIEL' && <>
+                                     <p>Lieu: <span className="font-semibold">{`${data?.nomPays}, ${data?.ville?.libelleDepartement}, ${data?.ville.libelle}(Local-${data?.idLocal})`}</span></p>
+                                     <p>Mode paiement: <span className="font-semibold">{data?.modePaiement.replace("_", " ").toLowerCase()}</span></p>
+                                     <p>Montant: <span className="font-semibold"> {data?.montant_participation} {data?.devise}</span></p>
+                                     </>}
 <Link
 className="text-blue-500 hover:text-blue-300"
-href={`liste-participants/${data?.idEvent}`}
+href={`/liste-participants/${data?.idEvent}`}
 >Tableau des inscrits</Link>
        {/* (hyperlien) Faire un don */}
                                 </div>

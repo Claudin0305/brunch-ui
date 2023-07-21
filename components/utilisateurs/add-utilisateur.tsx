@@ -60,17 +60,17 @@ const AddUtilisateur: React.FC<Props> = ({data_props}) => {
 
     useEffect(() => {
         const tableOptions: option[] = [
-           {
-    value: "standard",
-    label: "Standard"
+  //          {
+  //   value: "standard",
+  //   label: "Standard"
+  // },
+  {
+    value: "admin",
+    label: "admin"
   },
   {
-    value: "root",
-    label: "Administrateur"
-  },
-  {
-    value: "invite",
-    label: "Invité"
+    value: "user",
+    label: "user"
   },
         ];
         tableOptions.sort((a:any, b:any) => {
@@ -93,7 +93,7 @@ const AddUtilisateur: React.FC<Props> = ({data_props}) => {
 
     const updateUtilisateur = (data: Inputs) => {
         axios
-            .put(`${process.env.base_route}/utilisateurs/${data_props.id}`, data)
+            .put(`${process.env.base_route}/auth/signup/${data_props.id}`, data)
             .then((response) => {
                 if (response.status === 200) {
 
@@ -124,7 +124,7 @@ const AddUtilisateur: React.FC<Props> = ({data_props}) => {
     };
     const createUtilisateur = (data: Inputs |FormData) => {
 
-        axios.post(`${process.env.base_route}/utilisateurs`, data).then(response => {
+      axios.post(`${process.env.base_route}/auth/signup`, data).then(response => {
             if (response.status === 201) {
                 Swal.fire({
                     // position: 'top-end',
@@ -152,8 +152,12 @@ const AddUtilisateur: React.FC<Props> = ({data_props}) => {
 
     };
     const onSubmit: SubmitHandler<Inputs> = data => {
-        // console.log(data)
+        const role = [];
 
+        data?.role.forEach((r:any)=>{
+          role.push(r.value)
+        })
+        data?.role = role;
         setIsSubmit(true);
 
         if (data_props === null) {
@@ -323,6 +327,7 @@ const AddUtilisateur: React.FC<Props> = ({data_props}) => {
                       "Choisir le role..."
                     }
                     isClearable
+                    isMulti
                     options={options}
 
                   />

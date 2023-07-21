@@ -13,7 +13,7 @@ const LinkButton: React.FC<Props> = ({ path, text, icon }) => {
   return (
     <Stack direction="row" spacing={2}>
       <Link href={path}>
-        <Button className="bg-blue-600 capitalize" variant="contained" startIcon={icon}>
+        <Button className="bg-blue-500 capitalize" variant="contained" startIcon={icon}>
          {text}
         </Button>
       </Link>

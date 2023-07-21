@@ -17,6 +17,7 @@ import EmailIcon from '@mui/icons-material/Email';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
+import PeopleIcon from '@mui/icons-material/People';
 type nav = {
   path: string;
   name: string;
@@ -33,12 +34,17 @@ const SideBare: React.FC = () => {
     {
       path: "/evenements",
       icon: <EventIcon />,
-      name: "Evènements",
+      name: "Evénements",
+    },
+    {
+      path: "/participants",
+      icon: <PeopleIcon />,
+      name: "Participants",
     },
     {
       path: "/locaux-brunch",
       icon: <MeetingRoomIcon />,
-      name: "Locaux Brunch",
+      name: "Local événement",
     },
     {
       path: "/civilites",
@@ -92,7 +98,7 @@ const SideBare: React.FC = () => {
     },
   ];
   return (
-    <div className="h-screen flex flex-col w-72 shadow-lg bg-white overflow-y-scrol">
+    <div className="h-screen flex flex-col w-72 shadow-lg bg-white overflow-y-scroll">
       <div className="flex">
         <h1 className="text-2xl uppercase px-4 py-4">Administration</h1>
       </div>

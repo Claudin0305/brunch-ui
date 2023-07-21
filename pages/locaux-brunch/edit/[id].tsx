@@ -14,7 +14,7 @@ const Page: React.FC<Props> = ({ data }) => {
   return (
     <Layout>
       <Head>
-        <title>Locaux Brunch | Edit</title>
+        <title>Locaux Evénement | Edit</title>
       </Head>
       <LocalBrunchLayout>
         <div className="bg-white px-8 py-4 mb-4 shadow-md h-[calc(100vh_-_215px)] overflow-y-scroll">

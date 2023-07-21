@@ -5,7 +5,7 @@ import React, { MouseEvent } from "react";
 import Link from 'next/link'
 import Button from "@mui/material/Button";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import LocalBrunchLayout from "@/components/local-brunch/local-brunch-layout";
+import ParticipantLayout from "@/components/participants/participant-layout";
 import Swal from 'sweetalert2'
 import { useRouter } from 'next/router'
 
@@ -16,8 +16,8 @@ type Props = {
 
 const Page: React.FC<Props> = ({ data }) => {
   const router = useRouter()
-  const deleteLocalBrunch = (id: number) => {
-    fetch(`${process.env.base_route}/locaux/${id}`, {
+  const deleteParticipant = (id: number) => {
+    fetch(`${process.env.base_route}/participants/${id}`, {
       method: "DELETE",
 
       headers: {
@@ -39,7 +39,7 @@ const Page: React.FC<Props> = ({ data }) => {
         })
 
 
-        router.push('/locaux-brunch')
+        router.push('/participants')
 
       }
     }).catch((e) => {
@@ -55,7 +55,7 @@ const Page: React.FC<Props> = ({ data }) => {
   const handleDelete = (event: MouseEvent) => {
     Swal.fire({
       title: 'Etes-vous sûr?',
-      text: "Supprimer " + data.libelle,
+      text: "Supprimer " + data.prenom + " " + data.nom,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#2563eb',
@@ -70,7 +70,7 @@ const Page: React.FC<Props> = ({ data }) => {
         //   'Your file has been deleted.',
         //   'success'
         // )
-        deleteLocalBrunch(data.id_local)
+        deleteParticipant(data.id_participant)
       }
     })
 
@@ -81,55 +81,56 @@ const Page: React.FC<Props> = ({ data }) => {
   return (
     <Layout>
       <Head>
-        <title>Local Evénement | Details</title>
+        <title>Participant | Details</title>
       </Head>
-      <LocalBrunchLayout>
+      <ParticipantLayout>
         <div className="bg-white px-8 py-4 mb-4 shadow-md h-[calc(100vh_-_215px)] overflow-y-scroll">
 
           <div className="flex flex-col gap-y-4 w-1/2 mx-auto">
             <h1 className="font-bold text-sm md:text-lg capitalize bg-slate-100 text-center col-span-2">
-              Détails Local Evénement
+              Détails Participant
             </h1>
             <div className="flex justify-between">
 
-              <p>Identifiant</p><p>{`Local-${data.id_local}`}</p>
+              <p>Numéro de confirmation</p><p>{data.username}</p>
             </div>
             <div className="flex justify-between">
 
-              <p>Pays</p><p>{data.pays}</p>
+              <p>Prénom</p><p>{data.prenom}</p>
             </div>
             <div className="flex justify-between">
 
-              <p>Ville</p><p>{data.ville}</p>
+              <p>Nom</p><p>{data.nom}</p>
             </div>
             <div className="flex justify-between">
 
-              <p>Adresse</p><p>{data.adresse_no_rue}</p>
+              <p>Pays</p><p>{data.Pays}</p>
             </div>
             <div className="flex justify-between">
 
-              <p>Email resp.</p><p>{data.email_responsable}</p>
+              <p>Département</p><p>{data.ville.libelleDepartement}</p>
             </div>
             <div className="flex justify-between">
 
-              <p>Capacité tot.</p><p>{data.capacite_totale}</p>
+              <p>Ville</p><p>{data.ville.libelle}</p>
             </div>
             <div className="flex justify-between">
 
-              <p>Capacité tab.</p><p>{data.capacite_table}</p>
+              <p>Email</p><p>{data.email}</p>
             </div>
             <div className="flex justify-between">
 
-              <p>Seuil alerte</p><p>{data.seuil_alerte}</p>
+              <p>Téléphone</p><p>{data.tel_participant}</p>
             </div>
             <div className="flex justify-between">
 
-              <p>Nb Réservation</p><p>{data.nb_reservation}</p>
+              <p>Mode participation</p><p>{data.mode_participation}</p>
             </div>
             <div className="flex justify-between">
 
-              <p>Montant part.</p><p>{`${data.montant_participation} ${data.codeDevise}`}</p>
+              <p>Affiliation</p><p>{data?.nomAffiliation}</p>
             </div>
+
 
 
             <hr />
@@ -140,7 +141,7 @@ const Page: React.FC<Props> = ({ data }) => {
               Supprimer
             </Button>
 
-            <Link href={`/locaux-brunch/edit/${data.id_local}`}>
+            <Link href={`/participants/edit/${data.id_participant}`}>
               <Button className="bg-blue-600 capitalize" variant="contained" startIcon={<EditIcon />}>
                 Editer
               </Button>
@@ -148,14 +149,14 @@ const Page: React.FC<Props> = ({ data }) => {
 
           </div>
         </div>
-      </LocalBrunchLayout>
+      </ParticipantLayout>
     </Layout>
   );
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   // ...
-  const res = await fetch(`${process.env.base_route}/locaux/${context?.params?.id}`)
+  const res = await fetch(`${process.env.base_route}/participants/${context?.params?.id}`)
   //    console.log(res)
   const data = await res.json()
 

@@ -156,7 +156,7 @@ const AddDepartement: React.FC<Props> = ({ data_props, pays }) => {
                             fullWidth
                             size="small"
                             id="libelle"
-                            label="Libelle"
+                            label="Libelle département"
                             {...register("libelle", { required: true })}
                         />
                         {responseError !== null && <Error text={responseError?.libelle} />}

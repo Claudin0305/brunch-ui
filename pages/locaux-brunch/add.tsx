@@ -12,7 +12,7 @@ const Add:React.FC<Props> = ({data}) => {
   return (
     <Layout>
       <Head>
-        <title>Locaux Brunch | Ajouter</title>
+        <title>Local Evénement | Ajouter</title>
       </Head>
       <LocalBrunchLayout>
         <div className="bg-white px-8 py-4 shadow-md overflow-y-scroll h-[calc(100vh_-_200px)]">

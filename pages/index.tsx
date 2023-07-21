@@ -12,7 +12,6 @@ type Props = {
   data: any;
 }
 const Home: React.FC<Props> = ({ data }) => {
-  console.log(data);
   const date_fin = data?.[0].date_fin.split("T")[0].replaceAll('-', '/');
   const heure_fin = data?.[0].heure_fin;
   const date_limite = new Date(date_fin).toLocaleDateString('fr-fr', { weekday: "long", year: "numeric", month: "short", day: "numeric" }).split(" ")
