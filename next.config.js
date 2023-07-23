@@ -5,7 +5,7 @@ const nextConfig = {
     base_route: "http://grahn-brunch.ddns.net:9094/api",
   },
   images: {
-    domains: ["localhost"],
+    domains: ["grahn-brunch.ddns.net:9094"],
   },
 };
 
