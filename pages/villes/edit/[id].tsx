@@ -28,8 +28,10 @@ const Page: React.FC<Props> = ({ data }) => {
 export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const [villesRes, deptsRes] = await Promise.all([
-    fetch(`${process.env.base_route}/villes/${context?.params?.id}`),
-    fetch(`${process.env.base_route}/departements`)
+    // fetch(`${process.env.base_route}/villes/${context?.params?.id}`),
+    fetch(`http://localhost:8080/api/villes/${context?.params?.id}`),
+    // fetch(`${process.env.base_route}/departements`)
+    fetch(`http://localhost:8080/api/departements`)
   ]);
   const [ville, dept] = await Promise.all([
     villesRes.json(),
