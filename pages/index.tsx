@@ -7,6 +7,7 @@ import Counter from '@/components/core/counter'
 import Link from 'next/link'
 import { Button } from '@mui/material'
 import HowToRegIcon from '@mui/icons-material/HowToReg';
+import axios from 'axios';
 const inter = Inter({ subsets: ['latin'] })
 type Props = {
   data: any;
@@ -64,11 +65,35 @@ const Home: React.FC<Props> = ({ data }) => {
   )
 }
 export async function getServerSideProps() {
-  // Fetch data from external API
-  const res = await fetch(`${process.env.base_route}/events`)
-  const data = await res.json()
+  try {
+    // Fetch data from an API or perform other async operations
+    const response = await axios.get(`${process.env.base_route}/events`);
+    const data = response.data;
 
-  // Pass data to the page via props
-  return { props: { data } }
+    // Return the data as props
+    return {
+      props: {
+        data,
+      },
+    };
+  } catch (error) {
+    // Handle the error
+    console.error('Error fetching data:', error);
+    // You can return an error prop to display a custom error message on the page
+    return {
+      props: {
+        error: {
+          statusCode: error,
+          message: error,
+        },
+      },
+    };
+  }
+  // // Fetch data from external API
+  // const res = await fetch(`${process.env.base_route}/events`)
+  // const data = await res.json()
+
+  // // Pass data to the page via props
+  // return { props: { data } }
 }
 export default Home;
