@@ -2,11 +2,11 @@
 const nextConfig = {
   reactStrictMode: true,
   env: {
-    base_route: "http://localhost:8080/api",
+    base_route: "http://grahn-brunch.ddns.net:9094/api",
   },
   images: {
-    domains: ['localhost'],
+    domains: ["grahn-brunch.ddns.net"],
   },
-}
+};
 
 module.exports = nextConfig
