@@ -28,10 +28,10 @@ const Page: React.FC<Props> = ({ data }) => {
 export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const [localRes, eventResp, deviseResp, paysResp] = await Promise.all([
-    fetch(`${process.env.base_route}/locaux/${context?.params?.id}`),
-    fetch(`${process.env.base_route}/events`),
-    fetch(`${process.env.base_route}/devises`),
-    fetch(`${process.env.base_route}/pays`),
+    fetch(`${process.env.base_route_get}/locaux/${context?.params?.id}`),
+    fetch(`${process.env.base_route_get}/events`),
+    fetch(`${process.env.base_route_get}/devises`),
+    fetch(`${process.env.base_route_get}/pays`),
   ]);
   const [local, events, devises, pays] = await Promise.all([
     localRes.json(),

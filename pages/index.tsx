@@ -49,7 +49,7 @@ const Home: React.FC<Props> = ({ data }) => {
             </div>
             <div className='w-2/3'>
               <Image
-                src={`${process.env.base_route}/events/images/${data?.[0].imageDatas?.filter((img:any) => img.active === true)[0]?.name}`}
+                src={`${process.env.base_route_get}/events/images/${data?.[0].imageDatas?.filter((img:any) => img.active === true)[0]?.name}`}
                 width={400}
                 height={400}
                 alt={'logo évènement'}
@@ -67,8 +67,8 @@ const Home: React.FC<Props> = ({ data }) => {
 export async function getServerSideProps() {
   try {
     // Fetch data from an API or perform other async operations
-    // const response = await axios.get(`${process.env.base_route}/events`);
-    const response = await axios.get(`http://localhost:8080/api/events`);
+    const response = await axios.get(`${process.env.base_route_get}/events`);
+    // const response = await axios.get(`http://localhost:8080/api/events`);
     const data = response.data;
 
     // Return the data as props

@@ -28,7 +28,7 @@ const Page: React.FC<Props> = ({ data }) => {
 export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const [messagesRes] = await Promise.all([
-    fetch(`${process.env.base_route}/messages/${context?.params?.id}`)
+    fetch(`${process.env.base_route_get}/messages/${context?.params?.id}`)
   ]);
   const [message] = await Promise.all([
     messagesRes.json()

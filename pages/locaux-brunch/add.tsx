@@ -26,9 +26,9 @@ export async function getServerSideProps() {
   // Fetch data from external API
 
   const [eventResp, deviseResp, paysResp] = await Promise.all([
-    fetch(`${process.env.base_route}/events`),
-    fetch(`${process.env.base_route}/devises`),
-    fetch(`${process.env.base_route}/pays`),
+    fetch(`${process.env.base_route_get}/events`),
+    fetch(`${process.env.base_route_get}/devises`),
+    fetch(`${process.env.base_route_get}/pays`),
   ]);
   const [events, devises, pays] = await Promise.all([
     eventResp.json(),

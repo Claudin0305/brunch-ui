@@ -25,7 +25,7 @@ const Page: React.FC<Props> = ({ data }) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    const res = await fetch(`${process.env.base_route}/participants/par-evenement/${context?.params?.id_event}`)
+    const res = await fetch(`${process.env.base_route_get}/participants/par-evenement/${context?.params?.id_event}`)
     const data = await res.json()
 
     // Pass data to the page via props

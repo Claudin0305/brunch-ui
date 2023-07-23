@@ -27,13 +27,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   // Fetch data from external API
 
   const [civiliteResp, trancheAgeResp, paysResp, locauxResp, eventResp, respPart, respAff] = await Promise.all([
-    fetch(`${process.env.base_route}/civilites`),
-    fetch(`${process.env.base_route}/tranche-ages`),
-    fetch(`${process.env.base_route}/pays`),
-    fetch(`${process.env.base_route}/locaux`),
-    fetch(`${process.env.base_route}/events/${context?.params?.id_event}`),
-    fetch(`${process.env.base_route}/participants`),
-    fetch(`${process.env.base_route}/affiliations`),
+    fetch(`${process.env.base_route_get}/civilites`),
+    fetch(`${process.env.base_route_get}/tranche-ages`),
+    fetch(`${process.env.base_route_get}/pays`),
+    fetch(`${process.env.base_route_get}/locaux`),
+    fetch(`${process.env.base_route_get}/events/${context?.params?.id_event}`),
+    fetch(`${process.env.base_route_get}/participants`),
+    fetch(`${process.env.base_route_get}/affiliations`),
   ]);
   const [civilites, trancheAges, pays, locaux, event, participants, affiliations] = await Promise.all([
     civiliteResp.json(),

@@ -27,7 +27,7 @@ const Statut: React.FC<Props> = ({ data }) => {
 }
 export async function getServerSideProps() {
   // Fetch data from external API
-  const res = await fetch(`${process.env.base_route}/statuts`)
+  const res = await fetch(`${process.env.base_route_get}/statuts`)
   const data = await res.json()
 
   // Pass data to the page via props
