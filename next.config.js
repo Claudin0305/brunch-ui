@@ -9,7 +9,7 @@ const nextConfig = {
   },
    serverRuntimeConfig: {
     // Increase the timeout for getServerSideProps to 60 seconds.
-    getServerSidePropsTimeout: 60000,
+    getServerSidePropsTimeout: 30000,
   },
 }
 
