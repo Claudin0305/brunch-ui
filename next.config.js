@@ -8,8 +8,8 @@ const nextConfig = {
     domains: ['localhost', "grahn-brunch.ddns.net"],
   },
    serverRuntimeConfig: {
-    // Increase the timeout for getServerSideProps to 60 seconds.
-    getServerSidePropsTimeout: 30000,
+    // Increase the timeout for getServerSideProps to 15 seconds.
+    getServerSidePropsTimeout: 15000,
   },
 }
 
