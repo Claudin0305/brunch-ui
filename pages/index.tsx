@@ -48,7 +48,7 @@ const Home: React.FC<Props> = ({ data }) => {
             </div>
             <div className='w-2/3'>
               <Image
-                src={`${process.env.base_route_images}/events/images/${data?.[0].imageDatas?.filter((img:any) => img.active === true)[0]?.name}`}
+                src={`${process.env.base_route}/events/images/${data?.[0].imageDatas?.filter((img:any) => img.active === true)[0]?.name}`}
                 width={400}
                 height={400}
                 alt={'logo évènement'}

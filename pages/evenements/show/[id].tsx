@@ -115,7 +115,7 @@ const Page: React.FC<Props> = ({ data }) => {
             </h1>
             <div className="block mx-auto">
               <Image
-              src={`${process.env.base_route_images}/events/images/${data?.imageDatas?.filter((img:any)=>img.active===true)[0]?.name}`}
+              src={`${process.env.base_route}/events/images/${data?.imageDatas?.filter((img:any)=>img.active===true)[0]?.name}`}
               width={300}
               height={300}
               alt={'logo évènement'}

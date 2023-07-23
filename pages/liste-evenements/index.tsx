@@ -33,7 +33,7 @@ const Home: React.FC<Props> = ({ data }) => {
                                 >
                                     <div className="block shadow-md pb-8">
                                         <Image
-                                            src={`${process.env.base_route_images}/events/images/${e?.imageDatas?.filter((img:any) => img.active === true)[0]?.name}`}
+                                            src={`${process.env.base_route}/events/images/${e?.imageDatas?.filter((img:any) => img.active === true)[0]?.name}`}
                                             width={400}
                                             height={400}
                                             alt={'logo évènement'}
