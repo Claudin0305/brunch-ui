@@ -122,7 +122,7 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
       setValue('heure_debut', data_props.heure_debut)
       setValue('heure_fin', data_props.heure_fin)
       const image = data_props.imageDatas?.filter((img: any) => img.active === true)?.[0]
-      setPreviewImage(`${process.env.base_route}/events/images/${image?.name}`)
+      setPreviewImage(`${process.env.base_route_images}/events/images/${image?.name}`)
       setValue('image_event', image.name)
 
     }
@@ -505,7 +505,7 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
                         setPreviewImage("");
                       } else {
                         const image = data_props.imageDatas?.filter((img: any) => img.active === true)?.[0]
-                        setPreviewImage(`${process.env.base_route}/events/images/${image?.name}`)
+                        setPreviewImage(`${process.env.base_route_images}/events/images/${image?.name}`)
                         setValue('image_event', image.name)
                       }
                     }}
