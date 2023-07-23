@@ -7,6 +7,10 @@ const nextConfig = {
   images: {
     domains: ['localhost', "grahn-brunch.ddns.net"],
   },
+   serverRuntimeConfig: {
+    // Increase the timeout for getServerSideProps to 60 seconds.
+    getServerSidePropsTimeout: 60000,
+  },
 }
 
 module.exports = nextConfig
