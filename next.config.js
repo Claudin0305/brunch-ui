@@ -6,7 +6,7 @@ const nextConfig = {
     base_route_images: "http:localhost:8080/api"
   },
   images: {
-    domains: ["grahn-brunch.ddns.net", "localhost"],
+    domains: ["localhost"],
   },
 };
 
