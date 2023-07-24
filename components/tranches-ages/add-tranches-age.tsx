@@ -34,7 +34,7 @@ const AddTranchesAge: React.FC<Props> = ({data_props}) => {
 
    const updateTranchesAge = (data:Inputs) => {
     axios
-        .put(`${process.env.base_route}/tranche-ages/${data_props.id_devise}`, data)
+      .put(`${process.env.base_route}/tranche-ages/${data_props.id_tranche_age}`, data)
         .then((response) => {
           if (response.status === 200) {
 
