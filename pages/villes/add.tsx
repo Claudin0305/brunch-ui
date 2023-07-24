@@ -23,7 +23,7 @@ const Add:React.FC<Props> = ({data}) => {
 };
 export async function getServerSideProps() {
   // Fetch data from external API
-  const res = await fetch(`${process.env.base_route}/departements`)
+  const res = await fetch(`${process.env.base_route_get}/departements`)
   const data = await res.json()
 
   // Pass data to the page via props
