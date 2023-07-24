@@ -126,7 +126,7 @@ const Page: React.FC<Props> = ({ data }) => {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   // ...
-  const res = await fetch(`${process.env.base_route}/departements/${context?.params?.id}`)
+  const res = await fetch(`${process.env.base_route_get}/departements/${context?.params?.id}`)
   //    console.log(res)
   const data = await res.json()
 

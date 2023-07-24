@@ -28,7 +28,7 @@ const Ville: React.FC<Props> = ({ data }) => {
 export async function getServerSideProps() {
   // Fetch data from external API
   // const res = await fetch(`${process.env.base_route}/villes`)
-  const res = await fetch(`http://localhost:8080/api/villes`)
+  const res = await fetch(`${process.env.base_route_get}/villes`)
   const data = await res.json()
 
   // Pass data to the page via props
