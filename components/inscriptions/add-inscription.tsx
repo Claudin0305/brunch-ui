@@ -18,6 +18,7 @@ import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import ModalRecap from "@/components/core/modal-recap";
 import ModalAddVille from "../core/modal-add-ville";
+import ModalAddAffiliation from "../core/modal-add-affiliation";
 
 
 type Inputs = {
@@ -84,6 +85,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
   const { register, handleSubmit, watch, reset, setValue, getValues, control, formState: { errors } } = useForm<Inputs>();
   const [show, setShow] = useState<boolean>(false);
   const [showModalVille, setShowModalVille] = useState<boolean>(false);
+  const [showModalAffiliation, setShowModalAffiliation] = useState<boolean>(false);
   const router = useRouter()
   const [isSubmit, setIsSubmit] = useState<boolean>(false);
   const [optionsCivilite, setOptionsCivilite] = useState<option[] | any>();
@@ -94,6 +96,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
   const [optionsLocal, setOptionsLocal] = useState<option[] | any>();
   const [optionsTrancheAge, setOptionsTrancheAge] = useState<option[] | any>();
   const [capaciteTable, setCapaciteTable] = useState<number>(10)
+  const [selectedAffiliation, setSelectedAffiliation] = useState<option | any>();
   const [selectedVille, setSelectedVille] = useState<option | any>();
   const [selectedMode, setSelectedMode] = useState<option | any>();
   const [selectedPays, setSelectedPays] = useState<option | any>();
@@ -157,7 +160,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
 
     locaux?.forEach((e:any) => {
       tableOptions.push({
-        label: `Local-${e.id_local}`,
+        label: `Local-${e.id_local}(${e.pays}, ${e.ville})`,
         value: e.id_local,
         id_ville: e.idVille,
         data: e
@@ -177,13 +180,14 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
       }
       return 0;
     });
-    if (selectedVille !== null) {
-      const result = tableOptions?.filter(o => o.id_ville === selectedVille?.value)
-      setOptionsLocal(result);
-    } else {
-      setOptionsLocal([])
-    }
-  }, [selectedVille]);
+    setOptionsLocal(tableOptions);
+    // if (selectedVille !== null) {
+    //   const result = tableOptions?.filter(o => o.id_ville === selectedVille?.value)
+    //   setOptionsLocal(result);
+    // } else {
+    //   setOptionsLocal([])
+    // }
+  }, []);
   useEffect(() => {
     const tableOptions: option[] = [],
       tablePays: option[] = [],
@@ -261,7 +265,10 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
       })
     })
 
-    setOptionsAffiliation(tableOptions);
+    setOptionsAffiliation([{
+      label: "Autre Affiliation",
+      value: "0"
+    }, ...tableOptions]);
   }, [])
 
   useEffect(() => {
@@ -355,7 +362,9 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
 
 
   };
+// console.log(errors, errors!==null);
   const createInscription = (data: Inputs | FormData) => {
+    console.log('submit.....')
 
     axios.post(`${process.env.base_route}/participants`, data, {
           headers: {
@@ -395,6 +404,13 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
     }).catch(err => {
       setIsSubmit(false);
       console.log(err)
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Erreur lors de l\'inscription. Vérifiez vos données!',
+        confirmButtonColor: "#2563eb",
+        confirmButtonText: "Fermer",
+      })
       if (err.response.status === 400) {
         setResponseError(err.response.data);
         // console.log(responseError)
@@ -447,7 +463,7 @@ if(selectModePaiement !== null){
     }
 
   };
-  console.log(errors)
+
   const steps = [
     {
       label: 'Informations personnelles',
@@ -748,6 +764,10 @@ if(selectModePaiement !== null){
     {
       label: 'Mode de participation',
       description: <div className="flex flex-col md:grid md:grid-cols-3 gap-8">
+        {JSON.stringify(errors) !== '{}' && <div className="md:col-span-3 col-span-1 text-center -mt-4 flex justify-center">
+          <Error text="Erreur lors de la soumission. Vérifiez vos données!"/>
+          </div>}
+
         <input type="hidden" name=""/>
         <div className="flex-col flex md:-mt-4 z-10">
             <label
@@ -774,12 +794,22 @@ if(selectModePaiement !== null){
                     "Choisir affiliation..."
                   }
                   isClearable
+                  options={optionsAffiliation}
+                  value={selectedAffiliation}
+                  onChange={e => {
+                    if (e?.value == "0") {
+                      setShowModalAffiliation(!showModalAffiliation)
+                    } else {
+                      setSelectedAffiliation(e)
+                      setValue('id_affiliation', e)
+
+                    }
+                  }}
                   // value={selectLocal}
                   // onChange={e => {
                   //   setValue('id_affiliation', e);
                   //   setSelectLocal(e)
                   // }}
-                  options={optionsAffiliation}
                 />
               )}
             />{" "}
@@ -822,7 +852,7 @@ if(selectModePaiement !== null){
 
 
 
-        {selectedVille !== null && selectedMode && selectedMode.value === "PRESENTIEL" &&
+        {selectedMode && selectedMode.value === "PRESENTIEL" &&
           <div className="flex-col flex md:-mt-4 z-10">
             <label
               className="mb-2"
@@ -1093,6 +1123,11 @@ if(selectModePaiement !== null){
 
       </form>
       <ModalRecap show={show} setShow={setShow} data={responseData}/>
+      <ModalAddAffiliation
+        show={showModalAffiliation}
+        setShow={setShowModalAffiliation}
+        setSelectedAffiliation={setSelectedAffiliation}
+      />
       <ModalAddVille
       show={showModalVille}
       setShow={setShowModalVille}

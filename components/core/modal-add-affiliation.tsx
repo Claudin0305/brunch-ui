@@ -9,20 +9,19 @@ import axios from 'axios';
 type Props = {
     show: boolean;
     setShow: any;
-    selectedDept: any;
-    setSelectedVille: any;
+    setSelectedAffiliation: any;
 
 }
 type Inputs = {
-    libelle: string;
+    nom_affiliation: string;
 };
-const ModalAddVille: React.FC<Props> = ({ show, setShow, selectedDept, setSelectedVille }) => {
- const { register, handleSubmit, watch, reset, setValue, control, formState: { errors } } = useForm<Inputs>();
+const ModalAddAffiliation: React.FC<Props> = ({ show, setShow, setSelectedAffiliation }) => {
+    const { register, handleSubmit, watch, reset, setValue, control, formState: { errors } } = useForm<Inputs>();
     const [isSubmit, setIsSubmit] = useState<boolean>(false);
     const [responseError, setResponseError] = useState<any>(null);
-    const createVille = (data: Inputs | FormData) => {
+    const createAffiliation = (data: Inputs | FormData) => {
 
-        axios.post(`${process.env.base_route}/villes`, data).then(response => {
+        axios.post(`${process.env.base_route}/affiliations`, data).then(response => {
             console.log(response);
             if (response.status === 201) {
                 Swal.fire({
@@ -38,9 +37,9 @@ const ModalAddVille: React.FC<Props> = ({ show, setShow, selectedDept, setSelect
                 })
                 setIsSubmit(false);
                 reset();
-                setSelectedVille({
-                    label: response.data.libelle,
-                    value:response.data.id_ville
+                setSelectedAffiliation({
+                    label: response.data.nom_affiliation,
+                    value: response.data.affiliationId
                 })
                 setShow(!show);
             }
@@ -59,10 +58,7 @@ const ModalAddVille: React.FC<Props> = ({ show, setShow, selectedDept, setSelect
         // console.log(data)
 
         setIsSubmit(true);
-        const formData = new FormData();
-        formData.append('libelle', data.libelle);
-        formData.append('id_departement', selectedDept?.value)
-            createVille(formData);
+        createAffiliation(data);
 
 
     };
@@ -81,12 +77,12 @@ const ModalAddVille: React.FC<Props> = ({ show, setShow, selectedDept, setSelect
                                 {" "}
                                 {/*header*/}
                                 <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
-                                    <h3 className="text-2xl text-blue-500 text-center">Ajouter ville </h3>
+                                    <h3 className="text-2xl text-blue-500 text-center">Ajouter affiliation </h3>
 
                                     <button
-                                    onClick={e=>{
-                                        setShow(!show)
-                                    }}
+                                        onClick={e => {
+                                            setShow(!show)
+                                        }}
                                         type="button"
                                         className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="staticModal">
                                         <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
@@ -99,21 +95,19 @@ const ModalAddVille: React.FC<Props> = ({ show, setShow, selectedDept, setSelect
                                 <div className="relative p-6 flex-auto">
                                     <form onSubmit={handleSubmit(onSubmit)} className="center">
                                         {/* register your input into the hook by invoking the "register" function */}
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                            <div className="block">
+                                        <div className="block">
 
-                                                <TextField
-                                                    required
-                                                    autoComplete="given-name"
-                                                    fullWidth
-                                                    id="libelle"
-                                                    size="small"
-                                                    label="Libelle ville"
-                                                    {...register("libelle", { required: true })}
-                                                />
-                                                {responseError !== null && <Error text={responseError?.libelle} />}
-                                            </div>
-
+                                            <TextField
+                                                required
+                                                autoComplete="given-name"
+                                                fullWidth
+                                                size="small"
+                                                id="nom_affiliation"
+                                                label="Nom affiliation"
+                                                {...register("nom_affiliation", { required: 'Ce champ est obligatoire' })}
+                                            />
+                                            {responseError !== null && <Error text={responseError?.nom_affiliation} />}
+                                            {errors?.nom_affiliation && <Error text={errors.nom_affiliation.message} />}
                                         </div>
                                         <div className="flex justify-end flex-col mt-8 md:flex-row gap-8 mb-8">
                                             <Button
@@ -146,4 +140,4 @@ const ModalAddVille: React.FC<Props> = ({ show, setShow, selectedDept, setSelect
     );
 }
 
-export default ModalAddVille;
+export default ModalAddAffiliation;
