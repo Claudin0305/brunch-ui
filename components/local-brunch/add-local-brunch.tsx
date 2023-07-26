@@ -8,6 +8,7 @@ import Error from "@/components/core/error";
 import axios from 'axios';
 import { useRouter } from 'next/router'
 import Select from 'react-select';
+import Star from "../core/star";
 
 type option = {
   label: String;
@@ -244,7 +245,7 @@ const AddLocalBrunch: React.FC<Props> = ({ data_props, pays, events, devises }) 
               htmlFor={`id_event`}
             >
               {" "}
-              Evénement*{" "}
+              Evénement<Star/>{" "}
             </label>
             <Controller
               name={`id_event`}
@@ -272,7 +273,7 @@ const AddLocalBrunch: React.FC<Props> = ({ data_props, pays, events, devises }) 
               htmlFor={`id_ville`}
             >
               {" "}
-              Ville*{" "}
+              Ville<Star/>{" "}
             </label>
             <Controller
               name={`id_ville`}
@@ -429,7 +430,7 @@ const AddLocalBrunch: React.FC<Props> = ({ data_props, pays, events, devises }) 
               htmlFor={`id_devise`}
             >
               {" "}
-              Devise*{" "}
+              Devise<Star/>{" "}
             </label>
             <Controller
               name={`id_devise`}

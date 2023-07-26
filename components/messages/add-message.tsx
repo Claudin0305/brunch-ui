@@ -10,6 +10,7 @@ import { useRouter } from 'next/router'
 import Select from 'react-select';
 import dynamic from "next/dynamic";
 import 'react-quill/dist/quill.snow.css';
+import Star from "../core/star";
 const QuillNoSSRWrapper = dynamic(import('react-quill'), {
   ssr: false,
   loading: () => <p>chargement ...</p>,
@@ -223,7 +224,7 @@ const AddMessage: React.FC<Props> = ({data_props}) => {
                             htmlFor={`message_type`}
                         >
                             {" "}
-                            Type de message*{" "}
+                            Type de message<Star/>{" "}
                         </label>
                         <Controller
                             name={`message_type`}

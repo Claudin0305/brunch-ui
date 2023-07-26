@@ -16,3 +16,7 @@ background-size:cover;
         height: 70vh;
     }
 }
+
+.MuiFormLabel-asterisk {
+    color: red;
+}

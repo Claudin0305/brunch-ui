@@ -8,6 +8,7 @@ import Error from "@/components/core/error";
 import axios from 'axios';
 import { useRouter } from 'next/router'
 import Select from 'react-select';
+import Star from "../core/star";
 
 
 type option = {
@@ -312,7 +313,7 @@ const AddUtilisateur: React.FC<Props> = ({data_props}) => {
                 htmlFor={`role`}
               >
                 {" "}
-                Role*{" "}
+                Role<Star/>{" "}
               </label>
               <Controller
                 name={`role`}

@@ -12,6 +12,7 @@ import 'react-quill/dist/quill.snow.css';
 import Select from 'react-select';
 import Image from "next/image"
 import dynamic from "next/dynamic";
+import Star from "../core/star";
 const QuillNoSSRWrapper = dynamic(import('react-quill'), {
   ssr: false,
   loading: () => <p>chargement ...</p>,
@@ -372,7 +373,7 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
                   htmlFor={`format_event`}
                 >
                   {" "}
-                  Format événement*{" "}
+                  Format événement<Star/>{" "}
                 </label>
                 <Controller
                   name={`format_event`}
@@ -401,7 +402,7 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
                   htmlFor={`event_type`}
                 >
                   {" "}
-                  Type événement*{" "}
+                  Type événement<Star/>{" "}
                 </label>
                 <Controller
                   name={`event_type`}

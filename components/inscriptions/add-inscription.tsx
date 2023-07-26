@@ -11,14 +11,14 @@ import axios from 'axios';
 import { useRouter } from 'next/router'
 import Select from 'react-select';
 import FormStepper from "./form-stepper";
-
+import Star from "@/components/core/star";
 import { useTheme } from '@mui/material/styles';
 import MobileStepper from '@mui/material/MobileStepper';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import ModalRecap from "@/components/core/modal-recap";
-import ModalAddVille from "../core/modal-add-ville";
-import ModalAddAffiliation from "../core/modal-add-affiliation";
+import ModalAddVille from "@/components/core/modal-add-ville";
+import ModalAddAffiliation from "@/components/core/modal-add-affiliation";
 
 
 type Inputs = {
@@ -474,7 +474,7 @@ if(selectModePaiement !== null){
             htmlFor={`id_civilite`}
           >
             {" "}
-            Civilité*{" "}
+            Civilité<Star/>{" "}
           </label>
           <Controller
             name={`id_civilite`}
@@ -637,7 +637,7 @@ if(selectModePaiement !== null){
             htmlFor={`id_pays`}
           >
             {" "}
-            Pays*{" "}
+            Pays<Star/>{" "}
           </label>
           <Controller
             name={`id_pays`}
@@ -681,7 +681,7 @@ if(selectModePaiement !== null){
             htmlFor={`id_departement`}
           >
             {" "}
-            Département*{" "}
+            Département<Star/>{" "}
           </label>
           <Controller
             name={`id_departement`}
@@ -727,7 +727,7 @@ if(selectModePaiement !== null){
             htmlFor={`id_ville`}
           >
             {" "}
-            Ville*{" "}
+            Ville<Star/>{" "}
           </label>
           <Controller
             name={`id_ville`}
@@ -822,7 +822,7 @@ if(selectModePaiement !== null){
             htmlFor={`mode_participation`}
           >
             {" "}
-            Mode participation*{" "}
+            Mode participation<Star/>{" "}
           </label>
           <Controller
             name={`mode_participation`}
@@ -859,7 +859,7 @@ if(selectModePaiement !== null){
               htmlFor={`id_local`}
             >
               {" "}
-              Local*{" "}
+              Local<Star/>{" "}
             </label>
             <Controller
               name={`id_local`}
@@ -900,7 +900,7 @@ if(selectModePaiement !== null){
               htmlFor={`mode_paiement`}
             >
               {" "}
-              Mode paiement*{" "}
+              Mode paiement<Star/>{" "}
             </label>
             <Controller
               name={`mode_paiement`}

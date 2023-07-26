@@ -8,6 +8,7 @@ import Error from "@/components/core/error";
 import axios from 'axios';
 import { useRouter } from 'next/router'
 import Select from 'react-select';
+import Star from "@/components/core/star";
 
 type option = {
     label: string;
@@ -178,7 +179,7 @@ const AddDepartement: React.FC<Props> = ({ data_props, pays }) => {
                             htmlFor={`id_pays`}
                         >
                             {" "}
-                            Pays*{" "}
+                            Pays<Star/>{" "}
                         </label>
                         <Controller
                             name={`id_pays`}
