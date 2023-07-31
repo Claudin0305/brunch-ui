@@ -42,9 +42,9 @@ const TableLocalBrunch: React.FC<Props> = ({ data }) => {
   };
    const columns: GridColDef[] = [
     {
-      field: "local_brunch",
-      headerName: "Local",
-      renderCell:value=>`Local-${value.row.id_local}`,
+      field: "libelle",
+      headerName: "Libelle",
+      // renderCell:value=>`Local-${value.row.id_local}`,
       flex:1,
     },
     {

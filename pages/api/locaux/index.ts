@@ -5,10 +5,22 @@ import { getCookie } from 'cookies-next';
 export default async function handler( req: NextApiRequest,
   res: NextApiResponse) {
     const cookie = getCookie('token', {req, res})
+    let formData = new FormData()
+    formData.append('id_devise', req.body.id_devise)
+    formData.append('id_ville', req.body.id_ville)
+    formData.append('libelle', req.body.libelle)
+    formData.append('id_event', req.body.id_event)
+    formData.append('capacite_totale', ""+req.body.capacite_totale)
+    formData.append('capacite_table', ""+req.body.capacite_table)
+    formData.append('montant_participation', ""+req.body.montant_participation)
+    formData.append('email_responsable', req.body.email_responsable)
+    formData.append('seuil_alerte', ""+req.body.seuil_alerte)
+    formData.append('adresse_no_rue', req.body.adresse_no_rue)
+    formData.append('nb_reservation', "0")
 
 if(req.method === 'POST'){
     axios
-          .post(`${process.env.base_route}/locaux`, req.body, {
+          .post(`${process.env.base_route}/locaux`, formData, {
     headers: {
           withCredentials: true,
           Cookie: cookie

@@ -20,12 +20,13 @@ type Inputs = {
   seuil_alerte: number;
   montant_participation: number;
   adresse_no_rue: string;
+  libelle: string;
   id_devise: number | option | any;
   id_ville: number | option | any;
   id_event: number | option | any;
   capacite_totale: number;
   capacite_table: number;
-  nb_reservation: number;
+  nb_reservation: number | any;
 };
 type Props = {
   data_props: any | null;
@@ -50,6 +51,7 @@ const AddLocalBrunch: React.FC<Props> = ({ data_props, pays, events, devises }) 
     if (data_props !== null) {
       setValue('email_responsable', data_props.email_responsable);
       setValue('capacite_totale', data_props.capacite_totale);
+      setValue('libelle', data_props.libelle);
       setValue('capacite_table', data_props.capacite_table);
       setValue('adresse_no_rue', data_props.adresse_no_rue);
     setValue('nb_reservation', data_props.nb_reservation)
@@ -208,25 +210,22 @@ const AddLocalBrunch: React.FC<Props> = ({ data_props, pays, events, devises }) 
   };
   const onSubmit: SubmitHandler<Inputs> = data => {
     // console.log(data)
-    let formData = new FormData()
-    formData.append('id_devise', data.id_devise?.value)
-    formData.append('id_ville', data.id_ville?.value)
-    formData.append('id_event', data.id_event?.value)
-    formData.append('capacite_totale', ""+data.capacite_totale)
-    formData.append('capacite_table', ""+data.capacite_table)
-    formData.append('montant_participation', ""+data.montant_participation)
-    formData.append('email_responsable', data.email_responsable)
-    formData.append('seuil_alerte', ""+data.seuil_alerte)
-    formData.append('adresse_no_rue', data.adresse_no_rue)
+    data.id_devise = data.id_devise?.value
+    data.id_ville = data.id_ville?.value
+    data.id_event = data.id_event?.value
+    console.log(data);
+
 
 
     setIsSubmit(true);
     if (data_props === null) {
-      formData.append('nb_reservation', "0")
-      createLocalBrunch(formData);
+
+      data.nb_reservation = "0"
+      createLocalBrunch(data);
     } else {
-      formData.append('nb_reservation', ""+data_props.nb_reservation);
-      updateLocalBrunch(formData)
+      data.nb_reservation = ""+data_props.nb_reservation;
+      // formData.append('nb_reservation', ""+data_props.nb_reservation);
+      updateLocalBrunch(data)
     }
 
   };
@@ -239,6 +238,23 @@ const AddLocalBrunch: React.FC<Props> = ({ data_props, pays, events, devises }) 
       <form onSubmit={handleSubmit(onSubmit)} className="center">
         {/* register your input into the hook by invoking the "register" function */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="block">
+
+            <TextField
+              required
+              autoComplete="given-name"
+              fullWidth
+              id="libelle"
+              inputProps={{ min }}
+              size="small"
+              type="text"
+              label="Libelle"
+              {...register("libelle", { required: "Ce champ est obligatoire" })}
+              className="md:mt-3"
+            />
+            {/* {responseError !== null && <Error text={responseError?.libelle}/>} */}
+            {errors?.libelle && <Error text={errors.libelle.message} />}
+          </div>
           <div className="flex-col flex md:-mt-4 z-50">
             <label
               className="mb-2"

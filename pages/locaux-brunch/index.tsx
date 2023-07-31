@@ -10,7 +10,6 @@ type Props = {
 }
 
 const LocalBrunch: React.FC<Props> = ({ data }) => {
-  console.log(data)
   return (
     <Layout>
       <Head>

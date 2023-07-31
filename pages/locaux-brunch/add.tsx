@@ -51,9 +51,9 @@ const { req, res } = context;
           })
     ])
     // const response = await axios.get(`http://localhost:8080/api/events`);
-    const events =eventRes.data;
-    const devises = deviseRes.data;
-    const pays = paysRes.data;
+    const events =eventResp.data;
+    const devises = deviseResp.data;
+    const pays = paysResp.data;
     const data = {devises:devises, pays:pays, events: events}
 
     // Return the data as props
