@@ -21,7 +21,7 @@ const ModalAddAffiliation: React.FC<Props> = ({ show, setShow, setSelectedAffili
     const [responseError, setResponseError] = useState<any>(null);
     const createAffiliation = (data: Inputs | FormData) => {
 
-        axios.post(`${process.env.base_route}/affiliations`, data).then(response => {
+        axios.post(`${process.env.base_route}/affiliations/from-client`, data).then(response => {
             console.log(response);
             if (response.status === 201) {
                 Swal.fire({

@@ -5,8 +5,9 @@ import Button from "@mui/material/Button";
 import Swal from 'sweetalert2'
 import CircularIndeterminate from "@/components/core/circular-indeterminate";
 import Error from "@/components/core/error";
-import axios from 'axios';
 import { useRouter } from 'next/router'
+import axios from 'axios';
+import { getCookie } from 'cookies-next';
 
 
 type Inputs = {
@@ -18,6 +19,7 @@ data_props: any | null;
 
 const AddCivilite: React.FC<Props> = ({data_props}) => {
   const router = useRouter()
+  const cookie = getCookie('token');
   const { register, handleSubmit, watch, reset, setValue, control, formState: { errors } } = useForm<Inputs>();
   const [isSubmit, setIsSubmit] = useState<boolean>(false);
 
@@ -33,11 +35,13 @@ const AddCivilite: React.FC<Props> = ({data_props}) => {
 
 
    const updateCivilite = (data:Inputs) => {
-    axios
-        .put(`${process.env.base_route}/civilites/${data_props.id_civilite}`, data)
-        .then((response) => {
-          if (response.status === 200) {
-
+    const apiClient = axios.create({
+  baseURL: `${process.env.base_route}`,
+  // crossDomain: true // Important: This enables sending cookies with the request
+});
+axios.put(`/api/civilites/${data_props.id_civilite}`, data)
+.then((response)=>{
+   if (response.status === 200) {
             setIsSubmit(false);
             Swal.fire({
           // position: 'top-end',
@@ -50,20 +54,21 @@ const AddCivilite: React.FC<Props> = ({data_props}) => {
         router.push('/civilites')
         reset();
           }
-
-        })
+})
         .catch((err) => {
-          if (err.response.status === 400) {
+          console.log(err)
+          if (err?.response?.status === 400) {
             setResponseError(err.response.data);
           }
           setIsSubmit(false);
         });
 
 
+
    };
    const createCivilite =  (data:Inputs) => {
 
-  axios.post(`${process.env.base_route}/civilites`, data).then(response=>{
+  axios.post(`/api/civilites`, data).then(response=>{
 console.log(response);
 if(response.status === 201){
         Swal.fire({

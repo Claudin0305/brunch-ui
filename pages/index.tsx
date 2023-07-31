@@ -8,6 +8,7 @@ import Link from 'next/link'
 import { Button } from '@mui/material'
 import HowToRegIcon from '@mui/icons-material/HowToReg';
 import axios from 'axios';
+import EditIcon from '@mui/icons-material/Edit';
 const inter = Inter({ subsets: ['latin'] })
 type Props = {
   data: any;
@@ -39,10 +40,15 @@ const Home: React.FC<Props> = ({ data }) => {
             <div className='w-2/3 p-4'>
               <div className='mb-4 md:mb-8' dangerouslySetInnerHTML={{ __html: data?.[0].text_descriptif }}>
               </div>
-              <div className='flex items-start'>
+              <div className='flex items-start gap-x-4'>
                 <Link href={`/inscriptions/add/${data?.[0].id_event}`}>
                   <Button className="bg-blue-500 capitalize" variant="contained" startIcon={<HowToRegIcon />}>
                     S&apos;inscrire
+                  </Button>
+                </Link>
+                <Link href={`/inscriptions/modifier`}>
+                  <Button className="bg-blue-500 capitalize" variant="contained" startIcon={<EditIcon />}>
+                    Modifier
                   </Button>
                 </Link>
               </div>

@@ -1,4 +1,6 @@
+"use server"
 import React, { useState, useEffect } from "react";
+import { setCookie } from 'cookies-next';
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -6,8 +8,7 @@ import Swal from 'sweetalert2'
 import CircularIndeterminate from "@/components/core/circular-indeterminate";
 import axios from 'axios'
 import { useRouter } from 'next/router'
-
-
+import Error from "@/components/core/error";
 
 type Inputs = {
 
@@ -20,32 +21,38 @@ const Login: React.FC = () => {
   const router = useRouter();
   const { register, handleSubmit, watch, reset, setValue, control, formState: { errors } } = useForm<Inputs>();
   const [isSubmit, setIsSubmit] = useState<boolean>(false);
+  const [errorLogin, setErrorLogin] = useState<boolean>(false)
 
   const [responseError, setResponseError] = useState(null);
 
 
 
   const login = (data: Inputs) => {
-    axios.post(`${process.env.base_route}/users/login`, data).then(response => {
+    axios.post(`${process.env.base_route}/auth/signin`, data).then(response => {
       console.log(response);
-      if (response.status === 201) {
-        Swal.fire({
-          // position: 'top-end',
-          icon: 'success',
-          title: 'Enregistrement effectué!',
-          // showConfirmButton: false,
-          // timer: 1500
-          // buttonColor:"#000000",
-          // buttons:[""]
-          confirmButtonColor: "#0ea5e9",
-          confirmButtonText: "Fermer",
-        })
+      if (response.status === 200) {
+        // Swal.fire({
+        //   // position: 'top-end',
+        //   icon: 'success',
+        //   title: 'Enregistrement effectué!',
+        //   // showConfirmButton: false,
+        //   // timer: 1500
+        //   // buttonColor:"#000000",
+        //   // buttons:[""]
+        //   confirmButtonColor: "#0ea5e9",
+        //   confirmButtonText: "Fermer",
+        // })
+        setCookie('user', JSON.stringify(response.data))
+        setCookie('token', response.data.token)
+        // cookies.set('token', response.data.token)
         setIsSubmit(false);
+        router.push("/dashboard");
         reset();
       }
     }).catch(err => {
       setIsSubmit(false);
       console.log(err)
+      setErrorLogin(!errorLogin)
       if (err?.response?.status === 400) {
         setResponseError(err.response.data);
         // console.log(responseError)
@@ -78,6 +85,9 @@ const Login: React.FC = () => {
                   Connexion
               </h1>
               <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit(onSubmit)}>
+                {errorLogin && <div className="flex items-center justify-center">
+                  <Error text="Nom utilisateur ou mot de passe invalide!"/>
+                  </div>}
                   <div>
                       <TextField
             required
@@ -97,6 +107,7 @@ const Login: React.FC = () => {
             fullWidth
               size="small"
             id="password"
+            type="password"
             label="Mot de passe"
             {...register("password", { required: true })}
           />
@@ -111,21 +122,6 @@ const Login: React.FC = () => {
             {isSubmit && <CircularIndeterminate />} Connexion
           </Button>
                   </div>
-                  {/* <div className="flex items-center justify-between">
-                      <div className="flex items-start">
-                          <div className="flex items-center h-5">
-
-                          </div>
-                          <div className="ml-3 text-sm">
-                            <label htmlFor="remember" className="text-gray-500 dark:text-gray-300">Remember me</label>
-                          </div>
-                      </div>
-                      <a href="#" className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">Forgot password?</a>
-                  </div> */}
-                  {/* <button  type="submit" className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"> {isSubmit && <CircularIndeterminate />}Sign in</button>
-                  <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                      Don’t have an account yet? <a href="#" className="font-medium text-primary-600 hover:underline dark:text-primary-500">Sign up</a>
-                  </p> */}
               </form>
           </div>
       </div>

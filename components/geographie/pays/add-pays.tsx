@@ -36,7 +36,7 @@ const AddPays: React.FC<Props> = ({data_props}) => {
 
    const updatePays = (data:Inputs) => {
     axios
-        .put(`${process.env.base_route}/pays/${data_props.id_pays}`, data)
+        .put(`/api/pays/${data_props.id_pays}`, data)
         .then((response) => {
           if (response.status === 200) {
 
@@ -65,7 +65,7 @@ const AddPays: React.FC<Props> = ({data_props}) => {
    };
    const createPays =  (data:Inputs) => {
 
-  axios.post(`${process.env.base_route}/pays`, data).then(response=>{
+  axios.post(`/api/pays`, data).then(response=>{
 console.log(response);
 if(response.status === 201){
         Swal.fire({

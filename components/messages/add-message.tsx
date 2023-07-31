@@ -107,11 +107,7 @@ const AddMessage: React.FC<Props> = ({data_props}) => {
 
     const updateMessage = (data: Inputs | FormData) => {
         axios
-            .put(`${process.env.base_route}/messages/${data_props.id}`, data, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    })
+            .put(`/api/messages/${data_props.id}`, data)
             .then((response) => {
                 if (response.status === 200) {
 
@@ -142,11 +138,7 @@ const AddMessage: React.FC<Props> = ({data_props}) => {
     };
     const createMessage = (data: Inputs |FormData) => {
 
-        axios.post(`${process.env.base_route}/messages`, data, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    }).then(response => {
+        axios.post(`/api/messages`, data).then(response => {
             if (response.status === 201) {
                 Swal.fire({
                     // position: 'top-end',
@@ -181,16 +173,12 @@ const AddMessage: React.FC<Props> = ({data_props}) => {
 
         setIsSubmit(true);
         data.message_type = data.message_type?.value
-        const formData = new FormData();
-        formData.append('libelleTexte', data.libelle_texte);
-        formData.append('messageType', data.message_type)
-        formData.append('subject', data.subject)
 
     setValueText(data.libelle_texte)
         if (data_props === null) {
-            createMessage(formData);
+            createMessage(data);
         } else {
-            updateMessage(formData)
+            updateMessage(data)
         }
 
     };

@@ -34,7 +34,7 @@ const AddAffiliation: React.FC<Props> = ({data_props}) => {
 
    const updateAffiliation = (data:Inputs) => {
     axios
-        .put(`${process.env.base_route}/affiliations/${data_props.affiliationId}`, data)
+        .put(`/api/affiliations/${data_props.affiliationId}`, data)
         .then((response) => {
           if (response.status === 200) {
 
@@ -63,7 +63,7 @@ const AddAffiliation: React.FC<Props> = ({data_props}) => {
    };
    const createAffiliation =  (data:Inputs) => {
 
-  axios.post(`${process.env.base_route}/affiliations`, data).then(response=>{
+  axios.post(`/api/affiliations`, data).then(response=>{
 console.log(response);
 if(response.status === 201){
         Swal.fire({

@@ -4,11 +4,12 @@ import React from "react";
 import LocalBrunchLayout from "@/components/local-brunch/local-brunch-layout";
 // import AddP
 import AddLocalBrunch from "@/components/local-brunch/add-local-brunch";
+import axios from 'axios';
+import { getCookie } from 'cookies-next';
 type Props = {
   data:any;
 }
 const Add:React.FC<Props> = ({data}) => {
-  console.log(data)
   return (
     <Layout>
       <Head>
@@ -22,21 +23,56 @@ const Add:React.FC<Props> = ({data}) => {
     </Layout>
   );
 };
-export async function getServerSideProps() {
-  // Fetch data from external API
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  // ...
+const { req, res } = context;
+  const cookie = getCookie("token", {req, res})
 
-  const [eventResp, deviseResp, paysResp] = await Promise.all([
-    fetch(`${process.env.base_route_get}/events`),
-    fetch(`${process.env.base_route_get}/devises`),
-    fetch(`${process.env.base_route_get}/pays`),
-  ]);
-  const [events, devises, pays] = await Promise.all([
-    eventResp.json(),
-    deviseResp.json(),
-    paysResp.json()
-  ]);
+  try {
+    // Fetch data from an API or perform other async operations
+    const [eventResp, deviseResp, paysResp] = await Promise.all([
+      axios.get(`${process.env.base_route_get}/events`, {
+            headers: {
+               withCredentials: true,
+        Cookie: cookie
+            }
+          }),
+      axios.get(`${process.env.base_route_get}/devises`, {
+            headers: {
+               withCredentials: true,
+        Cookie: cookie
+            }
+          }),
+          axios.get(`${process.env.base_route_get}/pays`, {
+            headers: {
+               withCredentials: true,
+        Cookie: cookie
+            }
+          })
+    ])
+    // const response = await axios.get(`http://localhost:8080/api/events`);
+    const events =eventRes.data;
+    const devises = deviseRes.data;
+    const pays = paysRes.data;
+    const data = {devises:devises, pays:pays, events: events}
 
-  const data = {devises:devises, pays:pays, events: events}
-  return { props: { data } }
+    // Return the data as props
+    return {
+      props: {
+        data,
+      },
+    };
+  } catch (error) {
+    // Handle the error
+    console.error('Error fetching data:', error);
+    // You can return an error prop to display a custom error message on the page
+    const data:any[] = []
+    return {
+      props: {
+        data
+      }
+    };
+  }
 }
+
 export default Add;

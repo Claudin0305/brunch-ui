@@ -70,7 +70,7 @@ const AddDepartement: React.FC<Props> = ({ data_props, pays }) => {
 
     const updateDepartement = (data: Inputs) => {
         axios
-            .put(`${process.env.base_route}/departements/${data.id_pays}/${data_props.id_departement}`, data)
+            .put(`/api/departements/${data.id_pays}/${data_props.id_departement}`, data)
             .then((response) => {
                 if (response.status === 200) {
 
@@ -99,7 +99,7 @@ const AddDepartement: React.FC<Props> = ({ data_props, pays }) => {
     };
     const createDepartement = (data: Inputs) => {
 
-        axios.post(`${process.env.base_route}/departements/${data.id_pays}`, data).then(response => {
+        axios.post(`/api/departements/${data.id_pays}`, data).then(response => {
             console.log(response);
             if (response.status === 201) {
                 Swal.fire({
@@ -133,6 +133,9 @@ const AddDepartement: React.FC<Props> = ({ data_props, pays }) => {
 
         setIsSubmit(true);
         data.id_pays = data.id_pays?.value
+        const formData = new FormData();
+        formData.append('libelle', data.libelle);
+        formData.append('id_pays', data.id_pays)
         if (data_props === null) {
             createDepartement(data);
         } else {

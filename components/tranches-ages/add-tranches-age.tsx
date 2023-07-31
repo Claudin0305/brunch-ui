@@ -34,7 +34,7 @@ const AddTranchesAge: React.FC<Props> = ({data_props}) => {
 
    const updateTranchesAge = (data:Inputs) => {
     axios
-      .put(`${process.env.base_route}/tranche-ages/${data_props.id_tranche_age}`, data)
+      .put(`/api/tranche-ages/${data_props.id_tranche_age}`, data)
         .then((response) => {
           if (response.status === 200) {
 
@@ -63,7 +63,7 @@ const AddTranchesAge: React.FC<Props> = ({data_props}) => {
    };
    const createTranchesAge =  (data:Inputs) => {
 
-  axios.post(`${process.env.base_route}/tranche-ages`, data).then(response=>{
+  axios.post(`/api/tranche-ages`, data).then(response=>{
 console.log(response);
 if(response.status === 201){
         Swal.fire({

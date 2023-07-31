@@ -94,7 +94,7 @@ const AddUtilisateur: React.FC<Props> = ({data_props}) => {
 
     const updateUtilisateur = (data: Inputs) => {
         axios
-            .put(`${process.env.base_route}/auth/signup/${data_props.id}`, data)
+            .put(`/api/users/${data_props.id}`, data)
             .then((response) => {
                 if (response.status === 200) {
 
@@ -125,7 +125,7 @@ const AddUtilisateur: React.FC<Props> = ({data_props}) => {
     };
     const createUtilisateur = (data: Inputs |FormData) => {
 
-      axios.post(`${process.env.base_route}/auth/signup`, data).then(response => {
+      axios.post(`/api/users`, data).then(response => {
             if (response.status === 200) {
                 Swal.fire({
                     // position: 'top-end',

@@ -4,6 +4,8 @@ import React from "react";
 import DepartementLayout from "@/components/geographie/departements/departement-layout";
 // import AddP
 import AddDepartement from "@/components/geographie/departements/add-departement";
+import axios from 'axios';
+import { getCookie } from 'cookies-next';
 type Props = {
   data:any;
 }
@@ -21,12 +23,40 @@ const Add:React.FC<Props> = ({data}) => {
     </Layout>
   );
 };
-export async function getServerSideProps() {
+export async function getServerSideProps(context: any) {
   // Fetch data from external API
-  const res = await fetch(`${process.env.base_route_get}/pays`)
-  const data = await res.json()
+  // const cookies = new Cookies(req, res);
+  const { req, res } = context;
+  const cookie = getCookie("token", { req, res })
 
-  // Pass data to the page via props
-  return { props: { data } }
+  try {
+    // Fetch data from an API or perform other async operations
+    const response = await axios.get(`${process.env.base_route_get}/pays`, {
+      headers: {
+        withCredentials: true,
+        Cookie: cookie
+      }
+    });
+    // const response = await axios.get(`http://localhost:8080/api/events`);
+    const data = response.data;
+
+    // Return the data as props
+    return {
+      props: {
+        data,
+      },
+    };
+  } catch (error) {
+    // Handle the error
+    console.error('Error fetching data:', error);
+    // You can return an error prop to display a custom error message on the page
+    const data: any[] = []
+    return {
+      props: {
+        data
+      }
+    };
+  }
 }
+
 export default Add;

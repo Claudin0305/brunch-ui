@@ -28,7 +28,7 @@ type Inputs = {
   nom: string;
   prenom: string;
   affiliation: string;
-  mode_participation: string;
+  mode_participation: string | option;
   authorisation_liste: string;
   abonnement_newsletter: string;
   id_local: string | null | any;
@@ -116,21 +116,75 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
   useEffect(() => {
 
     if (data_props !== null) {
-      // setValue('email_responsable', data_props.email_responsable);
-      // setValue('capacite_totale', data_props.capacite_totale);
-      // setValue('capacite_table', data_props.capacite_table);
-      // setValue('adresse_no_rue', data_props.adresse_no_rue);
-      // setValue('montant_participation', data_props.montant_participation);
-      // setValue('seuil_alerte', data_props.seuil_alerte);
-      // const ville = optionsVille?.filter(v=> v.id_ville === data_props.id_ville)?.[0];
-      // setValue('id_ville', ville);
-      // const devise = optionsDevise?.filter(v=> v.id_devise === data_props.id_devise)?.[0];
-      // setValue('id_ville', devise);
-      // const civilite = optionsCivilite?.filter(v=> v.id_civilite === data_props.id_civilite)?.[0];
-      // setValue('id_civilite', civilite);
+      console.log(data_props);
+      setValue('nom', data_props.nom)
+      setValue('prenom', data_props.prenom)
+      setValue('email', data_props.email)
+      setValue('tel_participant', data_props.tel_participant)
+      setValue('authorisation_liste', data_props.authorisation_liste)
+      setValue('abonnement_newsletter', data_props.abonnement_newsletter)
+      setValue('email_confirmation', data_props.email)
+      const pays = optionsPays?.filter((o:any)=> o.label === data_props.nomPays)[0];
+      setValue('id_pays', pays);
+      setSelectedPays(pays)
+
+      const tableDept: option[] = [];
+      pays?.data.forEach((d: any) => {
+        tableDept.push({
+          label: d.libelle,
+          value: d.id_departement,
+          data: d.villes
+        })
+      })
+      setOptionsDepartement(sorter(tableDept));
+      const dept = optionsDepartement?.filter((o:any)=> o.value === data_props.ville.departementId)[0];
+      setValue('id_departement', dept);
+      setSelectedDepartement(dept)
+      const tableVille: option[] = [];
+      tableVille.push({
+        label: "Autre",
+        value: "0"
+      })
+      dept?.data.forEach((v: any) => {
+        tableVille.push({
+          label: v.libelle,
+          value: v.id_ville,
+        })
+      })
+      setOptionsVille(sorter(tableVille))
+      const ville = optionsVille?.filter((o:any)=> o.value === data_props.ville.id_ville)[0];
+      setValue('id_ville', ville);
+      setSelectedVille(ville)
+      const trAge = optionsTrancheAge?.filter((o: any) => o.value === data_props.idTrancheAge)[0];
+      setValue('id_tranche_age', trAge);
+      const civilite = optionsCivilite?.filter((o:any)=> o.value === data_props.idCivilite)[0];
+      setValue('id_civilite', civilite);
+      const aff = optionsAffiliation?.filter((o:any)=>o.value === data_props?.idAffiliation)[0]
+      setValue('id_affiliation', aff);
+      setSelectedAffiliation(aff)
+      const optionsMod: option[] = [
+        {
+          value: "PRESENTIEL",
+          label: "Présentiel"
+        },
+        {
+          value: "DISTANCIEL",
+          label: "Distanciel"
+        }
+      ]
+      const mod = optionsMod.filter((o:any)=> o.value === data_props.mode_participation)[0];
+      setValue('mode_participation', mod);
+      setSelectedMode(mod)
+      const loc = optionsLocal?.filter((o:any)=> o.value === data_props?.idLocal)[0];
+      setValue('id_local', loc);
+      setSelectLocal(loc);
+
+      const mod_p = mode_paiements.filter((o:any)=> o.value === data_props?.modePaiement)[0];
+      setValue('mode_paiement', mod_p);
+      setSelectModePaiement(mod_p);
 
     }
-  }, [])
+  }, [optionsPays])
 
   useEffect(() => {
     const tableOptions: option[] = [];
@@ -331,7 +385,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
 
   const updateInscription = (data: Inputs | FormData) => {
     axios
-      .put(`${process.env.base_route}/participants/${data_props.id_participant}`, data, {
+      .put(`${process.env.base_route}/participants/${data_props.username}`, data, {
           headers: {
             "Access-Control-Allow-Origin": "*",
           },
@@ -459,6 +513,7 @@ if(selectModePaiement !== null){
     if (data_props === null) {
       createInscription(formData);
     } else {
+      console.log(formData, data)
       updateInscription(formData)
     }
 

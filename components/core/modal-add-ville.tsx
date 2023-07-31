@@ -22,7 +22,7 @@ const ModalAddVille: React.FC<Props> = ({ show, setShow, selectedDept, setSelect
     const [responseError, setResponseError] = useState<any>(null);
     const createVille = (data: Inputs | FormData) => {
 
-        axios.post(`${process.env.base_route}/villes`, data).then(response => {
+        axios.post(`${process.env.base_route}/villes/from-client`, data).then(response => {
             console.log(response);
             if (response.status === 201) {
                 Swal.fire({

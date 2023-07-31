@@ -145,7 +145,7 @@ const AddLocalBrunch: React.FC<Props> = ({ data_props, pays, events, devises }) 
 
   const updateLocalBrunch = (data: Inputs | FormData) => {
     axios
-      .put(`${process.env.base_route}/locaux/${data_props.id_local}`, data)
+      .put(`/api/locaux/${data_props.id_local}`, data)
       .then((response) => {
         if (response.status === 200) {
 
@@ -174,7 +174,7 @@ const AddLocalBrunch: React.FC<Props> = ({ data_props, pays, events, devises }) 
   };
   const createLocalBrunch = (data: Inputs | FormData) => {
 
-    axios.post(`${process.env.base_route}/locaux`, data).then(response => {
+    axios.post(`/api/locaux`, data).then(response => {
       console.log(response);
       if (response.status === 201) {
         Swal.fire({

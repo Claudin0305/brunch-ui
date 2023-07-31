@@ -5,6 +5,7 @@ import { GetServerSideProps } from 'next'
 import DepartementLayout from "@/components/geographie/departements/departement-layout";
 import AddDepartement from "@/components/geographie/departements/add-departement";
 import axios from 'axios';
+import { getCookie } from 'cookies-next';
 type Props = {
   data: any;
 }
@@ -25,28 +26,50 @@ const Page: React.FC<Props> = ({ data }) => {
   );
 };
 
+
 export const getServerSideProps: GetServerSideProps = async (context) => {
-
-  const [deptsRes, paysRes] = await Promise.all([
-    fetch(`${process.env.base_route_get}/departements/${context?.params?.id}`),
-    fetch(`${process.env.base_route_get}/pays`)
-  ]);
-  const [dept, pays] = await Promise.all([
-    deptsRes.json(),
-    paysRes.json()
-  ]);
   // ...
-  // const res = await fetch(`${process.env.base_route}/departements/${context?.params?.id}`)
-  // //    console.log(res)
-  // const data = await res.json()
-  // const res_ = await fetch(`${process.env.base_route}/pays`)
-  // const data_ = await res_.json()
-  // console.log(data_)
+const { req, res } = context;
+  const cookie = getCookie("token", {req, res})
 
-  // Pass data to the page via props
-  const data = {...dept, pays: pays}
-  // console.log(data)
-  return { props: { data } }
+  try {
+    // Fetch data from an API or perform other async operations
+    const [deptsRes, paysRes] = await Promise.all([
+      axios.get(`${process.env.base_route_get}/departements/${context?.params?.id}`, {
+            headers: {
+               withCredentials: true,
+        Cookie: cookie
+            }
+          }),
+          axios.get(`${process.env.base_route_get}/pays`, {
+            headers: {
+               withCredentials: true,
+        Cookie: cookie
+            }
+          })
+    ])
+    // const response = await axios.get(`http://localhost:8080/api/events`);
+    const dat =deptsRes.data;
+    const pays = paysRes.data;
+    const data = {...dat, pays:pays}
+
+    // Return the data as props
+    return {
+      props: {
+        data,
+      },
+    };
+  } catch (error) {
+    // Handle the error
+    console.error('Error fetching data:', error);
+    // You can return an error prop to display a custom error message on the page
+    const data:any[] = []
+    return {
+      props: {
+        data
+      }
+    };
+  }
 }
 
 export default Page;

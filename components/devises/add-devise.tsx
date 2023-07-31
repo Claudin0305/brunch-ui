@@ -36,7 +36,7 @@ const AddDevise: React.FC<Props> = ({data_props}) => {
 
    const updateDevise = (data:Inputs) => {
     axios
-        .put(`${process.env.base_route}/devises/${data_props.id_devise}`, data)
+        .put(`/api/devises/${data_props.id_devise}`, data)
         .then((response) => {
           if (response.status === 200) {
 
@@ -65,7 +65,7 @@ const AddDevise: React.FC<Props> = ({data_props}) => {
    };
    const createDevise =  (data:Inputs) => {
 
-  axios.post(`${process.env.base_route}/devises`, data).then(response=>{
+  axios.post(`/api/devises`, data).then(response=>{
 console.log(response);
 if(response.status === 201){
         Swal.fire({
