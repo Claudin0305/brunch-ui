@@ -13,7 +13,6 @@ type Props = {
     data: any;
 }
 const Home: React.FC<Props> = ({ data }) => {
-    console.log(data)
     return (
         <>
             <Head>

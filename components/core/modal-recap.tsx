@@ -7,7 +7,6 @@ type Props = {
 
 }
 const ModalRecap: React.FC<Props> = ({ show, setShow, data }) => {
-    console.log(data)
 
     return (
         <>
@@ -49,6 +48,10 @@ const ModalRecap: React.FC<Props> = ({ show, setShow, data }) => {
                                      <p>Lieu: <span className="font-semibold">{`${data?.nomPays}, ${data?.ville?.libelleDepartement}, ${data?.ville.libelle}(Local-${data?.idLocal})`}</span></p>
                                      <p>Mode paiement: <span className="font-semibold">{data?.modePaiement.replace("_", " ").toLowerCase()}</span></p>
                                      <p>Montant: <span className="font-semibold"> {data?.montant_participation} {data?.devise}</span></p>
+                                        <Link
+                                            className="text-blue-500 hover:text-blue-300"
+                                            href={`/paiements`}
+                                        >Payer maintenant</Link>
                                      </>}
 <Link
 className="text-blue-500 hover:text-blue-300"

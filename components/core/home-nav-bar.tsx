@@ -23,6 +23,10 @@ const HomeNavBar = ()=>{
         name: 'Liste des inscrits'
       },
       {
+        path: '/paiements',
+        name: 'Paiement'
+      },
+      {
         path: '/connexion',
         name: 'Tableau de bord'
       },
@@ -53,7 +57,7 @@ return<div>
       <Link
         key={link.path}
         href={link.path}
-        className={`text-xl hover:text-blue-500 ${router.pathname === link.path ? 'text-blue-500':''}`}
+        className={`text-xl hover:text-blue-600 ${router.pathname === link.path ? 'text-blue-500':''}`}
       >{link.name}
       </Link>
     ))

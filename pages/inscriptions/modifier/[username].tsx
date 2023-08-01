@@ -12,7 +12,6 @@ type Props = {
     data: any;
 }
 const Page: React.FC<Props> = ({ data }) => {
-    console.log('testttt')
     return (
         <HomeLayout>
             <Head>

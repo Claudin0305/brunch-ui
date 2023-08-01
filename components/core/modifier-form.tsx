@@ -25,7 +25,6 @@ const UpdateInscription: React.FC = () => {
     const updateForm = (data: Inputs) => {
 
         axios.get(`${process.env.base_route_get}/participants/by/${data.username}`).then(response => {
-            console.log(response)
             if (response.status === 200) {
                 // Swal.fire({
                 //     // position: 'top-end',
@@ -56,7 +55,6 @@ const UpdateInscription: React.FC = () => {
                     confirmButtonText: "Fermer",
                 })
                 }
-                console.log(response);
                 setIsSubmit(false);
                 // reset();
             }

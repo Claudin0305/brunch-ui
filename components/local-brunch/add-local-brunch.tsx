@@ -323,7 +323,7 @@ const AddLocalBrunch: React.FC<Props> = ({ data_props, pays, events, devises }) 
               type="text"
               label="Adresse"
               {...register("adresse_no_rue", { required: "Ce champ est obligatoire" })}
-              className="md:mt-3"
+              className="md:mt-1"
             />
             {/* {responseError !== null && <Error text={responseError?.libelle}/>} */}
             {errors?.adresse_no_rue && <Error text={errors.adresse_no_rue.message} />}
@@ -382,6 +382,7 @@ const AddLocalBrunch: React.FC<Props> = ({ data_props, pays, events, devises }) 
               inputProps={{ min }}
               value={capaciteTable}
               size="small"
+              className="md:mt-2"
               label="Capacité table"
               {...register("capacite_table", { required: "Ce champ est obligatoire" })}
               onChange={e => {
@@ -411,7 +412,7 @@ const AddLocalBrunch: React.FC<Props> = ({ data_props, pays, events, devises }) 
                   message: 'La valeur doit être plus grande que 1'
                 }
               })}
-              className="md:mt-4"
+              className="md:mt-2"
             />
             {/* {responseError !== null && <Error text={responseError?.libelle}/>} */}
             {errors?.seuil_alerte && <Error text={errors.seuil_alerte.message} />}
@@ -434,7 +435,7 @@ const AddLocalBrunch: React.FC<Props> = ({ data_props, pays, events, devises }) 
                   message: 'La valeur doit être plus grande ou égale à 0'
                 }
               })}
-              className="md:mt-4"
+              className="md:mt-2"
             />
             {/* {responseError !== null && <Error text={responseError?.libelle}/>} */}
             {errors?.montant_participation && <Error text={errors.montant_participation.message} />}

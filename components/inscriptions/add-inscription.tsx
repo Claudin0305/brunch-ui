@@ -80,27 +80,38 @@ const mode_paiements: option[] = [
     value: "PAYPAL",
     label: "PayPal"
   },
+  {
+    value: "CHEQUE",
+    label: "Chèque"
+  },
 ]
+
+let errNext = {};
+const champ = 'Ce champ est obligatoire!';
 const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civilites, event, locaux, participants, affiliations }) => {
   const { register, handleSubmit, watch, reset, setValue, getValues, control, formState: { errors } } = useForm<Inputs>();
+  const [errorNext, setErrorNext] = useState<any>({});
   const [show, setShow] = useState<boolean>(false);
   const [showModalVille, setShowModalVille] = useState<boolean>(false);
   const [showModalAffiliation, setShowModalAffiliation] = useState<boolean>(false);
   const router = useRouter()
   const [isSubmit, setIsSubmit] = useState<boolean>(false);
+  const [newsLatter, setNewLatter] = useState<boolean>(false);
+  const [showData, setShowData] = useState<boolean>(false);
   const [optionsCivilite, setOptionsCivilite] = useState<option[] | any>();
   const [optionsAffiliation, setOptionsAffiliation] = useState<option[] | any>();
   const [optionsVille, setOptionsVille] = useState<option[] | any>();
   const [optionsDepartement, setOptionsDepartement] = useState<option[] | any>();
   const [optionsPays, setOptionsPays] = useState<option[] | any>();
   const [optionsLocal, setOptionsLocal] = useState<option[] | any>();
+  const [change, setChange] = useState<boolean>(false);
   const [optionsTrancheAge, setOptionsTrancheAge] = useState<option[] | any>();
   const [capaciteTable, setCapaciteTable] = useState<number>(10)
   const [selectedAffiliation, setSelectedAffiliation] = useState<option | any>();
   const [selectedVille, setSelectedVille] = useState<option | any>();
   const [selectedMode, setSelectedMode] = useState<option | any>();
-  const [selectedPays, setSelectedPays] = useState<option | any>();
-  const [selectedDepartement, setSelectedDepartement] = useState<option | any>();
+  const [selectedPays, setSelectedPays] = useState<option | any>(null);
+  const [selectedDepartement, setSelectedDepartement] = useState<option | any>(null);
   const [selectCivilite, setSelectCivilite] = useState<option | null>(null);
   const [selectTrangeAge, setSelectTrangeAge] = useState<option | null>(null);
   const [selectLocal, setSelectLocal] = useState<option | any>();
@@ -116,7 +127,6 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
   useEffect(() => {
 
     if (data_props !== null) {
-      console.log(data_props);
       setValue('nom', data_props.nom)
       setValue('prenom', data_props.prenom)
       setValue('email', data_props.email)
@@ -127,7 +137,6 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
       const pays = optionsPays?.filter((o:any)=> o.label === data_props.nomPays)[0];
       setValue('id_pays', pays);
       setSelectedPays(pays)
-
       const tableDept: option[] = [];
       pays?.data.forEach((d: any) => {
         tableDept.push({
@@ -137,9 +146,11 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
         })
       })
       setOptionsDepartement(sorter(tableDept));
-      const dept = optionsDepartement?.filter((o:any)=> o.value === data_props.ville.departementId)[0];
+      const dept = tableDept?.filter((o: any) => o.value === data_props.ville.departementId)[0];
       setValue('id_departement', dept);
       setSelectedDepartement(dept)
+
+
       const tableVille: option[] = [];
       tableVille.push({
         label: "Autre",
@@ -152,7 +163,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
         })
       })
       setOptionsVille(sorter(tableVille))
-      const ville = optionsVille?.filter((o:any)=> o.value === data_props.ville.id_ville)[0];
+      const ville = tableVille?.filter((o:any)=> o.value === data_props.ville.id_ville)[0];
       setValue('id_ville', ville);
       setSelectedVille(ville)
       const trAge = optionsTrancheAge?.filter((o: any) => o.value === data_props.idTrancheAge)[0];
@@ -214,7 +225,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
 
     locaux?.forEach((e:any) => {
       tableOptions.push({
-        label: `Local-${e.id_local}(${e.pays}, ${e.ville})`,
+        label: `${e.libelle} (${e.pays}, ${e.ville})`,
         value: e.id_local,
         id_ville: e.idVille,
         data: e
@@ -297,6 +308,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
 
     // setOptionsVille(tableOptions);
   }, []);
+
 
   useEffect(()=>{
     const tableOptions: option[] = [];
@@ -403,6 +415,20 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
             confirmButtonText: "Fermer",
           })
           // router.push('/locaux-brunch')
+          setValue('id_event', "");
+          setValue('id_tranche_age', "");
+          setValue('id_ville', "");
+          setValue('id_local', "");
+          setValue('id_affiliation', "");
+          setValue('id_civilite', "");
+
+          // setValue("abonnement_newsletter", "0")
+          // setValue("authorisation_liste", "0")
+
+          setSelectedVille(null)
+          setSelectedMode(null)
+          setSelectedAffiliation(null);
+          router.push("/")
           reset();
         }
 
@@ -454,6 +480,8 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
 
         setSelectedVille(null)
         setSelectedMode(null)
+        setSelectedAffiliation(null);
+        // setSelectedLocal(null);
       }
     }).catch(err => {
       setIsSubmit(false);
@@ -513,7 +541,6 @@ if(selectModePaiement !== null){
     if (data_props === null) {
       createInscription(formData);
     } else {
-      console.log(formData, data)
       updateInscription(formData)
     }
 
@@ -549,7 +576,8 @@ if(selectModePaiement !== null){
               />
             )}
           />{" "}
-          {errors?.id_civilite && <Error text={errors.id_civilite.message} />}
+          {errNext?.civilite && <Error text={champ}/>}
+          {/* {errors?.id_civilite && <Error text={errors.id_civilite.message} />} */}
         </div>
         <div className="block">
 
@@ -563,9 +591,17 @@ if(selectModePaiement !== null){
             label="Nom"
             {...register("nom", { required: "Ce champ est obligatoire" })}
             className="md:mt-3"
+            onChange={e=>{
+              console.log(e?.target.value)
+              if (e?.target.value !== ""){
+                errNext = {...errNext, nom:false}
+              }
+              register('nom').onChange(e);
+            }}
           />
           {/* {responseError !== null && <Error text={responseError?.libelle}/>} */}
-          {errors?.nom && <Error text={errors.nom.message} />}
+          {/* {errors?.nom && <Error text={errors.nom.message} />} */}
+          {errNext?.nom && <Error text={champ} />}
         </div>
         <div className="block">
 
@@ -581,7 +617,8 @@ if(selectModePaiement !== null){
             className="md:mt-3"
           />
           {/* {responseError !== null && <Error text={responseError?.libelle}/>} */}
-          {errors?.prenom && <Error text={errors.prenom.message} />}
+          {/* {errors?.prenom && <Error text={errors.prenom.message} />} */}
+          {errNext?.prenom && <Error text={champ} />}
         </div>
         <div className="block">
 
@@ -597,7 +634,8 @@ if(selectModePaiement !== null){
             className=""
           />
           {/* {responseError !== null && <Error text={responseError?.libelle}/>} */}
-          {errors?.tel_participant && <Error text={errors.tel_participant.message} />}
+          {/* {errors?.tel_participant && <Error text={errors.tel_participant.message} />} */}
+          {errNext?.tel_participant && <Error text={champ} />}
         </div>
         <div className="block">
 
@@ -628,8 +666,10 @@ if(selectModePaiement !== null){
             }}
           />
           {/* {responseError !== null && <Error text={responseError?.libelle}/>} */}
-          {errors?.email && <Error text={errors.email.message} />}
-          {existEmail && <Error text={"Ce courriel existe déjà dans notre système!"} />}
+          {/* {errors?.email && <Error text={errors.email.message} />} */}
+          {errNext?.email && <Error text={champ}/>}
+          {errNext?.email_invalid && <Error text={'Le format du courriel que vous avez spécifié incorrect.  Veuillez entrer un courriel valide.'} />}
+          {/* {existEmail && <Error text={"Ce courriel existe déjà dans notre système!"} />} */}
         </div>
         <div className="block">
 
@@ -655,8 +695,9 @@ if(selectModePaiement !== null){
 
           />
           {/* {responseError !== null && <Error text={responseError?.libelle}/>} */}
-          {errors?.email_confirmation && <Error text={errors.email_confirmation.message} />}
-          {!identiqueEmail && <Error text={"Le courriel que vous avez spécifié dans le champ \"Confirmation de courriel\" ne correspond pas à celui que vous avez indiqué dans le champ courriel.  Veuillez entrer la même valeur dans les 2 champs."} />}
+          {errNext?.email_confirmation && <Error text={'Le courriel que vous avez spécifié dans le champ "Confirmation de courriel" ne correspond pas à celui que vous avez indiqué dans le champ courriel.  Veuillez entrer la même valeur dans les 2 champs.'} />}
+          {/* {errors?.email_confirmation && <Error text={errors.email_confirmation.message} />}
+          {!identiqueEmail && <Error text={"Le courriel que vous avez spécifié dans le champ \"Confirmation de courriel\" ne correspond pas à celui que vous avez indiqué dans le champ courriel.  Veuillez entrer la même valeur dans les 2 champs."} />} */}
         </div>
         <div className="flex-col flex md:-mt-4 z-40">
           <label
@@ -684,7 +725,8 @@ if(selectModePaiement !== null){
               />
             )}
           />{" "}
-          {errors?.id_tranche_age && <Error text={errors.id_tranche_age.message} />}
+          {/* {errors?.id_tranche_age && <Error text={errors.id_tranche_age.message} />} */}
+          {errNext?.tranche_age && <Error text={champ} />}
         </div>
         <div className="flex-col flex md:-mt-4 z-30 ">
           <label
@@ -728,7 +770,8 @@ if(selectModePaiement !== null){
               />
             )}
           />{" "}
-          {errors?.id_pays && <Error text={errors.id_pays.message} />}
+          {/* {errors?.id_pays && <Error text={errors.id_pays.message} />} */}
+          {errNext?.pays && <Error text={champ} />}
         </div>
         {selectedPays && <div className="flex-col flex md:-mt-4 z-30 ">
           <label
@@ -736,7 +779,7 @@ if(selectModePaiement !== null){
             htmlFor={`id_departement`}
           >
             {" "}
-            Département<Star/>{" "}
+            Département/Province/Etat/Canton<Star/>{" "}
           </label>
           <Controller
             name={`id_departement`}
@@ -774,7 +817,8 @@ if(selectModePaiement !== null){
               />
             )}
           />{" "}
-          {errors?.id_departement && <Error text={errors.id_departement.message} />}
+          {/* {errors?.id_departement && <Error text={errors.id_departement.message} />} */}
+          {errNext?.departement && <Error text={champ} />}
         </div>}
         {selectedDepartement && <div className="flex-col flex md:-mt-4 z-30 ">
           <label
@@ -795,7 +839,7 @@ if(selectModePaiement !== null){
               <Select
                 {...field}
                 placeholder={
-                  "Choisir ville..."
+                "Choisir une ville ou cliquez sur \"Autre\" pour créer une ville manquante."
                 }
                 isClearable
                 options={optionsVille}
@@ -812,7 +856,8 @@ if(selectModePaiement !== null){
               />
             )}
           />{" "}
-          {errors?.id_ville && <Error text={errors.id_ville.message} />}
+          {/* {errors?.id_ville && <Error text={errors.id_ville.message} />} */}
+          {errNext?.ville && <Error text={champ} />}
         </div>}
       </div>,
     },
@@ -846,7 +891,7 @@ if(selectModePaiement !== null){
                 <Select
                   {...field}
                   placeholder={
-                    "Choisir affiliation..."
+                "Choisir une Affiliation ou cliquez sur \"Autre Affiliation\" pour créer une affiliation manquante."
                   }
                   isClearable
                   options={optionsAffiliation}
@@ -975,20 +1020,20 @@ if(selectModePaiement !== null){
                   isClearable
                   value={selectModePaiement}
                   onChange={e => {
-                    if(e?.value === "PAYPAL"){
-                      Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: 'Ce module est en cours de développement!',
-                        confirmButtonColor: "#2563eb",
-                        confirmButtonText: "Fermer",
-                      })
+                    // if(e?.value === "PAYPAL"){
+                    //   Swal.fire({
+                    //     icon: 'error',
+                    //     title: 'Oops...',
+                    //     text: 'Ce module est en cours de développement!',
+                    //     confirmButtonColor: "#2563eb",
+                    //     confirmButtonText: "Fermer",
+                    //   })
 
-                    }else{
+                    // }else{
 
                       setValue('mode_paiement', e);
                       setSelectModePaiement(e);
-                    }
+                    // }
                   }}
                   options={mode_paiements}
                 />
@@ -1020,20 +1065,24 @@ if(selectModePaiement !== null){
         <div className="col-span-3">
 
           <div className="block">
-
-            <Controller
-              name='authorisation_liste'
-              control={control}
-              defaultValue={'0'}
-              render={({ field }) => (
-                <FormControlLabel
-                  control={<Checkbox {...field} />}
-                  label={`J'autorise GRAHN-Monde à afficher mon nom dans le tableau des inscrits au Brunch'${new Date().getFullYear()}`}
-                />
-              )}
+             <input
+            {...register("authorisation_liste")}
+            type="checkbox"
+              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 mr-2"
             />
+            <label htmlFor="authorisation_liste">{`J'autorise GRAHN-Monde à afficher mon nom dans le tableau des inscrits au Brunch'${new Date().getFullYear()}`}</label>
+
           </div>
-          <div className="block">
+          <div className="block mt-4">
+             <input
+              {...register("abonnement_newsletter")}
+            type="checkbox"
+              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 mr-2"
+            />
+            <label htmlFor="authorisation_liste">Je souhaite recevoir les communications de GRAHN-Monde</label>
+
+          </div>
+          {/* <div className="block">
 
             <Controller
               name='abonnement_newsletter'
@@ -1046,7 +1095,7 @@ if(selectModePaiement !== null){
                 />
               )}
             />
-          </div>
+          </div> */}
         </div>
          <div className="flex justify-end flex-col mt-8 md:flex-row gap-8 mb-8 col-span-3">
           <Button
@@ -1117,7 +1166,87 @@ if(selectModePaiement !== null){
   const maxSteps = steps.length;
 
   const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    const values = getValues()
+    const errC = values.id_civilite === null || values.id_civilite === undefined
+    setErrorNext({ ...errorNext, errorCivilite: errC })
+    if (values.id_civilite === null || values.id_civilite === undefined){
+      errNext = { ...errNext, civilite: true }
+    }else{
+      errNext = { ...errNext, civilite: false }
+    }
+    if (values.id_pays === null || values.id_pays === undefined){
+      errNext = { ...errNext, pays: true }
+    }else{
+      errNext = { ...errNext, pays: false }
+    }
+    if (values.id_ville === null || values.id_ville === undefined){
+      errNext = { ...errNext, ville: true }
+    }else{
+      errNext = { ...errNext, ville: false }
+    }
+    if (values.id_departement === null || values.id_departement === undefined){
+      errNext = { ...errNext, departement: true }
+    }else{
+      errNext = { ...errNext, departement: false }
+    }
+    if (values.id_tranche_age === null || values.id_tranche_age === undefined){
+      errNext = { ...errNext, tranche_age: true }
+    }else{
+      errNext = { ...errNext, tranche_age: false }
+    }
+    if (values.nom.trim() ===""){
+      errNext = { ...errNext, nom: true }
+    }else{
+      errNext = { ...errNext, nom: false }
+    }
+    if (values.prenom.trim() ===""){
+      errNext = { ...errNext, prenom: true }
+    }else{
+      errNext = { ...errNext, prenom: false }
+    }
+    if (values.email.trim() ===""){
+      errNext = { ...errNext, email: true }
+    }else{
+      errNext = { ...errNext, email: false }
+    }
+    if (values.tel_participant.trim() ===""){
+      errNext = { ...errNext, tel_participant: true }
+    }else{
+      errNext = { ...errNext, tel_participant: false }
+    }
+
+    const keys = Object.keys(errNext);
+
+    if(!keys.includes("email")){
+      let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+      errNext = { ...errNext, email_invalid: !reg.test(values.email) }
+    }
+    if (values.email_confirmation.trim() !== "" && values.email !== values.email_confirmation) {
+      errNext = { ...errNext, email_confirmation: true }
+    }else{
+      errNext = { ...errNext, email_confirmation: false }
+    }
+
+    const val = Object.values(errNext);
+
+    const result = val.filter(v => v === true);
+    if(result.length > 0){
+Swal.fire({
+                    // position: 'top-end',
+                    icon: 'error',
+                    title: 'Vos données ne sont pas valides!',
+                    // showConfirmButton: false,
+                    // timer: 1500
+                    // buttonColor:"#000000",
+                    // buttons:[""]
+                    confirmButtonColor: "#2563eb",
+                    confirmButtonText: "Fermer",
+                })
+    }else{
+
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    }
+
   };
 
   const handleBack = () => {

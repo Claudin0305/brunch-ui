@@ -26,7 +26,7 @@ export default async function handler( req: NextApiRequest,
      }
     if(req.method === 'PUT'){
       axios
-          .put(`${process.env.base_route}/events/${id}`, req.formData, {
+          .put(`${process.env.base_route}/events/${id}`, formData, {
     headers: {
           withCredentials: true,
           Cookie: cookie,

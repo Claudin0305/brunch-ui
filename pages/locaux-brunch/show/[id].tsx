@@ -90,7 +90,7 @@ const Page: React.FC<Props> = ({ data }) => {
             </h1>
             <div className="flex justify-between">
 
-              <p>Identifiant</p><p>{`Local-${data.id_local}`}</p>
+              <p>Libelle</p><p>{data?.libelle}</p>
             </div>
             <div className="flex justify-between">
 
