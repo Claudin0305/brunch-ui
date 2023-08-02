@@ -6,6 +6,10 @@ export default async function handler( req: NextApiRequest,
   res: NextApiResponse) {
     const cookie = getCookie('token', {req, res})
 
+        const formData = new FormData();
+        formData.append("libelle", req.body.libelle);
+        formData.append("id_departement", req.body.id_departement);
+
 if(req.method === 'POST'){
     axios
           .post(`${process.env.base_route_get}/villes`, req.body, {

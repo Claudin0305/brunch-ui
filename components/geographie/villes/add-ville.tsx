@@ -132,13 +132,10 @@ const AddVille: React.FC<Props> = ({ data_props, departements }) => {
 
         setIsSubmit(true);
         data.id_departement = data.id_departement?.value
-        const formData = new FormData();
-        formData.append('libelle', data.libelle);
-        formData.append('id_departement', data.id_departement)
         if (data_props === null) {
-            createVille(formData);
+            createVille(data);
         } else {
-            updateVille(formData)
+            updateVille(data)
         }
 
     };
