@@ -5,13 +5,17 @@ import DeviseLayout from '@/components/devises/devise-layout';
 import TableDevise from '@/components/devises/table-devise';
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
+import Loader from "@/components/core/loader"
 type Props = {
   data: any
 }
 
 const Devise: React.FC<Props> = ({ data }) => {
+  const token = getCookie('token');
   return (
-    <Layout>
+    <>
+    {
+      token !== undefined ? <Layout>
       <Head>
         <title>Devise | Liste</title>
       </Head>
@@ -24,7 +28,9 @@ const Devise: React.FC<Props> = ({ data }) => {
 
 
 
-    </Layout>
+    </Layout> : <Loader/>
+    }
+    </>
   )
 }
 export async function getServerSideProps(context:any) {

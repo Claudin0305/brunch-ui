@@ -5,13 +5,17 @@ import StatutLayout from '@/components/statuts/statut-layout';
 import TableStatut from '@/components/statuts/table-statut';
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
+import Loader from "@/components/core/loader"
 type Props = {
   data: any
 }
 
 const Statut: React.FC<Props> = ({ data }) => {
+  const token = getCookie('token');
   return (
-    <Layout>
+    <>
+    {
+      token !== undefined ? <Layout>
       <Head>
         <title>Statut | Liste</title>
       </Head>
@@ -24,7 +28,9 @@ const Statut: React.FC<Props> = ({ data }) => {
 
 
 
-    </Layout>
+    </Layout> : <Loader/>
+    }
+    </>
   )
 }
 export async function getServerSideProps(context: any) {

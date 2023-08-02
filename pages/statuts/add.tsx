@@ -4,10 +4,14 @@ import React from "react";
 import StatutLayout from "@/components/statuts/statut-layout";
 // import AddP
 import AddStatut from "@/components/statuts/add-statut";
+import Loader from "@/components/core/loader"
+import {getCookie} from "cookies-next"
 
 const Add:React.FC = () => {
+  const token = getCookie('token');
   return (
-    <Layout>
+    <>
+    {token !== undefined ? <Layout>
       <Head>
         <title>Statut | Ajouter</title>
       </Head>
@@ -16,7 +20,8 @@ const Add:React.FC = () => {
           <AddStatut data_props={null}/>
         </div>
       </StatutLayout>
-    </Layout>
+    </Layout> : <Loader/>}
+    </>
   );
 };
 

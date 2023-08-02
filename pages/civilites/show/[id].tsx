@@ -10,15 +10,15 @@ import Swal from 'sweetalert2'
 import axios from 'axios';
 import { useRouter } from 'next/router'
 import { getCookie } from 'cookies-next';
-
+import Loader from '@/components/core/loader';
 import EditIcon from '@mui/icons-material/Edit';
 type Props = {
   data: any;
 }
 
 const Page: React.FC<Props> = ({ data }) => {
-  console.log(data)
   const router = useRouter()
+  const token = getCookie('token');
   const deleteCivilite = (id: number) => {
     axios.delete(`/api/civilites/${id}`)
     .then(response=>{
@@ -111,42 +111,43 @@ const Page: React.FC<Props> = ({ data }) => {
   };
 
   return (
-    <Layout>
-      <Head>
-        <title>Civilité | Détails</title>
-      </Head>
-      <CiviliteLayout>
-        <div className="bg-white px-8 py-4 mb-4 shadow-md h-[calc(100vh_-_215px)] overflow-y-scroll">
+    <>
+      {token !== undefined ? <Layout>
+        <Head>
+          <title>Civilité | Détails</title>
+        </Head>
+        <CiviliteLayout>
+          <div className="bg-white px-8 py-4 mb-4 shadow-md h-[calc(100vh_-_215px)] overflow-y-scroll">
 
-          <div className="flex flex-col gap-y-4 w-1/2 mx-auto">
-            <h1 className="font-bold text-sm md:text-lg capitalize bg-slate-100 text-center col-span-2">
-              Détails Civilité
-            </h1>
-            <div className="flex justify-between">
+            <div className="flex flex-col gap-y-4 w-1/2 mx-auto">
+              <h1 className="font-bold text-sm md:text-lg capitalize bg-slate-100 text-center col-span-2">
+                Détails Civilité
+              </h1>
+              <div className="flex justify-between">
 
-              <p>Civilité</p><p>{data.libelle}</p>
+                <p>Civilité</p><p>{data.libelle}</p>
+              </div>
+
+
+
+              <hr />
             </div>
+            <div className={'flex flex-col gap-y-8 justify-center md:justify-end pt-4 mb-4 md:flex-row md:gap-x-8'}>
 
-
-
-            <hr />
-          </div>
-          <div className={'flex flex-col gap-y-8 justify-center md:justify-end pt-4 mb-4 md:flex-row md:gap-x-8'}>
-
-            <Button onClick={handleDelete} className="bg-red-600 capitalize" variant="contained" startIcon={<DeleteForeverIcon />}>
-              Supprimer
-            </Button>
-
-            <Link href={`/civilites/edit/${data.id_civilite}`}>
-              <Button className="bg-blue-600 capitalize" variant="contained" startIcon={<EditIcon />}>
-                Editer
+              <Button onClick={handleDelete} className="bg-red-600 capitalize" variant="contained" startIcon={<DeleteForeverIcon />}>
+                Supprimer
               </Button>
-            </Link>
 
+              <Link href={`/civilites/edit/${data.id_civilite}`}>
+                <Button className="bg-blue-600 capitalize" variant="contained" startIcon={<EditIcon />}>
+                  Editer
+                </Button>
+              </Link>
+            </div>
           </div>
-        </div>
-      </CiviliteLayout>
-    </Layout>
+        </CiviliteLayout>
+      </Layout> : <Loader/>}
+    </>
   );
 };
 

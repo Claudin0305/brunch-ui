@@ -4,12 +4,17 @@ import React from "react";
 import UtilisateurLayout from "@/components/utilisateurs/utilisateur-layout";
 // import AddP
 import AddUtilisateur from "@/components/utilisateurs/add-utilisateur";
+import Loader from "@/components/core/loader"
+import {getCookie} from "cookies-next"
 type Props = {
   data: any;
 }
 const Add: React.FC<Props> = ({ data }) => {
+  const token = getCookie('token');
   return (
-    <Layout>
+    <>
+    {
+      token !== undefined ? <Layout>
       <Head>
         <title>Utilisateurs | Ajouter</title>
       </Head>
@@ -18,7 +23,9 @@ const Add: React.FC<Props> = ({ data }) => {
           <AddUtilisateur data_props={null} />
         </div>
       </UtilisateurLayout>
-    </Layout>
+    </Layout> : <Loader/>
+    }
+    </>
   );
 };
 

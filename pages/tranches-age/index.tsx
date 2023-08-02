@@ -5,13 +5,17 @@ import TranchesAgeLayout from '@/components/tranches-ages/tranches-age-layout';
 import TableTranchesAge from '@/components/tranches-ages/table-tranches-age';
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
+import Loader from "@/components/core/loader"
 type Props = {
   data: any
 }
 
 const TranchesAge: React.FC<Props> = ({ data }) => {
+  const token = getCookie('token');
   return (
-    <Layout>
+    <>
+    {
+      token !== undefined ? <Layout>
       <Head>
         <title>Tranches-age | Liste</title>
       </Head>
@@ -24,7 +28,9 @@ const TranchesAge: React.FC<Props> = ({ data }) => {
 
 
 
-    </Layout>
+    </Layout> : <Loader/>
+    }
+    </>
   )
 }
 export async function getServerSideProps(context: any) {

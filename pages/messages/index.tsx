@@ -4,14 +4,18 @@ import Head from 'next/head'
 import MessageLayout from '@/components/messages/message-layout';
 import TableMessage from '@/components/messages/table-message';
 import axios from 'axios';
+import Loader from "@/components/core/loader"
 import { getCookie } from 'cookies-next';
 type Props = {
   data: any
 }
 
 const Message: React.FC<Props> = ({ data }) => {
+  const token = getCookie('token');
   return (
-    <Layout>
+    <>
+    {
+      token !== undefined ? <Layout>
       <Head>
         <title>Messages | Liste</title>
       </Head>
@@ -24,7 +28,9 @@ const Message: React.FC<Props> = ({ data }) => {
 
 
 
-    </Layout>
+    </Layout> : <Loader/>
+    }
+    </>
   )
 }
 export async function getServerSideProps(context: any) {

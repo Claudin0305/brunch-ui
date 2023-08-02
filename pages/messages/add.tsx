@@ -4,12 +4,17 @@ import React from "react";
 import MessageLayout from "@/components/messages/message-layout";
 // import AddP
 import AddMessage from "@/components/messages/add-message";
+import Loader from "@/components/core/loader"
+import {getCookie} from "cookies-next"
 type Props = {
   data:any;
 }
 const Add:React.FC<Props> = ({data}) => {
+  const token = getCookie('token');
   return (
-    <Layout>
+    <>
+    {
+      token !== undefined ? <Layout>
       <Head>
         <title>Messages | Ajouter</title>
       </Head>
@@ -18,7 +23,9 @@ const Add:React.FC<Props> = ({data}) => {
           <AddMessage data_props={null}/>
         </div>
       </MessageLayout>
-    </Layout>
+    </Layout> : <Loader/>
+    }
+    </>
   );
 };
 

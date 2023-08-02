@@ -4,14 +4,18 @@ import React from "react";
 import VilleLayout from "@/components/geographie/villes/ville-layout";
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
+import Loader from "@/components/core/loader"
 // import AddP
 import AddVille from "@/components/geographie/villes/add-ville";
 type Props = {
   data:any;
 }
 const Add:React.FC<Props> = ({data}) => {
+  const token = getCookie('token');
   return (
-    <Layout>
+    <>
+   {
+    token !== undefined ?  <Layout>
       <Head>
         <title>Villes | Ajouter</title>
       </Head>
@@ -20,7 +24,9 @@ const Add:React.FC<Props> = ({data}) => {
           <AddVille data_props={null} departements={data}/>
         </div>
       </VilleLayout>
-    </Layout>
+    </Layout> : <Loader/>
+   }
+    </>
   );
 };
 export async function getServerSideProps(context: any) {

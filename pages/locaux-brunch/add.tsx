@@ -6,12 +6,17 @@ import LocalBrunchLayout from "@/components/local-brunch/local-brunch-layout";
 import AddLocalBrunch from "@/components/local-brunch/add-local-brunch";
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
+import Loader from "@/components/core/loader"
+import { GetServerSideProps } from 'next';
 type Props = {
   data:any;
 }
 const Add:React.FC<Props> = ({data}) => {
+  const token = getCookie('token');
   return (
-    <Layout>
+    <>
+   {
+    token !== undefined ?  <Layout>
       <Head>
         <title>Local Evénement | Ajouter</title>
       </Head>
@@ -20,7 +25,9 @@ const Add:React.FC<Props> = ({data}) => {
           <AddLocalBrunch data_props={null} pays={data?.pays} events={data?.events} devises={data?.devises}/>
         </div>
       </LocalBrunchLayout>
-    </Layout>
+    </Layout> : <Loader/>
+   }
+    </>
   );
 };
 export const getServerSideProps: GetServerSideProps = async (context) => {

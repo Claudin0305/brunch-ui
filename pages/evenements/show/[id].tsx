@@ -12,6 +12,7 @@ import Image from 'next/image'
 import {useEffect} from "react"
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
+import Loader from "@/components/core/loader"
 
 import EditIcon from '@mui/icons-material/Edit';
 type Props = {
@@ -39,6 +40,7 @@ const format_events: option[] = [
 ]
 
 const Page: React.FC<Props> = ({ data }) => {
+  const token = getCookie('token');
   const router = useRouter()
   console.log(data.imageDatas[0])
   const deleteEvent = (id: number) => {
@@ -100,7 +102,9 @@ const Page: React.FC<Props> = ({ data }) => {
   };
 
   return (
-    <Layout>
+    <>
+    {
+      token !== undefined ? <Layout>
       <Head>
         <title>Evènement | Détails</title>
       </Head>
@@ -178,7 +182,9 @@ const Page: React.FC<Props> = ({ data }) => {
           </div>
         </div>
       </EventLayout>
-    </Layout>
+    </Layout> : <Loader/>
+    }
+    </>
   );
 };
 export const getServerSideProps: GetServerSideProps = async (context) => {

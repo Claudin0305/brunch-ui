@@ -5,24 +5,27 @@ import { GetServerSideProps } from 'next'
 import AffiliationLayout from "@/components/affiliations/affiliation-layout";
 import AddAffiliation from "@/components/affiliations/add-affiliation";
 import { getCookie } from 'cookies-next';
+import Loader from '@/components/core/loader'
 import axios from 'axios';
 type Props = {
   data: any;
 }
 
 const Page: React.FC<Props> = ({ data }) => {
-  console.log(data)
+  const token = getCookie('token');
   return (
-    <Layout>
-      <Head>
-        <title>Affiliation | Edit</title>
-      </Head>
-      <AffiliationLayout>
-        <div className="bg-white px-8 py-4 mb-4 shadow-md h-[calc(100vh_-_215px)] overflow-y-scroll">
-          <AddAffiliation data_props={data} />
-        </div>
-      </AffiliationLayout>
-    </Layout>
+    <>
+      {token !== undefined ? <Layout>
+        <Head>
+          <title>Affiliation | Edit</title>
+        </Head>
+        <AffiliationLayout>
+          <div className="bg-white px-8 py-4 mb-4 shadow-md h-[calc(100vh_-_215px)] overflow-y-scroll">
+            <AddAffiliation data_props={data} />
+          </div>
+        </AffiliationLayout>
+      </Layout> : <Loader/>}
+    </>
   );
 };
 

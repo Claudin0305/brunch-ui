@@ -5,6 +5,7 @@ import { GetServerSideProps } from 'next'
 import VilleLayout from "@/components/geographie/villes/ville-layout";
 import AddVille from "@/components/geographie/villes/add-ville";
 import axios from 'axios';
+import Loader from "@/components/core/loader"
 import { getCookie } from 'cookies-next';
 type Props = {
   data: any;
@@ -12,8 +13,11 @@ type Props = {
 
 const Page: React.FC<Props> = ({ data }) => {
   // console.log(data)
+  const token = getCookie('token');
   return (
-    <Layout>
+    <>
+    {
+      token !== undefined ? <Layout>
       <Head>
         <title>Villes | Edit</title>
       </Head>
@@ -22,7 +26,9 @@ const Page: React.FC<Props> = ({ data }) => {
           <AddVille data_props={data} departements={data?.departement} />
         </div>
       </VilleLayout>
-    </Layout>
+    </Layout> : <Loader/>
+    }
+    </>
   );
 };
 

@@ -10,6 +10,7 @@ import Swal from 'sweetalert2'
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
 import { useRouter } from 'next/router'
+import Loader from "@/components/core/loader"
 
 import EditIcon from '@mui/icons-material/Edit';
 type Props = {
@@ -17,6 +18,7 @@ type Props = {
 }
 
 const Page: React.FC<Props> = ({ data }) => {
+  const token = getCookie('token');
   const router = useRouter()
   const deletePays = (id: number) => {
       axios.delete(`/api/pays/${id}`)
@@ -77,7 +79,9 @@ const Page: React.FC<Props> = ({ data }) => {
   };
 
   return (
-    <Layout>
+    <>
+    {
+      token !== undefined ? <Layout>
       <Head>
         <title>Pays | Details</title>
       </Head>
@@ -118,7 +122,9 @@ const Page: React.FC<Props> = ({ data }) => {
           </div>
         </div>
       </PaysLayout>
-    </Layout>
+    </Layout> : <Loader/>
+    }
+    </>
   );
 };
 export const getServerSideProps: GetServerSideProps = async (context) => {

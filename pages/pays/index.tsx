@@ -5,13 +5,17 @@ import PaysLayout from '@/components/geographie/pays/pays-layout';
 import TablePays from '@/components/geographie/pays/table-pays';
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
+import Loader from "@/components/core/loader"
 type Props = {
   data: any
 }
 
 const Pays: React.FC<Props> = ({ data }) => {
+  const token = getCookie('token');
   return (
-    <Layout>
+    <>
+   {
+    token !== undefined ?  <Layout>
       <Head>
         <title>Pays | Liste</title>
       </Head>
@@ -24,7 +28,9 @@ const Pays: React.FC<Props> = ({ data }) => {
 
 
 
-    </Layout>
+    </Layout> : <Loader/>
+   }
+    </>
   )
 }
 export async function getServerSideProps(context: any) {

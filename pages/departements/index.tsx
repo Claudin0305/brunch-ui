@@ -5,13 +5,17 @@ import DepartementLayout from '@/components/geographie/departements/departement-
 import TableDepartement from '@/components/geographie/departements/table-departement';
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
+import Loader from "@/components/core/loader"
 type Props = {
   data: any
 }
 
 const Departement: React.FC<Props> = ({ data }) => {
+  const token = getCookie('token');
   return (
-    <Layout>
+    <>
+   {
+    token !== undefined ?  <Layout>
       <Head>
         <title>Départements | Liste</title>
       </Head>
@@ -24,7 +28,9 @@ const Departement: React.FC<Props> = ({ data }) => {
 
 
 
-    </Layout>
+    </Layout> : <Loader/>
+   }
+    </>
   )
 }
 export async function getServerSideProps(context: any) {

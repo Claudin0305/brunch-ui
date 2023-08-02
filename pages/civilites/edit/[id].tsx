@@ -5,23 +5,27 @@ import { GetServerSideProps } from 'next'
 import CiviliteLayout from "@/components/civilites/civilite-layout";
 import AddCivilite from "@/components/civilites/add-civilite";
 import { getCookie } from 'cookies-next';
+import Loader from '@/components/core/loader'
 import axios from 'axios';
 type Props = {
   data: any;
 }
 
 const Page: React.FC<Props> = ({ data }) => {
+  const token = getCookie('token');
   return (
-    <Layout>
-      <Head>
-        <title>Civilité | Edit</title>
-      </Head>
-      <CiviliteLayout>
-        <div className="bg-white px-8 py-4 mb-4 shadow-md h-[calc(100vh_-_215px)] overflow-y-scroll">
-          <AddCivilite data_props={data} />
-        </div>
-      </CiviliteLayout>
-    </Layout>
+    <>
+      {token !== undefined ? <Layout>
+        <Head>
+          <title>Civilité | Edit</title>
+        </Head>
+        <CiviliteLayout>
+          <div className="bg-white px-8 py-4 mb-4 shadow-md h-[calc(100vh_-_215px)] overflow-y-scroll">
+            <AddCivilite data_props={data} />
+          </div>
+        </CiviliteLayout>
+      </Layout> : <Loader/>}
+    </>
   );
 };
 

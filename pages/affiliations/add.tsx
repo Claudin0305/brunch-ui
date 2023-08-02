@@ -4,10 +4,14 @@ import React from "react";
 import AffiliationLayout from "@/components/affiliations/affiliation-layout";
 // import AddP
 import AddAffiliation from "@/components/affiliations/add-affiliation";
+import Loader from '@/components/core/loader';
+import { getCookie } from 'cookies-next';
 
 const Add:React.FC = () => {
+  const token = getCookie('token');
   return (
-    <Layout>
+    <>
+    {token !== undefined ? <Layout>
       <Head>
         <title>Affiliation | Ajouter</title>
       </Head>
@@ -16,7 +20,8 @@ const Add:React.FC = () => {
           <AddAffiliation data_props={null}/>
         </div>
       </AffiliationLayout>
-    </Layout>
+    </Layout> : <Loader/>}
+    </>
   );
 };
 

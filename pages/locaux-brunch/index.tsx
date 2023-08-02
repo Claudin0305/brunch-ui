@@ -5,13 +5,17 @@ import LocalBrunchLayout from '@/components/local-brunch/local-brunch-layout';
 import TableLocalBrunch from '@/components/local-brunch/table-local-brunch';
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
+import Loader from "@/components/core/loader"
 type Props = {
   data: any
 }
 
 const LocalBrunch: React.FC<Props> = ({ data }) => {
+  const token = getCookie('token');
   return (
-    <Layout>
+    <>
+    {
+      token !== undefined ? <Layout>
       <Head>
         <title>Locaux Evénement | Liste</title>
       </Head>
@@ -23,7 +27,9 @@ const LocalBrunch: React.FC<Props> = ({ data }) => {
 
 
 
-    </Layout>
+    </Layout> : <Loader/>
+    }
+    </>
   )
 }
 export async function getServerSideProps(context:any) {

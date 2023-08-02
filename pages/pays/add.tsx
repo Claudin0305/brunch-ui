@@ -4,10 +4,15 @@ import React from "react";
 import PaysLayout from "@/components/geographie/pays/pays-layout";
 // import AddP
 import AddPays from "@/components/geographie/pays/add-pays";
+import Loader from "@/components/core/loader"
+import {getCookie} from "cookies-next";
 
 const Add:React.FC = () => {
+  const token = getCookie('token');
   return (
-    <Layout>
+    <>
+    {
+      token !== undefined ? <Layout>
       <Head>
         <title>Pays | Ajouter</title>
       </Head>
@@ -16,7 +21,9 @@ const Add:React.FC = () => {
           <AddPays data_props={null}/>
         </div>
       </PaysLayout>
-    </Layout>
+    </Layout> : <Loader/>
+    }
+    </>
   );
 };
 

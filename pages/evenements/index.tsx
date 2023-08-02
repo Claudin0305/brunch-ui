@@ -5,14 +5,18 @@ import EventLayout from '@/components/evenements/event-layout';
 import TableEvent from '@/components/evenements/table-event';
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
+import Loader from "@/components/core/loader"
 type Props = {
   data: any
 }
 
 const Event: React.FC<Props> = ({ data }) => {
+  const token = getCookie('token');
 
   return (
-    <Layout>
+    <>
+    {
+      token !== undefined ? <Layout>
       <Head>
         <title>Evénements | Liste</title>
       </Head>
@@ -25,7 +29,9 @@ const Event: React.FC<Props> = ({ data }) => {
 
 
 
-    </Layout>
+    </Layout> : <Loader/>
+    }
+    </>
   )
 }
 export async function getServerSideProps(context:any) {

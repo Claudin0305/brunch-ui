@@ -10,6 +10,7 @@ import Swal from 'sweetalert2'
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
 import { useRouter } from 'next/router'
+import Loader from "@/components/core/loader"
 
 import EditIcon from '@mui/icons-material/Edit';
 type Props = {
@@ -18,6 +19,7 @@ type Props = {
 
 const Page: React.FC<Props> = ({ data }) => {
   const router = useRouter()
+  const token = getCookie('token');
   const deleteLocalBrunch = (id: number) => {
       axios.delete(`/api/locaux/${id}`)
     .then(response=>{
@@ -77,7 +79,9 @@ const Page: React.FC<Props> = ({ data }) => {
   };
 
   return (
-    <Layout>
+    <>
+    {
+      token !== undefined ? <Layout>
       <Head>
         <title>Local Evénement | Details</title>
       </Head>
@@ -147,7 +151,9 @@ const Page: React.FC<Props> = ({ data }) => {
           </div>
         </div>
       </LocalBrunchLayout>
-    </Layout>
+    </Layout> : <Loader/>
+    }
+    </>
   );
 };
 export const getServerSideProps: GetServerSideProps = async (context) => {

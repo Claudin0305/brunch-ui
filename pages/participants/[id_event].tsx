@@ -2,18 +2,21 @@ import Layout from "@/components/home/layout";
 import Head from "next/head";
 import React from "react";
 import { GetServerSideProps } from 'next'
-import axios from 'axios';
 import TableParticipant from "@/components/participants/table-participant";
 import ParticipantLayout from "@/components/participants/participant-layout";
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
+import Loader from "@/components/core/loader"
 type Props = {
     data: any;
 }
 
 const Page: React.FC<Props> = ({ data }) => {
+  const token = getCookie('token');
     return (
-       <Layout>
+      <>
+       {
+        token !== undefined ? <Layout>
       <Head>
         <title>Participants | Liste</title>
       </Head>
@@ -26,7 +29,9 @@ const Page: React.FC<Props> = ({ data }) => {
 
 
 
-    </Layout>
+    </Layout> : <Loader/>
+       }
+    </>
     );
 };
 export const getServerSideProps: GetServerSideProps = async (context) => {

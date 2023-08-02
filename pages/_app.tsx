@@ -20,7 +20,7 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
   }
   useEffect(() => {
     const path = router.pathname;
-    const reg = [0-9]
+    console.log(getCookie('token'))
     const guestRoutes = [/^\/$/, /^\/paiements$/, /^\/liste-evenements$/, /^\/liste-participants\/\[id_event]$/, /^\/inscriptions\/add\/\[id_event]$/, /^\/inscriptions\/edit\/\[id_event]\/\[username]$/, /^\/inscriptions\/modifier/];
     const result = guestRoutes.filter(reg=> reg.test(path));
     if(result.length === 0){

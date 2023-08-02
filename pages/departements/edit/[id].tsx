@@ -6,14 +6,18 @@ import DepartementLayout from "@/components/geographie/departements/departement-
 import AddDepartement from "@/components/geographie/departements/add-departement";
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
+import Loader from '@/components/core/loader';
 type Props = {
   data: any;
 }
 
 const Page: React.FC<Props> = ({ data }) => {
   // console.log(data)
+  const token = getCookie('token');
   return (
-    <Layout>
+    <>
+    {
+      token !== undefined ? <Layout>
       <Head>
         <title>Départements | Edit</title>
       </Head>
@@ -22,7 +26,9 @@ const Page: React.FC<Props> = ({ data }) => {
           <AddDepartement data_props={data} pays={data?.pays} />
         </div>
       </DepartementLayout>
-    </Layout>
+    </Layout> : <Loader/>
+    }
+    </>
   );
 };
 

@@ -30,7 +30,8 @@ type Inputs = {
   url: string;
   cible_participation: any;
   image_event: any;
-  image_change: any
+  image_change: any;
+  image: any;
 
 
 };

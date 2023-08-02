@@ -10,13 +10,14 @@ import Swal from 'sweetalert2'
 import { getCookie } from 'cookies-next';
 import axios from 'axios';
 import { useRouter } from 'next/router'
-
+import Loader from '@/components/core/loader'
 import EditIcon from '@mui/icons-material/Edit';
 type Props = {
   data: any;
 }
 
 const Page: React.FC<Props> = ({ data }) => {
+  const token =getCookie('token');
   const router = useRouter()
   const deleteAffiliation = (id: number) => {
      axios.delete(`/api/affiliations/${id}`)
@@ -77,7 +78,8 @@ const Page: React.FC<Props> = ({ data }) => {
   };
 
   return (
-    <Layout>
+    <>
+   {token !== undefined ?  <Layout>
       <Head>
         <title>Affiliation | Details</title>
       </Head>
@@ -111,7 +113,8 @@ const Page: React.FC<Props> = ({ data }) => {
           </div>
         </div>
       </AffiliationLayout>
-    </Layout>
+    </Layout> : <Loader/>}
+    </>
   );
 };
 

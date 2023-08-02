@@ -2,12 +2,15 @@ import Layout from "@/components/home/layout";
 import Head from "next/head";
 import React from "react";
 import CiviliteLayout from "@/components/civilites/civilite-layout";
-// import AddP
+import {getCookie} from 'cookies-next'
 import AddCivilite from "@/components/civilites/add-civilite";
+import Loader from "@/components/core/loader";
 
 const Add:React.FC = () => {
+  const token = getCookie('token');
   return (
-    <Layout>
+    <>
+    {token !== undefined ?<Layout>
       <Head>
         <title>Civilité | Ajouter</title>
       </Head>
@@ -16,7 +19,8 @@ const Add:React.FC = () => {
           <AddCivilite data_props={null}/>
         </div>
       </CiviliteLayout>
-    </Layout>
+    </Layout> : <Loader/>}
+    </>
   );
 };
 

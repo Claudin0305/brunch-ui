@@ -6,14 +6,18 @@ import UtilisateurLayout from "@/components/utilisateurs/utilisateur-layout";
 import AddUtilisateur from "@/components/utilisateurs/add-utilisateur";
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
+import Loader from "@/components/core/loader"
 type Props = {
   data: any;
 }
 
 const Page: React.FC<Props> = ({ data }) => {
+  const token = getCookie('token');
   // console.log(data)
   return (
-    <Layout>
+    <>
+    {
+      token !== undefined ? <Layout>
       <Head>
         <title>Utilisateurs | Edit</title>
       </Head>
@@ -22,7 +26,9 @@ const Page: React.FC<Props> = ({ data }) => {
           <AddUtilisateur data_props={data} />
         </div>
       </UtilisateurLayout>
-    </Layout>
+    </Layout> : <Loader/>
+    }
+    </>
   );
 };
 

@@ -6,13 +6,17 @@ import PaysLayout from "@/components/geographie/pays/pays-layout";
 import AddPays from "@/components/geographie/pays/add-pays";
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
+import Loader from "@/components/core/loader"
 type Props = {
   data: any;
 }
 
 const Page: React.FC<Props> = ({ data }) => {
+  const token = getCookie('token');
   return (
-    <Layout>
+    <>
+    {
+      token !== undefined ? <Layout>
       <Head>
         <title>Pays | Edit</title>
       </Head>
@@ -21,7 +25,9 @@ const Page: React.FC<Props> = ({ data }) => {
           <AddPays data_props={data} />
         </div>
       </PaysLayout>
-    </Layout>
+    </Layout> : <Loader/>
+    }
+    </>
   );
 };
 

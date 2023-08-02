@@ -6,13 +6,17 @@ import EventLayout from "@/components/evenements/event-layout";
 import AddEvent from "@/components/evenements/add-event";
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
+import Loader from "@/components/core/loader"
 type Props = {
   data: any;
 }
 
 const Page: React.FC<Props> = ({ data }) => {
+  const token = getCookie('token');
   return (
-    <Layout>
+    <>
+    {
+      token !== undefined ? <Layout>
       <Head>
         <title>Evénement | Edit</title>
       </Head>
@@ -21,7 +25,9 @@ const Page: React.FC<Props> = ({ data }) => {
           <AddEvent data_props={data}/>
         </div>
       </EventLayout>
-    </Layout>
+    </Layout> : <Loader/>
+    }
+    </>
   );
 };
 

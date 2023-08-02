@@ -10,13 +10,16 @@ import { Button } from '@mui/material'
 import HowToRegIcon from '@mui/icons-material/HowToReg';
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
+import Loader from "@/components/core/loader"
 type Props = {
     data: any;
 }
 const Home: React.FC<Props> = ({ data }) => {
+  const token = getCookie('token');
     return (
         <>
-            <Head>
+            {
+              token !== undefined ? <><Head>
                 <title>Evenements | Participants</title>
                 <meta name="description" content="Brunch" />
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -47,7 +50,8 @@ const Home: React.FC<Props> = ({ data }) => {
                         }
                     </div>
                 </main>
-            </Layout>
+            </Layout></> : <Loader/>
+            }
         </>
     )
 }

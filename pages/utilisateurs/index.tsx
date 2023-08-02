@@ -5,13 +5,17 @@ import UtilisateurLayout from '@/components/utilisateurs/utilisateur-layout';
 import TableUtilisateur from '@/components/utilisateurs/table-utilisateur';
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
+import Loader from "@/components/core/loader"
 type Props = {
   data: any
 }
 
 const Utilisateur: React.FC<Props> = ({ data }) => {
+  const token = getCookie('token');
   return (
-    <Layout>
+    <>
+    {
+      token !== undefined ? <Layout>
       <Head>
         <title>Utilisateurs | Liste</title>
       </Head>
@@ -23,7 +27,9 @@ const Utilisateur: React.FC<Props> = ({ data }) => {
 
 
 
-    </Layout>
+    </Layout> : <Loader/>
+    }
+    </>
   )
 }
 export async function getServerSideProps(context: any) {

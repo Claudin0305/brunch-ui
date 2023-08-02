@@ -10,6 +10,7 @@ import Swal from 'sweetalert2'
 import { useRouter } from 'next/router'
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
+import Loader from "@/components/core/loader"
 
 import EditIcon from '@mui/icons-material/Edit';
 type Props = {
@@ -17,6 +18,7 @@ type Props = {
 }
 
 const Page: React.FC<Props> = ({ data }) => {
+  const token = getCookie('token');
   const router = useRouter()
   const deleteStatut = (id: number) => {
       axios.delete(`/api/statuts/${id}`)
@@ -77,7 +79,8 @@ const Page: React.FC<Props> = ({ data }) => {
   };
 
   return (
-    <Layout>
+    <>
+    { token !== undefined ? <Layout>
       <Head>
         <title>Statut | Détails</title>
       </Head>
@@ -112,7 +115,8 @@ const Page: React.FC<Props> = ({ data }) => {
           </div>
         </div>
       </StatutLayout>
-    </Layout>
+    </Layout> : <Loader/>}
+    </>
   );
 };
 export const getServerSideProps: GetServerSideProps = async (context) => {

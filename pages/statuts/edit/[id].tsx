@@ -6,13 +6,17 @@ import StatutLayout from "@/components/statuts/statut-layout";
 import AddStatut from "@/components/statuts/add-statut";
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
+import Loader from "@/components/core/loader"
 type Props = {
   data: any;
 }
 
 const Page: React.FC<Props> = ({ data }) => {
+  const token = getCookie('token');
   return (
-    <Layout>
+    <>
+    {
+      token !== undefined ? <Layout>
       <Head>
         <title>Statut | Edit</title>
       </Head>
@@ -21,7 +25,9 @@ const Page: React.FC<Props> = ({ data }) => {
           <AddStatut data_props={data} />
         </div>
       </StatutLayout>
-    </Layout>
+    </Layout> : <Loader/>
+    }
+    </>
   );
 };
 export const getServerSideProps: GetServerSideProps = async (context) => {

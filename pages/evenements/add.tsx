@@ -4,10 +4,15 @@ import React from "react";
 import EventLayout from "@/components/evenements/event-layout";
 // import AddP
 import AddEvent from "@/components/evenements/add-event";
+import Loader from "@/components/core/loader"
+import {getCookie} from "cookies-next"
 
 const Add: React.FC = () => {
+  const token = getCookie('token');
   return (
-    <Layout>
+    <>
+    {
+      token !== undefined ? <Layout>
       <Head>
         <title>Evénement | Ajouter</title>
       </Head>
@@ -16,7 +21,9 @@ const Add: React.FC = () => {
           <AddEvent data_props={null} />
         </div>
       </EventLayout>
-    </Layout>
+    </Layout> : <Loader/>
+    }
+    </>
   );
 };
 

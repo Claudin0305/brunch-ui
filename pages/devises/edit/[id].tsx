@@ -6,13 +6,17 @@ import DeviseLayout from "@/components/devises/devise-layout";
 import AddDevise from "@/components/devises/add-devise";
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
+import Loader from "@/components/core/loader"
 type Props = {
   data: any;
 }
 
 const Page: React.FC<Props> = ({ data }) => {
+  const token = getCookie('token');
   return (
-    <Layout>
+    <>
+    {
+      token !== undefined ? <Layout>
       <Head>
         <title>Devise | Edit</title>
       </Head>
@@ -21,7 +25,9 @@ const Page: React.FC<Props> = ({ data }) => {
           <AddDevise data_props={data} />
         </div>
       </DeviseLayout>
-    </Layout>
+    </Layout> : <Loader/>
+    }
+    </>
   );
 };
 export const getServerSideProps: GetServerSideProps = async (context) => {

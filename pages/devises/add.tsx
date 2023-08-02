@@ -4,10 +4,15 @@ import React from "react";
 import DeviseLayout from "@/components/devises/devise-layout";
 // import AddP
 import AddDevise from "@/components/devises/add-devise";
+import Loader from "@/components/core/loader"
+import {getCookie} from "cookies-next"
 
 const Add:React.FC = () => {
+  const token = getCookie('token');
   return (
-    <Layout>
+    <>
+    {
+      token !== undefined ? <Layout>
       <Head>
         <title>Devise | Ajouter</title>
       </Head>
@@ -16,7 +21,9 @@ const Add:React.FC = () => {
           <AddDevise data_props={null}/>
         </div>
       </DeviseLayout>
-    </Layout>
+    </Layout> : <Loader/>
+    }
+    </>
   );
 };
 

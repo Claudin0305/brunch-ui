@@ -41,6 +41,22 @@ type Inputs = {
   id_departement: string | null | any;
   mode_paiement: string | null | any;
 };
+type errType = {
+  civilite? : any
+  nom? : any
+  prenom? : any
+  email? : any
+  email_confirmation? : any
+  email_invalid? : any
+  pays? : any
+  departement? : any
+  ville? : any
+  tel_participant? : any
+  affiliation? : any
+  local? : any
+  mode_participation? : any
+  tranche_age? : any
+}
 type Props = {
   data_props: any | null;
   pays: any | null;
@@ -86,7 +102,7 @@ const mode_paiements: option[] = [
   },
 ]
 
-let errNext = {};
+let errNext: errType = {};
 const champ = 'Ce champ est obligatoire!';
 const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civilites, event, locaux, participants, affiliations }) => {
   const { register, handleSubmit, watch, reset, setValue, getValues, control, formState: { errors } } = useForm<Inputs>();

@@ -5,13 +5,17 @@ import CiviliteLayout from '@/components/civilites/civilite-layout';
 import TableCivilite from '@/components/civilites/table-civilite';
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
+import Loader from '@/components/core/loader';
 type Props = {
   data: any
 }
 
 const Civilite: React.FC<Props> = ({ data }) => {
+  const token = getCookie('token');
   return (
-    <Layout>
+   <>
+   {
+    token !== undefined ?  <Layout>
       <Head>
         <title>Civilités | Liste</title>
       </Head>
@@ -24,7 +28,9 @@ const Civilite: React.FC<Props> = ({ data }) => {
 
 
 
-    </Layout>
+    </Layout> : <Loader/>
+   }
+   </>
   )
 }
 //  {

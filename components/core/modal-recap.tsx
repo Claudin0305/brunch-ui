@@ -26,9 +26,9 @@ const ModalRecap: React.FC<Props> = ({ show, setShow, data }) => {
                                     <h3 className="text-2xl text-blue-500 text-center">Recapitulation </h3>
 
                                     <button
-                                    onClick={e=>{
-                                        setShow(!show)
-                                    }}
+                                        onClick={e => {
+                                            setShow(!show)
+                                        }}
                                         type="button"
                                         className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="staticModal">
                                         <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
@@ -39,25 +39,25 @@ const ModalRecap: React.FC<Props> = ({ show, setShow, data }) => {
                                 </div>{" "}
                                 {/*body*/}
                                 <div className="relative p-6 flex-auto">
-                                     <p className="uppercase">merci pour votre inscription</p>
-                                     <p>Numéro de confirmation: <span className="font-semibold">{data?.username}</span></p>
-                                     <p> Nous enverrons prochainement un accusé de réception au(x) courriel(s) que vous avez spécifié(s).</p>
-                                     {/* <Récapitulatif> */}
-                                     <p>Mode participation: <span className="font-semibold">{data?.mode_participation}</span></p>
-                                     {data?.mode_participation !== 'DISTANCIEL' && <>
-                                     <p>Lieu: <span className="font-semibold">{`${data?.nomPays}, ${data?.ville?.libelleDepartement}, ${data?.ville.libelle}(Local-${data?.idLocal})`}</span></p>
-                                     <p>Mode paiement: <span className="font-semibold">{data?.modePaiement.replace("_", " ").toLowerCase()}</span></p>
-                                     <p>Montant: <span className="font-semibold"> {data?.montant_participation} {data?.devise}</span></p>
+                                    <p className="uppercase">merci pour votre inscription</p>
+                                    <p>Numéro de confirmation: <span className="font-semibold">{data?.username}</span></p>
+                                    <p> Nous enverrons prochainement un accusé de réception au(x) courriel(s) que vous avez spécifié(s).</p>
+                                    {/* <Récapitulatif> */}
+                                    <p>Mode participation: <span className="font-semibold">{data?.mode_participation}</span></p>
+                                    {data?.mode_participation !== 'DISTANCIEL' && <>
+                                        <p>Lieu: <span className="font-semibold">{`${data?.nomPays}, ${data?.ville?.libelleDepartement}, ${data?.ville.libelle} (${data?.libelleLocal})`}</span></p>
+                                        <p>Mode paiement: <span className="font-semibold">{data?.modePaiement.replace("_", " ").toLowerCase()}</span></p>
+                                        <p>Montant: <span className="font-semibold"> {data?.montant_participation} {data?.devise}</span></p>
                                         <Link
                                             className="text-blue-500 hover:text-blue-300"
                                             href={`/paiements`}
                                         >Payer maintenant</Link>
-                                     </>}
-<Link
-className="text-blue-500 hover:text-blue-300"
-href={`/liste-participants/${data?.idEvent}`}
->Tableau des inscrits</Link>
-       {/* (hyperlien) Faire un don */}
+                                    </>}
+                                    <Link
+                                        className="text-blue-500 hover:text-blue-300"
+                                        href={`/liste-participants/${data?.idEvent}`}
+                                    >Tableau des inscrits</Link>
+                                    {/* (hyperlien) Faire un don */}
                                 </div>
                             </div>{" "}
                         </div>{" "}
