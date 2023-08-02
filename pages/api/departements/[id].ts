@@ -8,6 +8,10 @@ export default async function handler( req: NextApiRequest,
 
     const {id} = req.query
 
+        const formData = new FormData();
+        formData.append("libelle", req.body.libelle);
+        formData.append("id_pays", req.body.id_pays);
+
 if(req.method === 'DELETE'){
 axios
           .delete(`${process.env.base_route_get}/departements/${id}`, {
@@ -32,7 +36,7 @@ axios
 }
 if(req.method === 'PUT'){
       axios
-          .put(`${process.env.base_route_get}/departements/${id}`, req.body, {
+          .put(`${process.env.base_route_get}/departements/${id}`, formData, {
     headers: {
           withCredentials: true,
           Cookie: cookie

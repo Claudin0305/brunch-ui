@@ -13,7 +13,7 @@ export default async function handler( req: NextApiRequest,
         formData.append("id_departement", req.body.id_departement);
     if(req.method === 'PUT'){
       axios
-          .put(`${process.env.base_route_get}/villes/${id}`, req.body, {
+          .put(`${process.env.base_route_get}/villes/${id}`, formData, {
     headers: {
           withCredentials: true,
           Cookie: cookie

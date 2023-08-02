@@ -133,9 +133,6 @@ const AddDepartement: React.FC<Props> = ({ data_props, pays }) => {
 
         setIsSubmit(true);
         data.id_pays = data.id_pays?.value
-        const formData = new FormData();
-        formData.append('libelle', data.libelle);
-        formData.append('id_pays', data.id_pays)
         if (data_props === null) {
             createDepartement(data);
         } else {

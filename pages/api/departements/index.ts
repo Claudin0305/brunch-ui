@@ -5,10 +5,13 @@ import { getCookie } from 'cookies-next';
 export default async function handler( req: NextApiRequest,
   res: NextApiResponse) {
     const cookie = getCookie('token', {req, res})
+        const formData = new FormData();
+        formData.append("libelle", req.body.libelle);
+        formData.append("id_pays", req.body.id_pays);
 
 if(req.method === 'POST'){
     axios
-          .post(`${process.env.base_route_get}/departements`, req.body, {
+          .post(`${process.env.base_route_get}/departements`, formData, {
     headers: {
           withCredentials: true,
           Cookie: cookie
