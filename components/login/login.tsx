@@ -29,7 +29,6 @@ const Login: React.FC = () => {
 
   const login = (data: Inputs) => {
     axios.post(`${process.env.base_route}/auth/signin`, data).then(response => {
-      console.log(response);
       if (response.status === 200) {
         // Swal.fire({
         //   // position: 'top-end',

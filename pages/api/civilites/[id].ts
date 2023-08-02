@@ -9,7 +9,7 @@ export default async function handler( req: NextApiRequest,
     const {id} = req.query
     if(req.method === 'PUT'){
       axios
-          .put(`${process.env.base_route}/civilites/${id}`, req.body, {
+          .put(`${process.env.base_route_get}/civilites/${id}`, req.body, {
     headers: {
           withCredentials: true,
           Cookie: cookie
