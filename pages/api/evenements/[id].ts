@@ -26,7 +26,7 @@ export default async function handler( req: NextApiRequest,
      }
     if(req.method === 'PUT'){
       axios
-          .put(`${process.env.base_route}/events/${id}`, formData, {
+          .put(`${process.env.base_route_get}/events/${id}`, formData, {
     headers: {
           withCredentials: true,
           Cookie: cookie,
@@ -52,7 +52,7 @@ export default async function handler( req: NextApiRequest,
     }
 if(req.method === 'DELETE'){
 axios
-          .delete(`${process.env.base_route}/events/${id}`, {
+          .delete(`${process.env.base_route_get}/events/${id}`, {
     headers: {
           withCredentials: true,
           Cookie: cookie

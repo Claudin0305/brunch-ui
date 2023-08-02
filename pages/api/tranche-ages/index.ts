@@ -8,7 +8,7 @@ export default async function handler( req: NextApiRequest,
 
 if(req.method === 'POST'){
     axios
-          .post(`${process.env.base_route}/tranche-ages`, req.body, {
+          .post(`${process.env.base_route_get}/tranche-ages`, req.body, {
     headers: {
           withCredentials: true,
           Cookie: cookie

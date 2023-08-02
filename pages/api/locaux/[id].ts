@@ -22,7 +22,7 @@ export default async function handler( req: NextApiRequest,
     formData.append('nb_reservation', req.body.nb_reservation)
     if(req.method === 'PUT'){
       axios
-          .put(`${process.env.base_route}/locaux/${id}`, formData, {
+          .put(`${process.env.base_route_get}/locaux/${id}`, formData, {
     headers: {
           withCredentials: true,
           Cookie: cookie
@@ -47,7 +47,7 @@ export default async function handler( req: NextApiRequest,
     }
 if(req.method === 'DELETE'){
 axios
-          .delete(`${process.env.base_route}/locaux/${id}`, {
+          .delete(`${process.env.base_route_get}/locaux/${id}`, {
     headers: {
           withCredentials: true,
           Cookie: cookie

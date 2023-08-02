@@ -10,13 +10,10 @@ const formData = new FormData();
         formData.append('messageType', req.body.message_type)
         formData.append('subject', req.body.subject)
 
-    console.log("===========================================")
-    console.log(req.body)
-    console.log("===========================================")
     const {id} = req.query
     if(req.method === 'PUT'){
       axios
-          .put(`${process.env.base_route}/messages/${id}`, formData, {
+          .put(`${process.env.base_route_get}/messages/${id}`, formData, {
     headers: {
           withCredentials: true,
           Cookie: cookie,

@@ -34,7 +34,7 @@ export default async function handler( req: NextApiRequest,
     }
 if(req.method === 'DELETE'){
 axios
-          .delete(`${process.env.base_route}/civilites/${id}`, {
+          .delete(`${process.env.base_route_get}/civilites/${id}`, {
     headers: {
           withCredentials: true,
           Cookie: cookie

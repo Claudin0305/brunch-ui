@@ -8,7 +8,7 @@ export default async function handler( req: NextApiRequest,
 
 if(req.method === 'POST'){
     axios
-          .post(`${process.env.base_route}/affiliations`, req.body, {
+          .post(`${process.env.base_route_get}/affiliations`, req.body, {
     headers: {
           withCredentials: true,
           Cookie: cookie

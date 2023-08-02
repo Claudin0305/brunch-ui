@@ -10,7 +10,7 @@ export default async function handler( req: NextApiRequest,
 
 if(req.method === 'DELETE'){
 axios
-          .delete(`${process.env.base_route}/departements/${id}`, {
+          .delete(`${process.env.base_route_get}/departements/${id}`, {
     headers: {
           withCredentials: true,
           Cookie: cookie
@@ -32,7 +32,7 @@ axios
 }
 if(req.method === 'PUT'){
       axios
-          .put(`${process.env.base_route}/departements/${id}`, req.body, {
+          .put(`${process.env.base_route_get}/departements/${id}`, req.body, {
     headers: {
           withCredentials: true,
           Cookie: cookie

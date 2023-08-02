@@ -24,7 +24,7 @@ export default async function handler( req: NextApiRequest,
 
 if(req.method === 'POST'){
     axios
-          .post(`${process.env.base_route}/events`, formData, {
+          .post(`${process.env.base_route_get}/events`, formData, {
     headers: {
           withCredentials: true,
           Cookie: cookie,
