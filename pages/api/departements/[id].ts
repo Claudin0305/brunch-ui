@@ -11,6 +11,7 @@ export default async function handler( req: NextApiRequest,
         const formData = new FormData();
         formData.append("libelle", req.body.libelle);
         formData.append("id_pays", req.body.id_pays);
+        formData.append("dept_abbreviation", req.body.dept_abbreviation);
 
 if(req.method === 'DELETE'){
 axios

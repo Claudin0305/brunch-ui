@@ -7,6 +7,7 @@ export default async function handler( req: NextApiRequest,
     const cookie = getCookie('token', {req, res})
         const formData = new FormData();
         formData.append("libelle", req.body.libelle);
+        formData.append("dept_abbreviation", req.body.dept_abbreviation);
         formData.append("id_pays", req.body.id_pays);
 
 if(req.method === 'POST'){
