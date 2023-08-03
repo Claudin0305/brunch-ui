@@ -32,7 +32,7 @@ const ModalRecap: React.FC<Props> = ({ show, setShow, data }) => {
                                         type="button"
                                         className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="staticModal">
                                         <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
                                         </svg>
                                         <span className="sr-only">Close modal</span>
                                     </button>
@@ -40,22 +40,23 @@ const ModalRecap: React.FC<Props> = ({ show, setShow, data }) => {
                                 {/*body*/}
                                 <div className="relative p-6 flex-auto">
                                     <p className="uppercase">merci pour votre inscription</p>
-                                    <p>Numéro de confirmation: <span className="font-semibold">{data?.username}</span></p>
+                                    <p>Numéro de confirmation: <span className="font-semibold">{data.data?.username}</span></p>
                                     <p> Nous enverrons prochainement un accusé de réception au(x) courriel(s) que vous avez spécifié(s).</p>
                                     {/* <Récapitulatif> */}
-                                    <p>Mode participation: <span className="font-semibold">{data?.mode_participation}</span></p>
-                                    {data?.mode_participation !== 'DISTANCIEL' && <>
-                                        <p>Lieu: <span className="font-semibold">{`${data?.nomPays}, ${data?.ville?.libelleDepartement}, ${data?.ville.libelle} (${data?.libelleLocal})`}</span></p>
-                                        <p>Mode paiement: <span className="font-semibold">{data?.modePaiement.replace("_", " ").toLowerCase()}</span></p>
-                                        <p>Montant: <span className="font-semibold"> {data?.montant_participation} {data?.devise}</span></p>
-                                        <Link
+                                    <p>Mode participation: <span className="font-semibold">{data.data?.mode_participation}</span></p>
+                                    {data.data?.mode_participation !== 'DISTANCIEL' && <>
+                                        <p>Lieu: <span className="font-semibold">{`${data.data?.nomPays}, ${data.data?.ville?.libelleDepartement}, ${data.data?.ville?.libelle} (${data.data?.libelleLocal})`}</span></p>
+                                        <p>Mode paiement: <span className="font-semibold">{data.data?.modePaiement}</span></p>
+                                        <p>Montant: <span className="font-semibold"> {data.data?.montant_participation} {data.data?.devise}</span></p>
+                                        {data.data?.modePaiement === "IMMEDIAT" && <Link
                                             className="text-blue-500 hover:text-blue-300 block my-4"
                                             href={`/paiements`}
-                                        >Payer maintenant</Link>
+                                        >Payer maintenant</Link>}
+
                                     </>}
                                     <Link
                                         className="text-blue-500 block hover:text-blue-300"
-                                        href={`/liste-participants/${data?.idEvent}`}
+                                        href={`/liste-participants/${data.data?.idEvent}`}
                                     >Tableau des inscrits</Link>
                                     {/* (hyperlien) Faire un don */}
                                 </div>

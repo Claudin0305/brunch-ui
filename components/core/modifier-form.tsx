@@ -24,7 +24,7 @@ const UpdateInscription: React.FC = () => {
 
     const updateForm = (data: Inputs) => {
 
-        axios.get(`${process.env.base_route_get}/participants/by/${data.username}`).then(response => {
+        axios.get(`/api/inscriptions/update/${data.username}`).then(response => {
             if (response.status === 200) {
                 // Swal.fire({
                 //     // position: 'top-end',
@@ -41,7 +41,7 @@ const UpdateInscription: React.FC = () => {
                     // axios.post(`/inscriptions/edit/${response.data.idEvent}/${response.data.username}`).then(response=>{
                     //     console.log('test')
                     // })
-                    router.push(`/inscriptions/edit/${response.data.idEvent}/${response.data.username}`)
+                    router.push(`/inscriptions/edit/${response.data.data.idEvent}/${response.data.data.username}`)
                 }else{
                     Swal.fire({
                     // position: 'top-end',

@@ -100,7 +100,9 @@ const SideBare: React.FC = () => {
   return (
     <div className="h-screen flex flex-col w-72 shadow-lg bg-white overflow-y-scroll">
       <div className="flex">
-        <h1 className="text-2xl uppercase px-4 py-4">Administration</h1>
+
+        <Link href={"/"}><h1 className="text-2xl uppercase px-4 py-4 hover:text-blue-500"> Site web
+        </h1></Link>
       </div>
       <div className="flex flex-col">
         {navigation.map(({ path, icon, name }) => (

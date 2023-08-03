@@ -42,20 +42,21 @@ type Inputs = {
   mode_paiement: string | null | any;
 };
 type errType = {
-  civilite? : any
-  nom? : any
-  prenom? : any
-  email? : any
-  email_confirmation? : any
-  email_invalid? : any
-  pays? : any
-  departement? : any
-  ville? : any
-  tel_participant? : any
-  affiliation? : any
-  local? : any
-  mode_participation? : any
-  tranche_age? : any
+  civilite?: any
+  nom?: any
+  prenom?: any
+  email?: any
+  email_confirmation?: any
+  email_invalid?: any
+  pays?: any
+  departement?: any
+  ville?: any
+  tel_participant?: any
+  affiliation?: any
+  local?: any
+  mode_participation?: any
+  tranche_age?: any
+  tel_invalid?: any
 }
 type Props = {
   data_props: any | null;
@@ -89,17 +90,14 @@ const format_events: option[] = [
 ]
 const mode_paiements: option[] = [
   {
-    value: "PAIEMENT_DIFFERE",
+    value: "DIFFERE",
     label: "Paiement Différé"
   },
   {
-    value: "PAYPAL",
-    label: "PayPal"
+    value: "IMMEDIAT",
+    label: "Paiement Immédiat"
   },
-  {
-    value: "CHEQUE",
-    label: "Chèque"
-  },
+
 ]
 
 let errNext: errType = {};
@@ -141,16 +139,15 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
 
   const [responseError, setResponseError] = useState<any>(null);
   useEffect(() => {
-
     if (data_props !== null) {
       setValue('nom', data_props.nom)
       setValue('prenom', data_props.prenom)
       setValue('email', data_props.email)
       setValue('tel_participant', data_props.tel_participant)
-      setValue('authorisation_liste', data_props.authorisation_liste)
+      setValue('authorisation_liste', data_props.authorisationListe)
       setValue('abonnement_newsletter', data_props.abonnement_newsletter)
       setValue('email_confirmation', data_props.email)
-      const pays = optionsPays?.filter((o:any)=> o.label === data_props.nomPays)[0];
+      const pays = optionsPays?.filter((o: any) => o.label === data_props.nomPays)[0];
       setValue('id_pays', pays);
       setSelectedPays(pays)
       const tableDept: option[] = [];
@@ -179,14 +176,14 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
         })
       })
       setOptionsVille(sorter(tableVille))
-      const ville = tableVille?.filter((o:any)=> o.value === data_props.ville.id_ville)[0];
+      const ville = tableVille?.filter((o: any) => o.value === data_props.ville.id_ville)[0];
       setValue('id_ville', ville);
       setSelectedVille(ville)
       const trAge = optionsTrancheAge?.filter((o: any) => o.value === data_props.idTrancheAge)[0];
       setValue('id_tranche_age', trAge);
-      const civilite = optionsCivilite?.filter((o:any)=> o.value === data_props.idCivilite)[0];
+      const civilite = optionsCivilite?.filter((o: any) => o.value === data_props.idCivilite)[0];
       setValue('id_civilite', civilite);
-      const aff = optionsAffiliation?.filter((o:any)=>o.value === data_props?.idAffiliation)[0]
+      const aff = optionsAffiliation?.filter((o: any) => o.value === data_props?.idAffiliation)[0]
       setValue('id_affiliation', aff);
       setSelectedAffiliation(aff)
       const optionsMod: option[] = [
@@ -199,14 +196,14 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
           label: "Distanciel"
         }
       ]
-      const mod = optionsMod.filter((o:any)=> o.value === data_props.mode_participation)[0];
+      const mod = optionsMod.filter((o: any) => o.value === data_props.mode_participation)[0];
       setValue('mode_participation', mod);
       setSelectedMode(mod)
-      const loc = optionsLocal?.filter((o:any)=> o.value === data_props?.idLocal)[0];
+      const loc = optionsLocal?.filter((o: any) => o.value === data_props?.idLocal)[0];
       setValue('id_local', loc);
       setSelectLocal(loc);
 
-      const mod_p = mode_paiements.filter((o:any)=> o.value === data_props?.modePaiement)[0];
+      const mod_p = mode_paiements.filter((o: any) => o.value === data_props?.modePaiement)[0];
       setValue('mode_paiement', mod_p);
       setSelectModePaiement(mod_p);
 
@@ -215,7 +212,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
 
   useEffect(() => {
     const tableOptions: option[] = [];
-    tranche_ages?.sort((a:any, b:any) => {
+    tranche_ages?.sort((a: any, b: any) => {
       let fa = a.libelle,
         fb = b.libelle;
 
@@ -227,7 +224,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
       }
       return 0;
     });
-    tranche_ages?.forEach((p:any) => {
+    tranche_ages?.forEach((p: any) => {
       tableOptions.push({
         label: p.libelle,
         value: p.id_tranche_age
@@ -239,7 +236,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
   useEffect(() => {
     const tableOptions: option[] = [];
 
-    locaux?.forEach((e:any) => {
+    locaux?.forEach((e: any) => {
       tableOptions.push({
         label: `${e.libelle} (${e.pays}, ${e.ville})`,
         value: e.id_local,
@@ -249,7 +246,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
     })
 
 
-    tableOptions?.sort((a:any, b:any) => {
+    tableOptions?.sort((a: any, b: any) => {
       let fa = a.label,
         fb = b.label;
 
@@ -274,7 +271,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
       tablePays: option[] = [],
       tableDepartements: option[] = [],
       tableVilles: option[] = [];
-    pays?.forEach((p:any) => {
+    pays?.forEach((p: any) => {
       tablePays.push({
         label: p.libelle,
         value: p.id_pays,
@@ -306,7 +303,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
     //   return 0;
     // });
 
-    tablePays?.sort((a:any, b:any) => {
+    tablePays?.sort((a: any, b: any) => {
       let fa = a.label,
         fb = b.label;
 
@@ -326,9 +323,9 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
   }, []);
 
 
-  useEffect(()=>{
+  useEffect(() => {
     const tableOptions: option[] = [];
-    affiliations?.sort((a:any, b:any) => {
+    affiliations?.sort((a: any, b: any) => {
       let fa = a.nom_affiliation,
         fb = b.nom_affiliation;
 
@@ -340,7 +337,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
       }
       return 0;
     });
-    affiliations?.forEach((p:any) => {
+    affiliations?.forEach((p: any) => {
       tableOptions.push({
         label: p.nom_affiliation,
         value: p.affiliationId
@@ -373,7 +370,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
     }
   }, [event])
   const sorter = (table: option[]) => {
-    table?.sort((a:any, b:any) => {
+    table?.sort((a: any, b: any) => {
       let fa = a.label,
         fb = b.label;
 
@@ -389,7 +386,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
   }
   useEffect(() => {
     const tableOptions: option[] = [];
-    civilites?.sort((a:any, b:any) => {
+    civilites?.sort((a: any, b: any) => {
       let fa = a.libelle,
         fb = b.libelle;
 
@@ -401,7 +398,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
       }
       return 0;
     });
-    civilites?.forEach((e:any) => {
+    civilites?.forEach((e: any) => {
       tableOptions.push({
         label: e.libelle,
         value: e.id_civilite
@@ -413,11 +410,11 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
 
   const updateInscription = (data: Inputs | FormData) => {
     axios
-      .put(`${process.env.base_route}/participants/${data_props.username}`, data, {
-          headers: {
-            "Access-Control-Allow-Origin": "*",
-          },
-        })
+      .put(`/api/inscriptions/${data_props.username}`, data, {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
+      })
       .then((response) => {
         if (response.status === 200) {
 
@@ -458,16 +455,14 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
 
 
   };
-// console.log(errors, errors!==null);
+  // console.log(errors, errors!==null);
   const createInscription = (data: Inputs | FormData) => {
-    console.log('submit.....')
 
-    axios.post(`${process.env.base_route}/participants`, data, {
-          headers: {
-            "Access-Control-Allow-Origin": "*",
-          },
-        }).then(response => {
-      console.log(response);
+    axios.post(`/api/inscriptions`, data, {
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
+    }).then(response => {
       if (response.status === 201) {
         Swal.fire({
           // position: 'top-end',
@@ -518,46 +513,48 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
 
 
   };
-
+  // /^[+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[-\s\\./0-9]*$/g
 
   const onSubmit: SubmitHandler<Inputs> = data => {
     let formData = new FormData()
-    formData.append("id_event", event.id_event)
-    formData.append("prenom", data.prenom)
-    formData.append("nom", data.nom)
-    formData.append("email", data.email)
-    formData.append("tel_participant", data.tel_participant)
+    data.id_event = event.id_event
+    data.id_ville = selectedVille?.value;
+    data.mode_participation = selectedMode?.value;
+    data.id_tranche_age = data.id_tranche_age?.value
+    data.id_civilite = data.id_civilite?.value;
+
     if (data.affiliation !== undefined) {
 
       formData.append("affiliation", data.affiliation)
+
     }
-    formData.append("abonnement_newsletter", ""+data.abonnement_newsletter)
-    formData.append("authorisationListe", ""+data.authorisation_liste)
-    formData.append("id_ville", selectedVille?.value)
-    formData.append("mode_participation", selectedMode?.value)
-    formData.append("id_civilite", data.id_civilite?.value)
-    formData.append("id_tranche_age", data.id_tranche_age?.value)
+
     if (data?.id_local?.value !== undefined) {
+      data.id_local = data.id_local?.value;
       formData.append("id_local", data.id_local?.value)
     } else {
       formData.append("id_local", '0')
+      data.id_local = '0'
 
     }
     if (data?.id_affiliation?.value !== undefined) {
       formData.append("id_affiliation", data.id_affiliation?.value)
+      data.id_affiliation = data.id_affiliation?.value;
     } else {
       formData.append("id_affiliation", '0')
+      data.id_affiliation = '0'
 
     }
-if(selectModePaiement !== null){
-  formData.append("modePaiement", selectModePaiement?.value);
-}
+    if (selectModePaiement !== null) {
+      formData.append("modePaiement", selectModePaiement?.value);
+      data.mode_paiement = selectModePaiement?.value
+    }
 
     setIsSubmit(true);
     if (data_props === null) {
-      createInscription(formData);
+      createInscription(data);
     } else {
-      updateInscription(formData)
+      updateInscription(data)
     }
 
   };
@@ -572,7 +569,7 @@ if(selectModePaiement !== null){
             htmlFor={`id_civilite`}
           >
             {" "}
-            Civilité<Star/>{" "}
+            Civilité<Star />{" "}
           </label>
           <Controller
             name={`id_civilite`}
@@ -592,7 +589,7 @@ if(selectModePaiement !== null){
               />
             )}
           />{" "}
-          {errNext?.civilite && <Error text={champ}/>}
+          {errNext?.civilite && <Error text={champ} />}
           {/* {errors?.id_civilite && <Error text={errors.id_civilite.message} />} */}
         </div>
         <div className="block">
@@ -607,10 +604,9 @@ if(selectModePaiement !== null){
             label="Nom"
             {...register("nom", { required: "Ce champ est obligatoire" })}
             className="md:mt-3"
-            onChange={e=>{
-              console.log(e?.target.value)
-              if (e?.target.value !== ""){
-                errNext = {...errNext, nom:false}
+            onChange={e => {
+              if (e?.target.value !== "") {
+                errNext = { ...errNext, nom: false }
               }
               register('nom').onChange(e);
             }}
@@ -646,12 +642,18 @@ if(selectModePaiement !== null){
             size="small"
             type="text"
             label="Téléphone"
-            {...register("tel_participant", { required: "Ce champ est obligatoire" })}
+            {...register("tel_participant", {
+              required: "Ce champ est obligatoire", pattern: {
+                value: /^[+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[-\s\\./0-9]*$/g,
+                message: "Le format du "
+              }
+            })}
             className=""
           />
           {/* {responseError !== null && <Error text={responseError?.libelle}/>} */}
           {/* {errors?.tel_participant && <Error text={errors.tel_participant.message} />} */}
           {errNext?.tel_participant && <Error text={champ} />}
+          {errNext?.tel_invalid && <Error text={'Le numéro de téléphone est invalide!'} />}
         </div>
         <div className="block">
 
@@ -676,15 +678,15 @@ if(selectModePaiement !== null){
               setEmail(e?.target.value);
               setValue('email_confirmation', "")
               // console.log(participants)
-              const result = participants?.filter((p:any) => p.email === e.target.value && p.idEvent === event.id_event)
+              const result = participants?.filter((p: any) => p.email === e.target.value && p.idEvent === event.id_event)
               setExistEmail(result.length > 0);
               register('email').onChange(e);
             }}
           />
           {/* {responseError !== null && <Error text={responseError?.libelle}/>} */}
           {/* {errors?.email && <Error text={errors.email.message} />} */}
-          {errNext?.email && <Error text={champ}/>}
-          {errNext?.email_invalid && <Error text={'Le format du courriel que vous avez spécifié incorrect.  Veuillez entrer un courriel valide.'} />}
+          {errNext?.email && <Error text={champ} />}
+          {errNext?.email_invalid && <div className="block"> <Error text={'Le format du courriel que vous avez spécifié incorrect.  Veuillez entrer un courriel valide.'} /> </div>}
           {/* {existEmail && <Error text={"Ce courriel existe déjà dans notre système!"} />} */}
         </div>
         <div className="block">
@@ -750,7 +752,7 @@ if(selectModePaiement !== null){
             htmlFor={`id_pays`}
           >
             {" "}
-            Pays<Star/>{" "}
+            Pays<Star />{" "}
           </label>
           <Controller
             name={`id_pays`}
@@ -773,7 +775,7 @@ if(selectModePaiement !== null){
                   setSelectedDepartement(null);
                   setSelectedVille(null);
                   const tableDept: option[] = [];
-                  e?.data.forEach((d:any) => {
+                  e?.data.forEach((d: any) => {
                     tableDept.push({
                       label: d.libelle,
                       value: d.id_departement,
@@ -795,7 +797,7 @@ if(selectModePaiement !== null){
             htmlFor={`id_departement`}
           >
             {" "}
-            Département/Province/Etat/Canton<Star/>{" "}
+            Département/Province/Etat/Canton<Star />{" "}
           </label>
           <Controller
             name={`id_departement`}
@@ -819,10 +821,10 @@ if(selectModePaiement !== null){
                   setValue('id_departement', e)
                   const tableVille: option[] = [];
                   tableVille.push({
-                    label:"Autre",
-                    value:"0"
+                    label: "Autre",
+                    value: "0"
                   })
-                  e?.data.forEach((v:any) => {
+                  e?.data.forEach((v: any) => {
                     tableVille.push({
                       label: v.libelle,
                       value: v.id_ville,
@@ -842,7 +844,7 @@ if(selectModePaiement !== null){
             htmlFor={`id_ville`}
           >
             {" "}
-            Ville<Star/>{" "}
+            Ville<Star />{" "}
           </label>
           <Controller
             name={`id_ville`}
@@ -855,15 +857,15 @@ if(selectModePaiement !== null){
               <Select
                 {...field}
                 placeholder={
-                "Choisir une ville ou cliquez sur \"Autre\" pour créer une ville manquante."
+                  "Choisir une ville ou cliquez sur \"Autre\" pour créer une ville manquante."
                 }
                 isClearable
                 options={optionsVille}
                 value={selectedVille}
                 onChange={e => {
-                  if(e?.value == "0"){
+                  if (e?.value == "0") {
                     setShowModalVille(!showModalVille)
-                  }else{
+                  } else {
                     setSelectedVille(e)
                     setValue('id_ville', e)
 
@@ -881,64 +883,64 @@ if(selectModePaiement !== null){
       label: 'Mode de participation',
       description: <div className="flex flex-col md:grid md:grid-cols-3 gap-8">
         {JSON.stringify(errors) !== '{}' && <div className="md:col-span-3 col-span-1 text-center -mt-4 flex justify-center">
-          <Error text="Erreur lors de la soumission. Vérifiez vos données!"/>
-          </div>}
+          <Error text="Erreur lors de la soumission. Vérifiez vos données!" />
+        </div>}
 
-        <input type="hidden" name=""/>
+        <input type="hidden" name="" />
         <div className="flex-col flex md:-mt-4 z-10">
-            <label
-              className="mb-2"
-              htmlFor={`id_affiliation`}
-            >
-              {" "}
-              Affiliation{" "}
-            </label>
-            <Controller
-              name={`id_affiliation`}
-              control={control}
-              rules={{
-                required: {
-                  message: "Ce champ est obligatoire",
-                  value: false
-                },
-              }}
+          <label
+            className="mb-2"
+            htmlFor={`id_affiliation`}
+          >
+            {" "}
+            Affiliation{" "}
+          </label>
+          <Controller
+            name={`id_affiliation`}
+            control={control}
+            rules={{
+              required: {
+                message: "Ce champ est obligatoire",
+                value: false
+              },
+            }}
 
-              render={({ field }) => (
-                <Select
-                  {...field}
-                  placeholder={
-                "Choisir une Affiliation ou cliquez sur \"Autre Affiliation\" pour créer une affiliation manquante."
+            render={({ field }) => (
+              <Select
+                {...field}
+                placeholder={
+                  "Choisir une Affiliation ou cliquez sur \"Autre Affiliation\" pour créer une affiliation manquante."
+                }
+                isClearable
+                options={optionsAffiliation}
+                value={selectedAffiliation}
+                onChange={e => {
+                  if (e?.value == "0") {
+                    setShowModalAffiliation(!showModalAffiliation)
+                  } else {
+                    setSelectedAffiliation(e)
+                    setValue('id_affiliation', e)
+
                   }
-                  isClearable
-                  options={optionsAffiliation}
-                  value={selectedAffiliation}
-                  onChange={e => {
-                    if (e?.value == "0") {
-                      setShowModalAffiliation(!showModalAffiliation)
-                    } else {
-                      setSelectedAffiliation(e)
-                      setValue('id_affiliation', e)
+                }}
+              // value={selectLocal}
+              // onChange={e => {
+              //   setValue('id_affiliation', e);
+              //   setSelectLocal(e)
+              // }}
+              />
+            )}
+          />{" "}
+          {errors?.id_affiliation && <Error text={errors.id_affiliation.message} />}
 
-                    }
-                  }}
-                  // value={selectLocal}
-                  // onChange={e => {
-                  //   setValue('id_affiliation', e);
-                  //   setSelectLocal(e)
-                  // }}
-                />
-              )}
-            />{" "}
-            {errors?.id_affiliation && <Error text={errors.id_affiliation.message} />}
-
-          </div>
+        </div>
         <div className="flex-col flex md:-mt-4 z-20">
           <label
             className="mb-2"
             htmlFor={`mode_participation`}
           >
             {" "}
-            Mode participation<Star/>{" "}
+            Mode participation<Star />{" "}
           </label>
           <Controller
             name={`mode_participation`}
@@ -975,7 +977,7 @@ if(selectModePaiement !== null){
               htmlFor={`id_local`}
             >
               {" "}
-              Local<Star/>{" "}
+              Local<Star />{" "}
             </label>
             <Controller
               name={`id_local`}
@@ -1016,7 +1018,7 @@ if(selectModePaiement !== null){
               htmlFor={`mode_paiement`}
             >
               {" "}
-              Mode paiement<Star/>{" "}
+              Mode paiement<Star />{" "}
             </label>
             <Controller
               name={`mode_paiement`}
@@ -1047,8 +1049,8 @@ if(selectModePaiement !== null){
 
                     // }else{
 
-                      setValue('mode_paiement', e);
-                      setSelectModePaiement(e);
+                    setValue('mode_paiement', e);
+                    setSelectModePaiement(e);
                     // }
                   }}
                   options={mode_paiements}
@@ -1081,21 +1083,23 @@ if(selectModePaiement !== null){
         <div className="col-span-3">
 
           <div className="block">
-             <input
-            {...register("authorisation_liste")}
-            type="checkbox"
+            <input
+              {...register("authorisation_liste")}
+              type="checkbox"
+              id="authorisation_liste"
               className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 mr-2"
             />
             <label htmlFor="authorisation_liste">{`J'autorise GRAHN-Monde à afficher mon nom dans le tableau des inscrits au Brunch'${new Date().getFullYear()}`}</label>
 
           </div>
           <div className="block mt-4">
-             <input
+            <input
               {...register("abonnement_newsletter")}
-            type="checkbox"
+              type="checkbox"
+              id="abonnement_newsletter"
               className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 mr-2"
             />
-            <label htmlFor="authorisation_liste">Je souhaite recevoir les communications de GRAHN-Monde</label>
+            <label htmlFor="abonnement_newsletter">Je souhaite recevoir les communications de GRAHN-Monde</label>
 
           </div>
           {/* <div className="block">
@@ -1113,7 +1117,7 @@ if(selectModePaiement !== null){
             />
           </div> */}
         </div>
-         <div className="flex justify-end flex-col mt-8 md:flex-row gap-8 mb-8 col-span-3">
+        <div className="flex justify-end flex-col mt-8 md:flex-row gap-8 mb-8 col-span-3">
           <Button
             type="reset"
             className="text-blue-600 border-blue-600 capitalize"
@@ -1134,48 +1138,7 @@ if(selectModePaiement !== null){
         </div>,
       </div>,
     },
-    // {
-    //   label: 'resumé',
-    //   description: <div>
-    //     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-    //       {getValues('nom') && <div className="flex justify-between">
-    //         <p>Nom:</p> <p>{getValues('nom')}</p>
-    //       </div>
-    //       }
-    //       {getValues('prenom') && <div className="flex justify-between">
-    //         <p>Prenom:</p> <p>{getValues('prenom')}</p>
-    //       </div>
-    //       }
-    //       {getValues('email') && <div className="flex justify-between">
-    //         <p>Email:</p> <p>{getValues('email')}</p>
-    //       </div>
-    //       }
-    //       {getValues('tel_participant') && <div className="flex justify-between">
-    //         <p>Téléphone:</p> <p>{getValues('tel_participant')}</p>
-    //       </div>
-    //       }
-    //     </div>
-    //     <div className="flex justify-end flex-col mt-8 md:flex-row gap-8 mb-8">
-    //       <Button
-    //         type="reset"
-    //         className="text-blue-600 border-blue-600 capitalize"
-    //         variant="outlined"
-    //       >
-    //         Reinitialiser
-    //       </Button>
 
-    //       <Button
-    //         disabled={isSubmit || existEmail || !identiqueEmail || selectedMode === null}
-    //         type="submit"
-    //         className={`bg-blue-600 capitalize text-white flex items-center justify-center gap-x-2 ${isSubmit || selectedMode === null ? "bg-blue-400" : ""}`}
-    //         variant="contained"
-
-    //       >
-    //         {isSubmit && <CircularIndeterminate />} <span>{data_props === null ? "S'inscrire" : 'Modifier'}</span>
-    //       </Button>
-    //     </div>,
-    //   </div>
-    // },
   ];
   const theme = useTheme();
   const [activeStep, setActiveStep] = React.useState(0);
@@ -1185,80 +1148,82 @@ if(selectModePaiement !== null){
     const values = getValues()
     const errC = values.id_civilite === null || values.id_civilite === undefined
     setErrorNext({ ...errorNext, errorCivilite: errC })
-    if (values.id_civilite === null || values.id_civilite === undefined){
+    if (values.id_civilite === null || values.id_civilite === undefined) {
       errNext = { ...errNext, civilite: true }
-    }else{
+    } else {
       errNext = { ...errNext, civilite: false }
     }
-    if (values.id_pays === null || values.id_pays === undefined){
+    if (values.id_pays === null || values.id_pays === undefined) {
       errNext = { ...errNext, pays: true }
-    }else{
+    } else {
       errNext = { ...errNext, pays: false }
     }
-    if (values.id_ville === null || values.id_ville === undefined){
+    if (values.id_ville === null || values.id_ville === undefined) {
       errNext = { ...errNext, ville: true }
-    }else{
+    } else {
       errNext = { ...errNext, ville: false }
     }
-    if (values.id_departement === null || values.id_departement === undefined){
+    if (values.id_departement === null || values.id_departement === undefined) {
       errNext = { ...errNext, departement: true }
-    }else{
+    } else {
       errNext = { ...errNext, departement: false }
     }
-    if (values.id_tranche_age === null || values.id_tranche_age === undefined){
+    if (values.id_tranche_age === null || values.id_tranche_age === undefined) {
       errNext = { ...errNext, tranche_age: true }
-    }else{
+    } else {
       errNext = { ...errNext, tranche_age: false }
     }
-    if (values.nom.trim() ===""){
+    if (values.nom.trim() === "") {
       errNext = { ...errNext, nom: true }
-    }else{
+    } else {
       errNext = { ...errNext, nom: false }
     }
-    if (values.prenom.trim() ===""){
+    if (values.prenom.trim() === "") {
       errNext = { ...errNext, prenom: true }
-    }else{
+    } else {
       errNext = { ...errNext, prenom: false }
     }
-    if (values.email.trim() ===""){
+    if (values.email.trim() === "") {
       errNext = { ...errNext, email: true }
-    }else{
+    } else {
       errNext = { ...errNext, email: false }
     }
-    if (values.tel_participant.trim() ===""){
+    if (values.tel_participant.trim() === "") {
       errNext = { ...errNext, tel_participant: true }
-    }else{
+    } else {
       errNext = { ...errNext, tel_participant: false }
+      let reg = /^[+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[-\s\\./0-9]*$/g
+      errNext = { ...errNext, tel_invalid: !reg.test(values.tel_participant) }
     }
 
     const keys = Object.keys(errNext);
 
-    if(!keys.includes("email")){
+    if (values.email.trim() !== "") {
       let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
       errNext = { ...errNext, email_invalid: !reg.test(values.email) }
     }
     if (values.email_confirmation.trim() !== "" && values.email !== values.email_confirmation) {
       errNext = { ...errNext, email_confirmation: true }
-    }else{
+    } else {
       errNext = { ...errNext, email_confirmation: false }
     }
 
     const val = Object.values(errNext);
 
     const result = val.filter(v => v === true);
-    if(result.length > 0){
-Swal.fire({
-                    // position: 'top-end',
-                    icon: 'error',
-                    title: 'Vos données ne sont pas valides!',
-                    // showConfirmButton: false,
-                    // timer: 1500
-                    // buttonColor:"#000000",
-                    // buttons:[""]
-                    confirmButtonColor: "#2563eb",
-                    confirmButtonText: "Fermer",
-                })
-    }else{
+    if (result.length > 0) {
+      Swal.fire({
+        // position: 'top-end',
+        icon: 'error',
+        title: 'Vos données ne sont pas valides!',
+        // showConfirmButton: false,
+        // timer: 1500
+        // buttonColor:"#000000",
+        // buttons:[""]
+        confirmButtonColor: "#2563eb",
+        confirmButtonText: "Fermer",
+      })
+    } else {
 
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
     }
@@ -1322,17 +1287,17 @@ Swal.fire({
         </section>
 
       </form>
-      <ModalRecap show={show} setShow={setShow} data={responseData}/>
+      <ModalRecap show={show} setShow={setShow} data={responseData} />
       <ModalAddAffiliation
         show={showModalAffiliation}
         setShow={setShowModalAffiliation}
         setSelectedAffiliation={setSelectedAffiliation}
       />
       <ModalAddVille
-      show={showModalVille}
-      setShow={setShowModalVille}
-      selectedDept={selectedDepartement}
-      setSelectedVille={setSelectedVille}
+        show={showModalVille}
+        setShow={setShowModalVille}
+        selectedDept={selectedDepartement}
+        setSelectedVille={setSelectedVille}
       />
     </div>
   );
