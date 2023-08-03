@@ -49,12 +49,12 @@ const ModalRecap: React.FC<Props> = ({ show, setShow, data }) => {
                                         <p>Mode paiement: <span className="font-semibold">{data?.modePaiement.replace("_", " ").toLowerCase()}</span></p>
                                         <p>Montant: <span className="font-semibold"> {data?.montant_participation} {data?.devise}</span></p>
                                         <Link
-                                            className="text-blue-500 hover:text-blue-300"
+                                            className="text-blue-500 hover:text-blue-300 block my-4"
                                             href={`/paiements`}
                                         >Payer maintenant</Link>
                                     </>}
                                     <Link
-                                        className="text-blue-500 hover:text-blue-300"
+                                        className="text-blue-500 block hover:text-blue-300"
                                         href={`/liste-participants/${data?.idEvent}`}
                                     >Tableau des inscrits</Link>
                                     {/* (hyperlien) Faire un don */}

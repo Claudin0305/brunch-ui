@@ -21,9 +21,9 @@ const Page: React.FC = () => {
                     <a target="_blank" href="https://paypal.me/DonBatir?country.x=CA&locale.x=fr_CA" className="text-blue-500 hover:text-blue-600">PayPal</a>
                 </li>
                 <li>
-                    <p><span className="font-semibold text-blue-500">Chèque</span>: GRAHN-Monde, 1649 Rue Notre-Dame-de Fatima, Laval, H7G 4V8, Québec, Canada</p>
+                        <p><span className="font-semibold text-blue-500">Chèque</span>: <span className="font-semibold">GRAHN-Monde, 1649 Rue Notre-Dame-de Fatima, Laval, H7G 4V8, Québec, Canada</span></p>
                 </li>
-                <li><p><span className="font-semibold text-blue-500">Virement Interac</span>: brunch-grahn@monde.org, mot de passe Brunch'2023</p></li>
+                    <li><p><span className="font-semibold text-blue-500">Virement Interac</span>: <span className="font-semibold">brunch-grahn@monde.org, mot de passe Brunch'2023</span></p></li>
             </ul>
             </div>
 
