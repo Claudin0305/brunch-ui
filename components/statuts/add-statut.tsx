@@ -34,7 +34,7 @@ const AddStatut: React.FC<Props> = ({data_props}) => {
 
    const updateStatut = (data:Inputs) => {
     axios
-        .put(`${process.env.base_route}/statuts/${data_props.id_statut}`, data)
+        .put(`/api/statuts/${data_props.id_statut}`, data)
         .then((response) => {
           if (response.status === 200) {
 
@@ -63,7 +63,7 @@ const AddStatut: React.FC<Props> = ({data_props}) => {
    };
    const createStatut =  (data:Inputs) => {
 
-  axios.post(`${process.env.base_route}/statuts`, data).then(response=>{
+  axios.post(`/api/statuts`, data).then(response=>{
 console.log(response);
 if(response.status === 201){
         Swal.fire({

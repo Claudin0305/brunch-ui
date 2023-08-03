@@ -474,7 +474,7 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
                   fullWidth
                   id="url"
                   size="small"
-                  label="Domaine email"
+                  label="Site web"
                   type="url"
 
                   {...register("url", { required: true })}

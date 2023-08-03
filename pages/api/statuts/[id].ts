@@ -9,7 +9,7 @@ export default async function handler( req: NextApiRequest,
     const {id} = req.query
     if(req.method === 'PUT'){
       axios
-          .put(`${process.env.base_route_get}/pays/${id}`, req.body, {
+          .put(`${process.env.base_route_get}/statuts/${id}`, req.body, {
     headers: {
           withCredentials: true,
           Cookie: cookie
@@ -34,7 +34,7 @@ export default async function handler( req: NextApiRequest,
     }
 if(req.method === 'DELETE'){
 axios
-          .delete(`${process.env.base_route_get}/pays/${id}`, {
+          .delete(`${process.env.base_route_get}/statuts/${id}`, {
     headers: {
           withCredentials: true,
           Cookie: cookie

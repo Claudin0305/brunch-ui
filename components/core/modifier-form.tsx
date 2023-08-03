@@ -41,7 +41,9 @@ const UpdateInscription: React.FC = () => {
                     // axios.post(`/inscriptions/edit/${response.data.idEvent}/${response.data.username}`).then(response=>{
                     //     console.log('test')
                     // })
-                    router.push(`/inscriptions/edit/${response.data.data.idEvent}/${response.data.data.username}`)
+                    console.log(response)
+
+                    router.push(`/inscriptions/edit/${response.data.idEvent}/${response.data.username}`)
                 }else{
                     Swal.fire({
                     // position: 'top-end',
@@ -65,6 +67,18 @@ const UpdateInscription: React.FC = () => {
                 // console.log(responseError)
                 //sweal error
             }
+            Swal.fire({
+                    // position: 'top-end',
+                    icon: 'error',
+                    title: 'Dossier introuvable!',
+                    // showConfirmButton: false,
+                    // timer: 1500
+                    // buttonColor:"#000000",
+                    // buttons:[""]
+                    confirmButtonColor: "#2563eb",
+                    confirmButtonText: "Fermer",
+                })
+                router.push('/')
         })
 
 

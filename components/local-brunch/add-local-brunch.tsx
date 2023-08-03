@@ -106,7 +106,7 @@ const AddLocalBrunch: React.FC<Props> = ({ data_props, pays, events, devises }) 
     });
     events?.forEach((p:any) => {
       tableOptions.push({
-        label: `évènement-${p.id_event}`,
+        label: `${p.eventType}'${p.date_debut.split('-')[0]}`,
         value: p.id_event
       })
     })

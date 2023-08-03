@@ -127,7 +127,7 @@ const Page: React.FC<Props> = ({ data }) => {
             </div>
             <div className="flex justify-between">
 
-              <p>Identifiant</p><p>{`évènement-${data.id_event}`}</p>
+              <p>Identifiant</p><p>{`${data.eventType}'${data.date_debut.split('-')[0]}`}</p>
             </div>
             <div className="flex justify-between">
 
