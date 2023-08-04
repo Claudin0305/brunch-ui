@@ -42,7 +42,6 @@ const format_events: option[] = [
 const Page: React.FC<Props> = ({ data }) => {
   const token = getCookie('token');
   const router = useRouter()
-  console.log(data.imageDatas[0])
   const deleteEvent = (id: number) => {
       axios.delete(`/api/evenements/${id}`)
     .then(response=>{

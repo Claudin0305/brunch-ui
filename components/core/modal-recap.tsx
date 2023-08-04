@@ -1,4 +1,4 @@
-import React from "react";
+
 import Link from "next/link"
 type Props = {
     show: boolean;
@@ -39,16 +39,17 @@ const ModalRecap: React.FC<Props> = ({ show, setShow, data }) => {
                                 </div>{" "}
                                 {/*body*/}
                                 <div className="relative p-6 flex-auto">
+                                    <Link className="text-blue-500 hover:text-blue-300 block my-4" href={'/'}>Retour à la page principale</Link>
                                     <p className="uppercase">merci pour votre inscription</p>
-                                    <p>Numéro de confirmation: <span className="font-semibold">{data.data?.username}</span></p>
+                                    <p>Numéro de confirmation: <span className="font-semibold">{data?.data?.username}</span></p>
                                     <p> Nous enverrons prochainement un accusé de réception au(x) courriel(s) que vous avez spécifié(s).</p>
                                     {/* <Récapitulatif> */}
-                                    <p>Mode participation: <span className="font-semibold">{data.data?.mode_participation}</span></p>
-                                    {data.data?.mode_participation !== 'DISTANCIEL' && <>
-                                        <p>Lieu: <span className="font-semibold">{`${data.data?.nomPays}, ${data.data?.ville?.libelleDepartement}, ${data.data?.ville?.libelle} (${data.data?.libelleLocal})`}</span></p>
-                                        <p>Mode paiement: <span className="font-semibold">{data.data?.modePaiement}</span></p>
-                                        <p>Montant: <span className="font-semibold"> {data.data?.montant_participation} {data.data?.devise}</span></p>
-                                        {data.data?.modePaiement === "IMMEDIAT" && <Link
+                                    <p>Mode participation: <span className="font-semibold">{data?.data?.mode_participation}</span></p>
+                                    {data?.data?.mode_participation !== 'DISTANCIEL' && <>
+                                        <p>Lieu: <span className="font-semibold">{`${data?.data?.nomPays}, ${data?.data?.ville?.libelleDepartement}, ${data?.data?.ville?.libelle} (${data?.data?.libelleLocal})`}</span></p>
+                                        <p>Mode paiement: <span className="font-semibold">{data?.data?.modePaiement}</span></p>
+                                        <p>Montant: <span className="font-semibold"> {data?.data?.montant_participation} {data?.data?.devise}</span></p>
+                                        {data?.data?.modePaiement === "IMMEDIAT" && <Link
                                             className="text-blue-500 hover:text-blue-300 block my-4"
                                             href={`/paiements`}
                                         >Payer maintenant</Link>}
@@ -56,7 +57,7 @@ const ModalRecap: React.FC<Props> = ({ show, setShow, data }) => {
                                     </>}
                                     <Link
                                         className="text-blue-500 block hover:text-blue-300"
-                                        href={`/liste-participants/${data.data?.idEvent}`}
+                                        href={`/liste-participants/${data?.data?.idEvent}`}
                                     >Tableau des inscrits</Link>
                                     {/* (hyperlien) Faire un don */}
                                 </div>

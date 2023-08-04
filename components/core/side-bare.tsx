@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Icecream, DashboardCustomizeRounded } from "@mui/icons-material";

@@ -1,4 +1,4 @@
-import React from "react";
+
 import { ReactNode } from "react";
 import LinkButton from "@/components/core/link-button"
 import { useRouter } from "next/router";

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import{ useState, useEffect } from "react";
 type Props={
   date_fin: string;
   date_limite: string[];
@@ -71,9 +71,7 @@ const Counter:React.FC<Props> = ({date_fin, date_limite}) => {
             </div>
 
           </>
-        ) : (
-          <h1>Register end!</h1>
-        )}
+        ) :null}
       </section>
 
   );
