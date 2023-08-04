@@ -26,24 +26,13 @@ const UpdateInscription: React.FC = () => {
 
         axios.get(`/api/inscriptions/update/${data.username}`).then(response => {
             if (response.status === 200) {
-                // Swal.fire({
-                //     // position: 'top-end',
-                //     icon: 'success',
-                //     title: 'Enregistrement effectué!',
-                //     // showConfirmButton: false,
-                //     // timer: 1500
-                //     // buttonColor:"#000000",
-                //     // buttons:[""]
-                //     confirmButtonColor: "#2563eb",
-                //     confirmButtonText: "Fermer",
-                // })
-                if(response.data !== ""){
+
+                if(response.data.data !== ""){
                     // axios.post(`/inscriptions/edit/${response.data.idEvent}/${response.data.username}`).then(response=>{
                     //     console.log('test')
                     // })
-                    console.log(response)
 
-                    router.push(`/inscriptions/edit/${response.data.idEvent}/${response.data.username}`)
+                    router.push(`/inscriptions/edit/${response.data.data.idEvent}/${response.data.data.username}`)
                 }else{
                     Swal.fire({
                     // position: 'top-end',

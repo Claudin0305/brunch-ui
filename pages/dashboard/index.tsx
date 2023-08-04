@@ -14,7 +14,7 @@ const Dashboard = () => {
         <title>Tableau de bord</title>
       </Head>
 
-      <div>Dashboard</div>
+      <section>Dashboard</section>
 
 
     </Layout> :<Loader/>}

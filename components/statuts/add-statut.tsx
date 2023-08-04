@@ -55,6 +55,7 @@ const AddStatut: React.FC<Props> = ({data_props}) => {
         .catch((err) => {
           if (err.response.status === 400) {
             setResponseError(err.response.data);
+            console.log("Hello", err)
           }
           setIsSubmit(false);
         });
@@ -83,7 +84,7 @@ if(response.status === 201){
   }).catch(err=>{
     setIsSubmit(false);
     if(err.response.status === 400){
-      setResponseError(err.response.data);
+      setResponseError(err.response.data.err);
       // console.log(responseError)
       //sweal error
     }

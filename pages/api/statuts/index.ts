@@ -26,7 +26,7 @@ if(req.method === 'POST'){
             console.log(err)
             if (err?.response?.status === 400) {
             }
-            return res.status(400).json({error:"bad request", err: err})
+            return res.status(400).json({error:"bad request", err: err?.response?.data})
           });
 }
 
