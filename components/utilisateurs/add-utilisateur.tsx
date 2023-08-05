@@ -126,7 +126,7 @@ const AddUtilisateur: React.FC<Props> = ({data_props}) => {
     const createUtilisateur = (data: Inputs |FormData) => {
 
       axios.post(`/api/users`, data).then(response => {
-            if (response.status === 200) {
+            if (response.status === 201) {
                 Swal.fire({
                     // position: 'top-end',
                     icon: 'success',
