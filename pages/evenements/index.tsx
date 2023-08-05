@@ -14,7 +14,7 @@ const Event: React.FC<Props> = ({ data }) => {
   const token = getCookie('token');
 
   return (
-    <>
+    <div>
     {
       token !== undefined ? <Layout>
       <Head>
@@ -31,7 +31,7 @@ const Event: React.FC<Props> = ({ data }) => {
 
     </Layout> : <Loader/>
     }
-    </>
+    </div>
   )
 }
 export async function getServerSideProps(context:any) {

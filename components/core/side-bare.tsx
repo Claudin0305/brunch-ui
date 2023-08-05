@@ -101,7 +101,7 @@ const SideBare: React.FC = () => {
     <div className="h-screen flex flex-col w-72 shadow-lg bg-white overflow-y-scroll">
       <div className="flex">
 
-        <Link href={"/"}><h1 className="text-2xl uppercase px-4 py-4 hover:text-blue-500"> Site web
+        <Link href={"/"}><h1 className="text-2xl uppercase px-4 py-4 hover:text-blue-500"> Accueil
         </h1></Link>
       </div>
       <div className="flex flex-col">
