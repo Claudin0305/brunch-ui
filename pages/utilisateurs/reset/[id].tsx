@@ -3,7 +3,7 @@ import Head from "next/head";
 import React from "react";
 import { GetServerSideProps } from 'next'
 import UtilisateurLayout from "@/components/utilisateurs/utilisateur-layout";
-import AddUtilisateur from "@/components/utilisateurs/add-utilisateur";
+import ResetUtilisateur from "@/components/utilisateurs/reset-utilisateur";
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
 import Loader from "@/components/core/loader"
@@ -19,11 +19,11 @@ const Page: React.FC<Props> = ({ data }) => {
     {
       token !== undefined ? <Layout>
       <Head>
-        <title>Utilisateur | Edit</title>
+        <title>Utilisateur | Reset</title>
       </Head>
       <UtilisateurLayout>
         <div className="bg-white px-8 py-4 mb-4 shadow-md h-[calc(100vh_-_215px)] overflow-y-scroll">
-          <AddUtilisateur data_props={data} />
+          <ResetUtilisateur data_props={data} />
         </div>
       </UtilisateurLayout>
     </Layout> : <Loader/>

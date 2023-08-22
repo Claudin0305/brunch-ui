@@ -677,7 +677,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
               let pattern = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
               setErrorEmail(!pattern.test(e?.target.value))
               setEmail(e?.target.value);
-              setValue('email_confirmation', "")
+              // setValue('email_confirmation', "")
               // console.log(participants)
               const result = participants?.filter((p: any) => p.email === e.target.value && p.idEvent === event.id_event)
               setExistEmail(result.length > 0);
@@ -696,7 +696,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
             required
             autoComplete="given-name"
             size="small"
-            disabled={errorEmail}
+            // disabled={errorEmail}
             fullWidth
             id="email_confirmation"
             type="email"

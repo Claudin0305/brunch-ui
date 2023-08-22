@@ -16,6 +16,9 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
+import axios from 'axios';
+import { useRouter } from 'next/router'
+import { deleteCookie } from 'cookies-next';
 
 const Search = styled('div')(({ theme }) => ({
   position:'relative',
@@ -64,6 +67,7 @@ const NavBare:React.FC = () => {
    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     React.useState<null | HTMLElement>(null);
+  const router = useRouter()
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -84,6 +88,38 @@ const NavBare:React.FC = () => {
   const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
+   const logout =  () => {
+
+  axios.post(`/api/users/logout`, {}).then(response=>{
+if(response.status === 200){
+        // Swal.fire({
+        //   // position: 'top-end',
+        //   icon: 'success',
+        //   title: 'Enregistrement effectué!',
+        //   // showConfirmButton: false,
+        //   // timer: 1500
+        //   // buttonColor:"#000000",
+        //   // buttons:[""]
+        //    confirmButtonColor: "#2563eb",
+        //     confirmButtonText: "Fermer",
+        // })
+        // setIsSubmit(false);
+        // reset();
+        router.push('/')
+    deleteCookie('user')
+    deleteCookie('token')
+    }
+  }).catch(err=>{
+    deleteCookie('user')
+    deleteCookie('token')
+        router.push('/')
+    if(err.response.status === 400){
+      setResponseError(err.response.data.err);
+      // console.log(responseError)
+      //sweal error
+    }
+  })
+}
 
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
@@ -103,7 +139,10 @@ const NavBare:React.FC = () => {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={()=>{
+        logout()
+        handleMenuClose()
+      }}>Déconnexion</MenuItem>
     </Menu>
   );
 

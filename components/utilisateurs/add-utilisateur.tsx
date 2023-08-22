@@ -53,7 +53,12 @@ const AddUtilisateur: React.FC<Props> = ({data_props}) => {
       setValue('username', data_props.username);
       setValue('email', data_props.email);
       setValue('c_email', data_props.email);
-      const result = options?.filter((r:any) => r.value === data_props.role)[0];
+      const result:any = [];
+      data_props.roles?.forEach((e:any)=>{
+        const role = e.name.split("_")[1].toLowerCase()
+        const r = options?.filter((el:any)=> el.value === role)[0]
+        result.push(r)
+      })
       setValue('role', result);
 
         }
