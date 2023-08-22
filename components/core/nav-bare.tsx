@@ -113,11 +113,7 @@ if(response.status === 200){
     deleteCookie('user')
     deleteCookie('token')
         router.push('/')
-    if(err.response.status === 400){
-      setResponseError(err.response.data.err);
-      // console.log(responseError)
-      //sweal error
-    }
+
   })
 }
 
