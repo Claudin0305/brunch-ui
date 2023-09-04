@@ -22,10 +22,10 @@ const HomeNavBar = ()=>{
         path: '/liste-evenements',
         name: 'Liste des inscrits'
       },
-      // {
-      //   path: '/paiements',
-      //   name: 'Paiement'
-      // },
+      {
+        path: '/paiements',
+        name: 'Paiement'
+      },
       {
         path: '/connexion',
         name: 'Tableau de bord'
