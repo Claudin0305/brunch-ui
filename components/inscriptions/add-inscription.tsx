@@ -1084,24 +1084,47 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
         <div className="col-span-3">
 
           <div className="block">
-            <input
+            {/* <input
               {...register("authorisation_liste")}
               type="checkbox"
               id="authorisation_liste"
               className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 mr-2"
-            />
+            /> */}
             <label htmlFor="authorisation_liste">{`J'autorise GRAHN-Monde à afficher mon nom dans le tableau des inscrits au Brunch'${new Date().getFullYear()}`}</label>
+            <div className="flex gap-8">
+              <div className="flex justify-center items-center my-2">
+
+                <input {...register("authorisation_liste")} type="radio" value="1" id="yes" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 mr-2" />
+                <label htmlFor="yes" className="mb-1">Oui</label>
+              </div>
+              <div className="flex justify-center items-center my-2">
+
+                <input {...register("authorisation_liste")} type="radio" value="0" id="no" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 mr-2" />
+                <label htmlFor="no" className="mb-1">Non</label>
+              </div>
+            </div>
 
           </div>
           <div className="block mt-4">
-            <input
+            {/* <input
               {...register("abonnement_newsletter")}
               type="checkbox"
               id="abonnement_newsletter"
               className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 mr-2"
-            />
+            /> */}
             <label htmlFor="abonnement_newsletter">Je souhaite recevoir les communications de GRAHN-Monde</label>
+            <div className="flex gap-8">
+              <div className="flex justify-center items-center my-2">
 
+                <input {...register("abonnement_newsletter")} type="radio" value="1" id="yes1" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 mr-2" />
+                <label htmlFor="yes1" className="mb-1">Oui</label>
+              </div>
+              <div className="flex justify-center items-center my-2">
+
+                <input {...register("abonnement_newsletter")} type="radio" value="0" id="no1" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 mr-2" />
+                <label htmlFor="no1" className="mb-1">Non</label>
+              </div>
+            </div>
           </div>
           {/* <div className="block">
 
