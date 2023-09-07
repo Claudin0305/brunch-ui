@@ -30,8 +30,8 @@ type Inputs = {
   prenom: string;
   affiliation: string;
   mode_participation: string | option;
-  authorisation_liste: string;
-  abonnement_newsletter: string;
+  authorisation_liste: string | any;
+  abonnement_newsletter: string | any;
   id_local: string | null | any;
   id_affiliation: string | null | any;
   id_ville: string | null | any;
@@ -58,6 +58,8 @@ type errType = {
   mode_participation?: any
   tranche_age?: any
   tel_invalid?: any
+  newsletter?: any
+  authorisation_liste?: any
 }
 type Props = {
   data_props: any | null;
@@ -130,7 +132,10 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
   const [selectCivilite, setSelectCivilite] = useState<option | null>(null);
   const [selectTrangeAge, setSelectTrangeAge] = useState<option | null>(null);
   const [selectLocal, setSelectLocal] = useState<option | any>();
-  const [selectModePaiement, setSelectModePaiement] = useState<option | any>(null);
+  const [selectModePaiement, setSelectModePaiement] = useState<option | any>({
+    value: "DIFFERE",
+    label: "Paiement Différé"
+  });
   const [formatEventOptions, setFormatEventOptions] = useState<option[] | any>()
   const [errorEmail, setErrorEmail] = useState<boolean>(false);
   const [existEmail, setExistEmail] = useState<boolean>(false);
@@ -279,30 +284,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
         data: p.departements
       })
     })
-    // pays?.forEach(p => {
-    //   p?.departements?.forEach(d => {
-    //     d?.villes?.forEach(v => {
-    //       tableOptions.push(
-    //         {
-    //           label: `${v.libelle} (${d.libelle}, ${p.libelle})`,
-    //           value: v.id_ville
-    //         }
-    //       )
-    //     })
-    //   })
-    // })
-    // tableOptions?.sort((a, b) => {
-    //   let fa = a.label,
-    //     fb = b.label;
 
-    //   if (fa < fb) {
-    //     return -1;
-    //   }
-    //   if (fa > fb) {
-    //     return 1;
-    //   }
-    //   return 0;
-    // });
 
     tablePays?.sort((a: any, b: any) => {
       let fa = a.label,
@@ -487,8 +469,8 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
         setValue('id_affiliation', "");
         setValue('id_civilite', "");
 
-        setValue("abonnement_newsletter", "0")
-        setValue("authorisation_liste", "0")
+        setValue("abonnement_newsletter", "")
+        setValue("authorisation_liste", "")
 
         setSelectedVille(null)
         setSelectedMode(null)
@@ -518,45 +500,75 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
 
   const onSubmit: SubmitHandler<Inputs> = data => {
     let formData = new FormData()
-    data.id_event = event.id_event
-    data.id_ville = selectedVille?.value;
-    data.mode_participation = selectedMode?.value;
-    data.id_tranche_age = data.id_tranche_age?.value
-    data.id_civilite = data.id_civilite?.value;
-
-    if (data.affiliation !== undefined) {
-
-      formData.append("affiliation", data.affiliation)
-
-    }
-
-    if (data?.id_local?.value !== undefined) {
-      data.id_local = data.id_local?.value;
-      formData.append("id_local", data.id_local?.value)
+    const values = getValues()
+    if (values.abonnement_newsletter === null || values.abonnement_newsletter === undefined) {
+      errNext = { ...errNext, newsletter: true }
     } else {
-      formData.append("id_local", '0')
-      data.id_local = '0'
-
+      errNext = { ...errNext, newsletter: false }
     }
-    if (data?.id_affiliation?.value !== undefined) {
-      formData.append("id_affiliation", data.id_affiliation?.value)
-      data.id_affiliation = data.id_affiliation?.value;
+    if (values.authorisation_liste === null || values.authorisation_liste === undefined) {
+      errNext = { ...errNext, authorisation_liste: true }
     } else {
-      formData.append("id_affiliation", '0')
-      data.id_affiliation = '0'
-
+      errNext = { ...errNext, authorisation_liste: false }
     }
-    if (selectModePaiement !== null) {
-      formData.append("modePaiement", selectModePaiement?.value);
-      data.mode_paiement = selectModePaiement?.value
-    }
+    const val = Object.values(errNext);
 
-    setIsSubmit(true);
-    if (data_props === null) {
-      createInscription(data);
+    const result = val.filter(v => v === true);
+    if (result.length > 0) {
+      Swal.fire({
+        // position: 'top-end',
+        icon: 'error',
+        title: 'Vos données ne sont pas valides!',
+        // showConfirmButton: false,
+        // timer: 1500
+        // buttonColor:"#000000",
+        // buttons:[""]
+        confirmButtonColor: "#2563eb",
+        confirmButtonText: "Fermer",
+      })
     } else {
-      updateInscription(data)
+
+      data.id_event = event.id_event
+      data.id_ville = selectedVille?.value;
+      data.mode_participation = selectedMode?.value;
+      data.id_tranche_age = data.id_tranche_age?.value
+      data.id_civilite = data.id_civilite?.value;
+
+      if (data.affiliation !== undefined) {
+
+        formData.append("affiliation", data.affiliation)
+
+      }
+
+      if (data?.id_local?.value !== undefined) {
+        data.id_local = data.id_local?.value;
+        formData.append("id_local", data.id_local?.value)
+      } else {
+        formData.append("id_local", '0')
+        data.id_local = '0'
+
+      }
+      if (data?.id_affiliation?.value !== undefined) {
+        formData.append("id_affiliation", data.id_affiliation?.value)
+        data.id_affiliation = data.id_affiliation?.value;
+      } else {
+        formData.append("id_affiliation", '0')
+        data.id_affiliation = '0'
+
+      }
+      if (selectModePaiement !== null) {
+        formData.append("modePaiement", selectModePaiement?.value);
+        data.mode_paiement = selectModePaiement?.value
+      }
+
+      setIsSubmit(true);
+      if (data_props === null) {
+        createInscription(data);
+      } else {
+        updateInscription(data)
+      }
     }
+
 
   };
 
@@ -1012,7 +1024,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
 
 
         }
-        {selectLocal && selectLocal?.data?.montant_participation > 0 &&
+        {/* {selectLocal && selectLocal?.data?.montant_participation > 0 &&
           <div className="flex-col flex md:-mt-4 z-10">
             <label
               className="mb-2"
@@ -1059,28 +1071,10 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
               )}
             />{" "}
             {errors?.mode_paiement && <Error text={errors.mode_paiement.message} />}
-            {/* {selectLocal && <p className="mt-2"><span className="font-bold">Montant participation:</span> {`${selectLocal?.data?.montant_participation} ${selectLocal?.data?.codeDevise}`}</p>} */}
+
           </div>
-        }
-        {/* <div className="block">
+        } */}
 
-          <TextField
-            autoComplete="given-name"
-            fullWidth
-            id="affiliation"
-            size="small"
-            type="text"
-            label="Affiliation"
-            // {...register("affiliation")}
-            className="md:mt-3"
-            onChange={e=>{
-
-              setDataForm({...dataForm, affiliation:e?.target.value})
-              register('affiliation').onChange(e);
-            }}
-          />
-          {errors?.affiliation && <Error text={errors.affiliation.message} />}
-        </div> */}
         <div className="col-span-3">
 
           <div className="block">
@@ -1103,7 +1097,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
                 <label htmlFor="no" className="mb-1">Non</label>
               </div>
             </div>
-
+            {errNext?.authorisation_liste && <Error text={champ} />}
           </div>
           <div className="block mt-4">
             {/* <input
@@ -1125,6 +1119,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
                 <label htmlFor="no1" className="mb-1">Non</label>
               </div>
             </div>
+            {errNext?.newsletter && <Error text={champ} />}
           </div>
           {/* <div className="block">
 
@@ -1151,7 +1146,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
           </Button>
 
           <Button
-            disabled={isSubmit || existEmail || !identiqueEmail || selectedMode === null}
+            disabled={isSubmit || !identiqueEmail || selectedMode === null}
             type="submit"
             className={`bg-blue-600 capitalize text-white flex items-center justify-center gap-x-2 ${isSubmit || selectedMode === null ? "bg-blue-400" : ""}`}
             variant="contained"
@@ -1170,6 +1165,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
 
   const handleNext = () => {
     const values = getValues()
+    // console.log(values)
     const errC = values.id_civilite === null || values.id_civilite === undefined
     setErrorNext({ ...errorNext, errorCivilite: errC })
     if (values.id_civilite === null || values.id_civilite === undefined) {
@@ -1177,6 +1173,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
     } else {
       errNext = { ...errNext, civilite: false }
     }
+
     if (values.id_pays === null || values.id_pays === undefined) {
       errNext = { ...errNext, pays: true }
     } else {
@@ -1316,12 +1313,14 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
         show={showModalAffiliation}
         setShow={setShowModalAffiliation}
         setSelectedAffiliation={setSelectedAffiliation}
+        setVal={setValue}
       />
       <ModalAddVille
         show={showModalVille}
         setShow={setShowModalVille}
         selectedDept={selectedDepartement}
         setSelectedVille={setSelectedVille}
+        setVal={setValue}
       />
     </div>
   );

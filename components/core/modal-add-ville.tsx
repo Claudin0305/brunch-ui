@@ -11,19 +11,19 @@ type Props = {
     setShow: any;
     selectedDept: any;
     setSelectedVille: any;
-
+    setVal: any;
 }
 type Inputs = {
     libelle: string;
 };
-const ModalAddVille: React.FC<Props> = ({ show, setShow, selectedDept, setSelectedVille }) => {
+const ModalAddVille: React.FC<Props> = ({ show, setShow, selectedDept, setSelectedVille, setVal }) => {
  const { register, handleSubmit, watch, reset, setValue, control, formState: { errors } } = useForm<Inputs>();
     const [isSubmit, setIsSubmit] = useState<boolean>(false);
     const [responseError, setResponseError] = useState<any>(null);
     const createVille = (data: Inputs | FormData) => {
 
         axios.post(`${process.env.base_route}/villes/from-client`, data).then(response => {
-            console.log(response);
+            console.log(response.data);
             if (response.status === 201) {
                 Swal.fire({
                     // position: 'top-end',
@@ -42,15 +42,19 @@ const ModalAddVille: React.FC<Props> = ({ show, setShow, selectedDept, setSelect
                     label: response.data.libelle,
                     value:response.data.id_ville
                 })
+                setVal('id_ville', {
+                    label: response.data.libelle,
+                    value: response.data.id_ville
+                })
                 setShow(!show);
             }
         }).catch(err => {
             setIsSubmit(false);
-            if (err.response.status === 400) {
-                setResponseError(err.response.data);
-                // console.log(responseError)
-                //sweal error
-            }
+            // if (err?.response.status === 400) {
+            //     setResponseError(err?.response.data);
+            //     // console.log(responseError)
+            //     //sweal error
+            // }
         })
 
 

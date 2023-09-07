@@ -10,12 +10,13 @@ type Props = {
     show: boolean;
     setShow: any;
     setSelectedAffiliation: any;
+    setVal:any;
 
 }
 type Inputs = {
     nom_affiliation: string;
 };
-const ModalAddAffiliation: React.FC<Props> = ({ show, setShow, setSelectedAffiliation }) => {
+const ModalAddAffiliation: React.FC<Props> = ({ show, setShow, setSelectedAffiliation, setVal }) => {
     const { register, handleSubmit, watch, reset, setValue, control, formState: { errors } } = useForm<Inputs>();
     const [isSubmit, setIsSubmit] = useState<boolean>(false);
     const [responseError, setResponseError] = useState<any>(null);
@@ -41,15 +42,19 @@ const ModalAddAffiliation: React.FC<Props> = ({ show, setShow, setSelectedAffili
                     label: response.data.nom_affiliation,
                     value: response.data.affiliationId
                 })
+                setVal('id_affiliation', {
+                    label: response.data.nom_affiliation,
+                    value: response.data.affiliationId
+                })
                 setShow(!show);
             }
         }).catch(err => {
             setIsSubmit(false);
-            if (err.response.status === 400) {
-                setResponseError(err.response.data);
-                // console.log(responseError)
-                //sweal error
-            }
+            // if (err.response.status === 400) {
+            //     setResponseError(err.response.data);
+            //     // console.log(responseError)
+            //     //sweal error
+            // }
         })
 
 
