@@ -59,7 +59,8 @@ type errType = {
   tranche_age?: any
   tel_invalid?: any
   newsletter?: any
-  authorisation_liste?: any
+  authorisation_liste?: any;
+  email_conf_null?:any
 }
 type Props = {
   data_props: any | null;
@@ -501,12 +502,12 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
   const onSubmit: SubmitHandler<Inputs> = data => {
     let formData = new FormData()
     const values = getValues()
-    if (values.abonnement_newsletter === null || values.abonnement_newsletter === undefined) {
+    if (values.abonnement_newsletter === null || values.abonnement_newsletter === undefined || values.abonnement_newsletter ==="") {
       errNext = { ...errNext, newsletter: true }
     } else {
       errNext = { ...errNext, newsletter: false }
     }
-    if (values.authorisation_liste === null || values.authorisation_liste === undefined) {
+    if (values.authorisation_liste === null || values.authorisation_liste === undefined || values.authorisation_liste === "") {
       errNext = { ...errNext, authorisation_liste: true }
     } else {
       errNext = { ...errNext, authorisation_liste: false }
@@ -527,46 +528,61 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
         confirmButtonText: "Fermer",
       })
     } else {
-
-      data.id_event = event.id_event
-      data.id_ville = selectedVille?.value;
-      data.mode_participation = selectedMode?.value;
-      data.id_tranche_age = data.id_tranche_age?.value
-      data.id_civilite = data.id_civilite?.value;
-
-      if (data.affiliation !== undefined) {
-
-        formData.append("affiliation", data.affiliation)
-
-      }
-
-      if (data?.id_local?.value !== undefined) {
-        data.id_local = data.id_local?.value;
-        formData.append("id_local", data.id_local?.value)
+      const result2 = participants?.filter((p: any) => p.email === data.email && p.idEvent === event.id_event && p.prenom.toLowerCase() === data.prenom.toLowerCase() && p.nom.toLowerCase() === data.nom.toLowerCase());
+      if (result2.length > 0) {
+        Swal.fire({
+          // position: 'top-end',
+          icon: 'error',
+          title: "Échec d’inscription Une inscription existe déjà pour cette personne(même nom, prénom, courriel).",
+          // showConfirmButton: false,
+          // timer: 1500
+          // buttonColor:"#000000",
+          // buttons:[""]
+          confirmButtonColor: "#2563eb",
+          confirmButtonText: "Fermer",
+        })
       } else {
-        formData.append("id_local", '0')
-        data.id_local = '0'
+        data.id_event = event.id_event
+        data.id_ville = selectedVille?.value;
+        data.mode_participation = selectedMode?.value;
+        data.id_tranche_age = data.id_tranche_age?.value
+        data.id_civilite = data.id_civilite?.value;
 
-      }
-      if (data?.id_affiliation?.value !== undefined) {
-        formData.append("id_affiliation", data.id_affiliation?.value)
-        data.id_affiliation = data.id_affiliation?.value;
-      } else {
-        formData.append("id_affiliation", '0')
-        data.id_affiliation = '0'
+        if (data.affiliation !== undefined) {
 
-      }
-      if (selectModePaiement !== null) {
-        formData.append("modePaiement", selectModePaiement?.value);
-        data.mode_paiement = selectModePaiement?.value
+          formData.append("affiliation", data.affiliation)
+
+        }
+
+        if (data?.id_local?.value !== undefined) {
+          data.id_local = data.id_local?.value;
+          formData.append("id_local", data.id_local?.value)
+        } else {
+          formData.append("id_local", '0')
+          data.id_local = '0'
+
+        }
+        if (data?.id_affiliation?.value !== undefined) {
+          formData.append("id_affiliation", data.id_affiliation?.value)
+          data.id_affiliation = data.id_affiliation?.value;
+        } else {
+          formData.append("id_affiliation", '0')
+          data.id_affiliation = '0'
+
+        }
+        if (selectModePaiement !== null) {
+          formData.append("modePaiement", selectModePaiement?.value);
+          data.mode_paiement = selectModePaiement?.value
+        }
+
+        setIsSubmit(true);
+        if (data_props === null) {
+          createInscription(data);
+        } else {
+          updateInscription(data)
+        }
       }
 
-      setIsSubmit(true);
-      if (data_props === null) {
-        createInscription(data);
-      } else {
-        updateInscription(data)
-      }
     }
 
 
@@ -699,7 +715,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
           {/* {responseError !== null && <Error text={responseError?.libelle}/>} */}
           {/* {errors?.email && <Error text={errors.email.message} />} */}
           {errNext?.email && <Error text={champ} />}
-          {errNext?.email_invalid && <div className="block"> <Error text={'Le format du courriel que vous avez spécifié incorrect.  Veuillez entrer un courriel valide.'} /> </div>}
+          {errNext?.email_invalid && <div className="block"> <Error text={'Le format du courriel que vous avez spécifié est incorrect.  Veuillez entrer un courriel valide.'} /> </div>}
           {/* {existEmail && <Error text={"Ce courriel existe déjà dans notre système!"} />} */}
         </div>
         <div className="block">
@@ -726,6 +742,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
 
           />
           {/* {responseError !== null && <Error text={responseError?.libelle}/>} */}
+          {errNext?.email_conf_null && <Error text={champ} />}
           {errNext?.email_confirmation && <Error text={'Le courriel que vous avez spécifié dans le champ "Confirmation de courriel" ne correspond pas à celui que vous avez indiqué dans le champ courriel.  Veuillez entrer la même valeur dans les 2 champs.'} />}
           {/* {errors?.email_confirmation && <Error text={errors.email_confirmation.message} />}
           {!identiqueEmail && <Error text={"Le courriel que vous avez spécifié dans le champ \"Confirmation de courriel\" ne correspond pas à celui que vous avez indiqué dans le champ courriel.  Veuillez entrer la même valeur dans les 2 champs."} />} */}
@@ -895,9 +912,9 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
     {
       label: 'Mode de participation',
       description: <div className="flex flex-col md:grid md:grid-cols-3 gap-8">
-        {JSON.stringify(errors) !== '{}' && <div className="md:col-span-3 col-span-1 text-center -mt-4 flex justify-center">
+        {/* {JSON.stringify(errors) !== '{}' && <div className="md:col-span-3 col-span-1 text-center -mt-4 flex justify-center">
           <Error text="Erreur lors de la soumission. Vérifiez vos données!" />
-        </div>}
+        </div>} */}
 
         <input type="hidden" name="" />
         <div className="flex-col flex md:-mt-4 z-10">
@@ -1139,7 +1156,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
         <div className="flex justify-end flex-col mt-8 md:flex-row gap-8 mb-8 col-span-3">
           <Button
             type="reset"
-            className="text-blue-600 border-blue-600 capitalize"
+            className="text-blue-600 border-blue-600 capitalize hidden"
             variant="outlined"
           >
             Reinitialiser
@@ -1165,13 +1182,18 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
 
   const handleNext = () => {
     const values = getValues()
-    // console.log(values)
+    // console.log(values.email_confirmation)
     const errC = values.id_civilite === null || values.id_civilite === undefined
     setErrorNext({ ...errorNext, errorCivilite: errC })
     if (values.id_civilite === null || values.id_civilite === undefined) {
       errNext = { ...errNext, civilite: true }
     } else {
       errNext = { ...errNext, civilite: false }
+    }
+    if (values.email_confirmation === null || values.email_confirmation === undefined || values.email_confirmation ==="") {
+      errNext = { ...errNext, email_conf_null: true }
+    } else {
+      errNext = { ...errNext, email_conf_null: false }
     }
 
     if (values.id_pays === null || values.id_pays === undefined) {
@@ -1223,7 +1245,8 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
       let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
       errNext = { ...errNext, email_invalid: !reg.test(values.email) }
     }
-    if (values.email_confirmation.trim() !== "" && values.email !== values.email_confirmation) {
+    // console.log(errNext, keys)
+    if (values.email_confirmation.trim() !== "" && values.email !== values.email_confirmation || values.email_confirmation === null || values.email_confirmation === undefined) {
       errNext = { ...errNext, email_confirmation: true }
     } else {
       errNext = { ...errNext, email_confirmation: false }
