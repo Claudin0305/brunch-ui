@@ -173,7 +173,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
 
       const tableVille: option[] = [];
       tableVille.push({
-        label: "Autre",
+        label: "Ajouter ville",
         value: "0"
       })
       dept?.data.forEach((v: any) => {
@@ -329,7 +329,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
     })
 
     setOptionsAffiliation([{
-      label: "Autre Affiliation",
+      label: "Ajouter Affiliation",
       value: "0"
     }, ...tableOptions]);
   }, [])
@@ -851,7 +851,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
                   setValue('id_departement', e)
                   const tableVille: option[] = [];
                   tableVille.push({
-                    label: "Autre",
+                    label: "Ajouter ville",
                     value: "0"
                   })
                   e?.data.forEach((v: any) => {
@@ -887,7 +887,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
               <Select
                 {...field}
                 placeholder={
-                  "Choisir une ville ou cliquez sur \"Autre\" pour créer une ville manquante."
+                  "Choisir une ville ou cliquez sur \"Ajouter ville\" pour créer une ville manquante."
                 }
                 isClearable
                 options={optionsVille}
@@ -939,7 +939,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
               <Select
                 {...field}
                 placeholder={
-                  "Choisir une Affiliation ou cliquez sur \"Autre Affiliation\" pour créer une affiliation manquante."
+                  "Choisir une Affiliation ou cliquez sur \"Ajouter Affiliation\" pour créer une affiliation manquante."
                 }
                 isClearable
                 options={optionsAffiliation}
