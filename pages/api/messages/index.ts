@@ -36,19 +36,5 @@ if(req.method === 'POST'){
           });
 }
 
-  // if (req.method !== 'POST') {
-  //   return res.status(405).json({ error: 'Method Not Allowed' });
-  // }
 
-  // try {
-  //   const dataToSend = { message: 'Hello, server!' };
-  //   const response = await axios.post('https://example.com/api/endpoint', dataToSend);
-
-  //   // Vous pouvez éventuellement traiter la réponse du serveur distant avant de la renvoyer
-  //   const responseData = response.data;
-  //   res.status(200).json(responseData);
-  // } catch (error) {
-  //   console.error('Error:', error);
-  //   res.status(500).json({ error: 'Internal Server Error' });
-  // }
 }

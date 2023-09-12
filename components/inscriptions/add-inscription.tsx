@@ -61,6 +61,8 @@ type errType = {
   newsletter?: any
   authorisation_liste?: any;
   email_conf_null?:any
+  invalid_nom?:any
+  invalid_prenom?:any
 }
 type Props = {
   data_props: any | null;
@@ -476,11 +478,27 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
         setSelectedVille(null)
         setSelectedMode(null)
         setSelectedAffiliation(null);
+
         // setSelectedLocal(null);
+        const sendMessage = ()=>{
+          axios.post('/api/messages/send-message', { id_event: response.data.data.idEvent, id_participant: response.data.data.id_participant }, {
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+            },
+          })
+          .then(answer=>{
+            if(answer.status === 201){
+              console.log("Message envoyer")
+            }
+          }).catch(errorSend=>{
+            console.log(errorSend)
+          })
+        }
+        sendMessage()
       }
     }).catch(err => {
       setIsSubmit(false);
-      console.log(err)
+      // console.log(err)
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
@@ -502,10 +520,16 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
   const onSubmit: SubmitHandler<Inputs> = data => {
     let formData = new FormData()
     const values = getValues()
+    console.log(values, errNext)
     if (values.abonnement_newsletter === null || values.abonnement_newsletter === undefined || values.abonnement_newsletter ==="") {
       errNext = { ...errNext, newsletter: true }
     } else {
       errNext = { ...errNext, newsletter: false }
+    }
+    if (values.mode_participation === null || values.mode_participation === undefined || values.mode_participation ==="") {
+      errNext = { ...errNext, mode_participation: true }
+    } else {
+      errNext = { ...errNext, mode_participation: false }
     }
     if (values.authorisation_liste === null || values.authorisation_liste === undefined || values.authorisation_liste === "") {
       errNext = { ...errNext, authorisation_liste: true }
@@ -519,7 +543,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
       Swal.fire({
         // position: 'top-end',
         icon: 'error',
-        title: 'Vos données ne sont pas valides!',
+        title: 'Oops.  Erreur lors de l’inscription.  Vérifiez vos données.',
         // showConfirmButton: false,
         // timer: 1500
         // buttonColor:"#000000",
@@ -643,6 +667,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
           {/* {responseError !== null && <Error text={responseError?.libelle}/>} */}
           {/* {errors?.nom && <Error text={errors.nom.message} />} */}
           {errNext?.nom && <Error text={champ} />}
+          {errNext?.invalid_nom && <div className="block"> <Error text={'La valeur du nom est incorrecte'} /> </div>}
         </div>
         <div className="block">
 
@@ -660,6 +685,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
           {/* {responseError !== null && <Error text={responseError?.libelle}/>} */}
           {/* {errors?.prenom && <Error text={errors.prenom.message} />} */}
           {errNext?.prenom && <Error text={champ} />}
+          {errNext?.invalid_prenom && <div className="block"> <Error text={'La valeur du prénom est incorrecte'} /> </div>}
         </div>
         <div className="block">
 
@@ -990,12 +1016,15 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
                 value={selectedMode}
                 onChange={e => {
                   setSelectedMode(e);
+                  // console.log(e)
+                  setValue('mode_participation', e)
 
                 }}
               />
             )}
           />{" "}
           {errors?.mode_participation && <Error text={errors.mode_participation.message} />}
+          {errNext?.mode_participation && <Error text={champ} />}
         </div>
 
 
@@ -1103,12 +1132,12 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
             /> */}
             <label htmlFor="authorisation_liste">{`J'autorise GRAHN-Monde à afficher mon nom dans le tableau des inscrits au Brunch'${new Date().getFullYear()}`}</label>
             <div className="flex gap-8">
-              <div className="flex justify-center items-center my-2">
+              <div className="flex justify-center items-center mt-2">
 
                 <input {...register("authorisation_liste")} type="radio" value="1" id="yes" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 mr-2" />
                 <label htmlFor="yes" className="mb-1">Oui</label>
               </div>
-              <div className="flex justify-center items-center my-2">
+              <div className="flex justify-center items-center mt-2">
 
                 <input {...register("authorisation_liste")} type="radio" value="0" id="no" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 mr-2" />
                 <label htmlFor="no" className="mb-1">Non</label>
@@ -1244,6 +1273,14 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
     if (values.email.trim() !== "") {
       let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
       errNext = { ...errNext, email_invalid: !reg.test(values.email) }
+    }
+    if (values.nom.trim() !== "") {
+      let reg = /^[a-zA-ZÀÂÆÇÈÉÊËÎÏÔŒÙÛÜÝàâæçèéêëîïôœùûüý -\s]+$/;
+      errNext = { ...errNext, invalid_nom: !reg.test(values.nom) }
+    }
+    if (values.prenom.trim() !== "") {
+      let reg = /^[a-zA-ZÀÂÆÇÈÉÊËÎÏÔŒÙÛÜÝàâæçèéêëîïôœùûüý -\s]+$/;
+      errNext = { ...errNext, invalid_prenom: !reg.test(values.prenom) }
     }
     // console.log(errNext, keys)
     if (values.email_confirmation.trim() !== "" && values.email !== values.email_confirmation || values.email_confirmation === null || values.email_confirmation === undefined) {
