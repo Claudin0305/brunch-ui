@@ -139,6 +139,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
     value: "DIFFERE",
     label: "Paiement Différé"
   });
+  const [activeStep, setActiveStep] = React.useState(0);
   const [formatEventOptions, setFormatEventOptions] = useState<option[] | any>()
   const [errorEmail, setErrorEmail] = useState<boolean>(false);
   const [existEmail, setExistEmail] = useState<boolean>(false);
@@ -471,6 +472,12 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
         setValue('id_local', "");
         setValue('id_affiliation', "");
         setValue('id_civilite', "");
+        setSelectCivilite(null);
+        setSelectLocal(null);
+        setSelectTrangeAge(null);
+        setSelectedVille(null);
+        setSelectedDepartement(null);
+        setSelectedPays(null);
 
         setValue("abonnement_newsletter", "")
         setValue("authorisation_liste", "")
@@ -478,6 +485,8 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
         setSelectedVille(null)
         setSelectedMode(null)
         setSelectedAffiliation(null);
+        setActiveStep(0)
+        errNext = {};
 
         // setSelectedLocal(null);
         const sendMessage = ()=>{
@@ -520,7 +529,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
   const onSubmit: SubmitHandler<Inputs> = data => {
     let formData = new FormData()
     const values = getValues()
-    console.log(values, errNext)
+    // console.log(values, errNext)
     if (values.abonnement_newsletter === null || values.abonnement_newsletter === undefined || values.abonnement_newsletter ==="") {
       errNext = { ...errNext, newsletter: true }
     } else {
@@ -1206,7 +1215,6 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
 
   ];
   const theme = useTheme();
-  const [activeStep, setActiveStep] = React.useState(0);
   const maxSteps = steps.length;
 
   const handleNext = () => {
