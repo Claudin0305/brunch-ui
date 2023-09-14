@@ -4,6 +4,8 @@ import React from "react";
 import { GridCellParams, /*GridPageChangeParams,*/ GridRowId } from '@mui/x-data-grid';
 import MenuAction from "@/components/core/menu-action"
 import type { GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
+import DoneIcon from '@mui/icons-material/Done';
+import ClearIcon from '@mui/icons-material/Clear';
 
 import { Pagination } from "@mui/material";
 
@@ -57,12 +59,33 @@ const TableParticipant: React.FC<Props> = ({ data }) => {
             flex: 1,
         },
         {
+            field: "email",
+            headerName: "Courriel",
+            // renderCell: (value) => <PersoToolTip value={value} />,
+            // width:100,
+            flex: 1,
+        },
+        {
+            field: "tel_participant",
+            headerName: "Tel",
+            // renderCell: (value) => <PersoToolTip value={value} />,
+            // width:100,
+            flex: 1,
+        },
+        {
+            field: "nomAffiliation",
+            headerName: "Affiliation",
+            // renderCell: (value) => <PersoToolTip value={value} />,
+            // width:100,
+            flex: 1,
+        },
+        {
             field: "pays",
             headerName: "Pays",
             // renderCell: (value) => <PersoToolTip value={value} />,
             // width:100,
-            renderCell: value => value.row.nomPays
-            ,
+            renderCell: value => value.row.nomPays,
+            valueGetter: value=> value.row.nomPays,
             flex: 1,
         },
         {
@@ -70,8 +93,8 @@ const TableParticipant: React.FC<Props> = ({ data }) => {
             headerName: "Département",
             // renderCell: (value) => <PersoToolTip value={value} />,
             // width:100,
-            renderCell: value => value.row.ville.libelleDepartement
-            ,
+            renderCell: value => value.row.ville.libelleDepartement,
+            valueGetter: value=> value.row.ville.libelleDepartement,
             flex: 1,
         },
         {
@@ -79,12 +102,45 @@ const TableParticipant: React.FC<Props> = ({ data }) => {
             headerName: "Ville",
             // renderCell: (value) => <PersoToolTip value={value} />,
             // width:100,
-            renderCell: value => value.row.ville.libelle
+            renderCell: value => value.row.ville.libelle,
+            valueGetter: value=> value.row.ville.libelle,
+            flex: 1,
+        },
+        {
+            field: "Local",
+            headerName: "Local",
+            // renderCell: (value) => <PersoToolTip value={value} />,
+            // width:100,
+            renderCell: value => value.row.libelleLocal
+
             ,
+            valueGetter: value=> value.row.libelleLocal,
+            flex: 1,
+        },
+        {
+            field: "mode_participation",
+            headerName: "Mode Participation",
+            // renderCell: (value) => <PersoToolTip value={value} />,
+            // width:100,
+
+
             flex: 1,
         },
 
-
+{
+            field: "abonnement_newsletter",
+            headerName: "Newsletter",
+            renderCell: (value) => value.row.abonnement_newsletter ? <DoneIcon/> : <ClearIcon/>  ,
+            // width:100,
+            flex: 1,
+        },
+{
+            field: "authorisationListe",
+            headerName: "Listing",
+            renderCell: (value) => value.row.authorisationListe ? <DoneIcon/> : <ClearIcon/>  ,
+            // width:100,
+            flex: 1,
+        },
 
 
 
