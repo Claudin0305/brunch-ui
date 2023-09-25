@@ -23,7 +23,7 @@ const Page: React.FC = () => {
                 <li>
                         <p><span className="font-semibold text-blue-500">Chèque</span>: <span className="font-semibold">GRAHN-Monde, 1649 Rue Notre-Dame-de Fatima, Laval, H7G 4V8, Québec, Canada</span></p>
                 </li>
-                    <li><p><span className="font-semibold text-blue-500">Virement Interac</span>: <span className="font-semibold">brunch-grahn@grahn-monde.org, mot de passe Brunch'2023</span></p></li>
+                    <li><p><span className="font-semibold text-blue-500">Virement Interac</span>: <span className="font-semibold">brunch-grahn@grahn-monde.org, mot de passe Brunch2023</span></p></li>
             </ul>
             </div>
 
