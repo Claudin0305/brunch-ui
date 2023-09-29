@@ -196,6 +196,8 @@ datasets: [
 }
 const keysCivilite = Object.keys(dataCivil);
 const keysAffiliation = Object.keys(dataAffiliation);
+const keysVille = Object.keys(dataVille);
+const keysPays = Object.keys(dataPays);
 // console.log(keysCivilite);
 // console.log(dataCivil[keysCivilite[0]] * data?.length/100)
 const DetailsCivilite = ()=>{
@@ -216,6 +218,24 @@ const DetailsAffiliation = ()=>{
     </div>
   )
 }
+const DetailsVille = ()=>{
+  return (
+    <div className="flex flex-col md:grid md:grid-cols-3 md:gap-4">
+      {
+        keysVille.map((c:any)=>(<p key={c} className=""><span className="text-gray-500">{c}: </span><span></span>{Math.round(dataVille[c] * data?.length/100)}</p>))
+      }
+    </div>
+  )
+}
+const DetailsPays = ()=>{
+  return (
+    <div className="flex flex-col md:grid md:grid-cols-3 md:gap-4">
+      {
+        keysPays.map((c:any)=>(<p key={c} className=""><span className="text-gray-500">{c}: </span><span></span>{Math.round(dataPays[c] * data?.length/100)}</p>))
+      }
+    </div>
+  )
+}
 return (
     <> <div style={{ height: "100%", width: "100%", overflow: "auto" }}>
     <div className="grid grid-cols-1 gap-2 md:grid-cols-4 md:gap-4">
@@ -229,9 +249,11 @@ return (
       </div>
       <div className="md:col-span-2">
         <Bar options={optionsVille} data={dataV} />
+        <DetailsVille/>
       </div>
       <div className="md:col-span-2">
         <Bar options={optionsPays} data={dataP} />
+        <DetailsPays/>
       </div>
     </div>
     </div>
