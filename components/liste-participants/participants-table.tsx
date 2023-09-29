@@ -84,7 +84,13 @@ const TableParticipant: React.FC<Props> = ({ data }) => {
             flex: 1,
         }
 
-
+,{
+            field: "nomAffiliation",
+            headerName: "Affiliation",
+            // renderCell: (value) => <PersoToolTip value={value} />,
+            // width:100,
+            flex: 1,
+        },
 
 
 

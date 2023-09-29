@@ -8,7 +8,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 type Props = {
   children: ReactNode;
 };
-const DashboardLayout: React.FC<Props> = ({ children }) => {
+const StatLayout: React.FC<Props> = ({ children }) => {
   const router = useRouter();
   return (
     <div className="relative px-4">
@@ -27,4 +27,4 @@ const DashboardLayout: React.FC<Props> = ({ children }) => {
   );
 };
 
-export default DashboardLayout;
+export default StatLayout;
