@@ -149,7 +149,7 @@ const TableParticipant: React.FC<Props> = ({ data }) => {
         {
             field: "Actions",
             ...actionSetting,
-            renderCell: (cellValues: GridCellParams) => (
+            renderCell: (cellValues: GridCellParams) => {
                 // <div className="grid grid-cols-2 gap-1 border-l-2 pl-2 -ml-2">
                 //   {result?.create === 1 && (
                 //     <EditBtn callBack={handleClick} cellValues={cellValues} />
@@ -158,11 +158,12 @@ const TableParticipant: React.FC<Props> = ({ data }) => {
                 //     <DeleteBtn callBack={handleClickDelete} cellValues={cellValues} />
                 //   )}
                 // </div>
-                <MenuAction
+                console.log(cellValues.row);
+                return (<MenuAction
                     path_details={`/participants/show/${cellValues.id}`}
-                    path_edit={`/participants/edit/${cellValues.id}`}
-                />
-            ),
+                    path_edit={`/inscriptions/edit/${cellValues.row.idEvent}/${cellValues.row.username}`}
+                />)
+            },
         },
     ];
 
