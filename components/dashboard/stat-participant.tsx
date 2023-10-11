@@ -238,20 +238,20 @@ const DetailsPays = ()=>{
 }
 return (
     <> <div style={{ height: "100%", width: "100%", overflow: "auto" }}>
-    <div className="grid grid-cols-1 gap-2 md:grid-cols-4 md:gap-4">
-      <div className="md:col-span-2">
+    <div className="grid grid-cols-1 gap-2 md:grid-cols-1 md:gap-4">
+      {/* <div className="md:col-span-2">
         <Bar options={options} data={dataCivilite} />
         <DetailsCivilite/>
-      </div>
-      <div className="md:col-span-2">
+      </div> */}
+      <div className="">
         <Bar options={optionsAffiliation} data={dataAff} />
         <DetailsAffiliation/>
       </div>
-      <div className="md:col-span-2">
+      <div className="">
         <Bar options={optionsVille} data={dataV} />
         <DetailsVille/>
       </div>
-      <div className="md:col-span-2">
+      <div className="">
         <Bar options={optionsPays} data={dataP} />
         <DetailsPays/>
       </div>
