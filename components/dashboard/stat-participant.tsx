@@ -143,14 +143,14 @@ tableauSansDoublonsPay.forEach((ele:any)=>{
   datasets: [
     {
       label: '% par Civilité',
-      data: [...tableauSansDoublons.map(e=>dataCivil[e])],
+      data: [...tableauSansDoublons.map((e:any)=>dataCivil[e])],
       backgroundColor: ["rgba(255, 99, 132, 0.5)", "Orange", "Yellow", "Green", "Purple", "Blue"]
       // backgroundColor: ['rgba(255, 99, 132, 0.5)', 'rgba(53, 162, 235, 0.5)'],
     },
 
   ],
 }
-const labelsAffiliation = [];
+const labelsAffiliation: any = [];
 tableauSansDoublonsAff.forEach((e:any)=>{
   if(e === null){
     labelsAffiliation.push("Aucune aff.")
@@ -163,7 +163,7 @@ labels:labelsAffiliation,
 datasets: [
   {
     label: '% par Affiliation',
-    data: [...tableauSansDoublonsAff.map(e=>dataAffiliation[e])],
+    data: [...tableauSansDoublonsAff.map((e:any)=>dataAffiliation[e])],
     backgroundColor: ["rgba(255, 99, 132, 0.5)", "Orange", "Yellow", "Green", "Purple", "Blue"]
     // backgroundColor: ['rgba(255, 99, 132, 0.5)', 'rgba(53, 162, 235, 0.5)'],
   },
@@ -175,7 +175,7 @@ labels:tableauSansDoublonsVil,
 datasets: [
   {
     label: '% par Ville',
-    data: [...tableauSansDoublonsVil.map(e=>dataVille[e])],
+    data: [...tableauSansDoublonsVil.map((e:any)=>dataVille[e])],
     backgroundColor: ["rgba(255, 99, 132, 0.5)", "Orange", "Yellow", "Green", "Purple", "Blue"]
     // backgroundColor: ['rgba(255, 99, 132, 0.5)', 'rgba(53, 162, 235, 0.5)'],
   },
@@ -187,7 +187,7 @@ labels:tableauSansDoublonsPay,
 datasets: [
   {
     label: '% par pays',
-    data: [...tableauSansDoublonsPay.map(e=>dataPays[e])],
+    data: [...tableauSansDoublonsPay.map((e:any)=>dataPays[e])],
     backgroundColor: ["rgba(255, 99, 132, 0.5)", "Orange", "Yellow", "Green", "Purple", "Blue"]
     // backgroundColor: ['rgba(255, 99, 132, 0.5)', 'rgba(53, 162, 235, 0.5)'],
   },
@@ -213,7 +213,7 @@ const DetailsAffiliation = ()=>{
   return (
     <div className="flex flex-col md:grid md:grid-cols-3 md:gap-4">
       {
-        keysAffiliation.map((c:any)=>(<p key={c} className=""><span className="text-gray-500">{c=== 'null' ? 'Aucune aff.' : c}: </span><span></span>{Math.round(dataAffiliation[c] * data?.length/100)}</p>))
+        keysAffiliation.map((c:any)=>(<p key={c} className=""><span className="text-gray-500">{c=== 'null' ? 'Aucune aff.(null)' : c}: </span><span></span>{Math.round(dataAffiliation[c] * data?.length/100)}</p>))
       }
     </div>
   )

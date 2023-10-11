@@ -147,7 +147,7 @@ const Page: React.FC<Props> = ({ data }) => {
               Supprimer
             </Button>
 
-            <Link href={`/participants/edit/${data.id_participant}`}>
+            <Link href={`/inscriptions/edit/${data.idEvent}/${data.username}`}>
               <Button className="bg-blue-600 capitalize" variant="contained" startIcon={<EditIcon />}>
                 Editer
               </Button>

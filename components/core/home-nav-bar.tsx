@@ -27,6 +27,10 @@ const HomeNavBar = ()=>{
         name: 'Paiement'
       },
       {
+        path: '/faire-un-don',
+        name: 'Faire un don'
+      },
+      {
         path: '/connexion',
         name: 'Tableau de bord'
       },
