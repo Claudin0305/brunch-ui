@@ -18,7 +18,7 @@ const Page: React.FC = () => {
                 <h1 className="font-bold text-sm md:text-lg capitalize mb-8 text-center">
                     Don pour autres projets
                 </h1>
-
+                <h1 className="text-center text-lg text-red-600">Page en construction...</h1>
             </div>
 
 
