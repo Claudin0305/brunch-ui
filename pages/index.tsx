@@ -34,13 +34,16 @@ const Home: React.FC<Props> = ({ data }) => {
             <h1 className="m-auto font-waterfall text-5xl text-white font-bold">{`${data?.[0].eventType.replace("_", " ")}`}<span>&#x27;</span>{`${data?.[0].createdAt.split("-")[0]}`}</h1>
           </section>
           <div className='px-8 md:px-32 mb-4 md:mb-8 container mx-auto flex flex-col w-full space-y-4'>
+
             <h3 className='uppercase text-gray-400 text-lg flex items-center'>a venir <span className='w-32 h-1 ml-2 border-t-2 border-t-blue-400 border border-b-0 border-r-0 border-l-0'></span> </h3>
             <h1 className='uppercase text-3xl font-bold text-black'>événements proches</h1>
           </div>
           {/* Description event */}
           {
             now.valueOf() < fin.valueOf() ? <><section className='px-8 md:px-32 mb-4 md:mb-8 mx-auto flex flex-col-reverse md:flex-row gap-4 items-center md:items-start'>
+
               <div className='w-2/3 p-4'>
+                <p className="text-center text-lg text-red-600 mb-4 -mt-8">Veuillez noter que les inscriptions en présentiel au Centre de Congrès Palace (Laval, Canada) sont terminées.  Il est désormais uniquement possible de s’inscrire pour une participation à distance via vidéoconférence Zoom.</p>
                 <div className='mb-4 md:mb-8' dangerouslySetInnerHTML={{ __html: data?.[0].text_descriptif }}>
                 </div>
                 <div className='flex items-start gap-x-4'>
