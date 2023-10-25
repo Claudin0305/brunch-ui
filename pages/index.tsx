@@ -43,7 +43,6 @@ const Home: React.FC<Props> = ({ data }) => {
             now.valueOf() < fin.valueOf() ? <><section className='px-8 md:px-32 mb-4 md:mb-8 mx-auto flex flex-col-reverse md:flex-row gap-4 items-center md:items-start'>
 
               <div className='w-2/3 p-4'>
-                <p className="text-center text-lg text-red-600 mb-4 -mt-8">Veuillez noter que les inscriptions en présentiel au Centre de Congrès Palace (Laval, Canada) sont terminées.  Il est désormais uniquement possible de s’inscrire pour une participation à distance via vidéoconférence Zoom.</p>
                 <div className='mb-4 md:mb-8' dangerouslySetInnerHTML={{ __html: data?.[0].text_descriptif }}>
                 </div>
                 <div className='flex items-start gap-x-4'>
