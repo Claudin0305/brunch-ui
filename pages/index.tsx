@@ -31,7 +31,7 @@ const Home: React.FC<Props> = ({ data }) => {
 
         <main className={`bg-white`}>
           <section id="event_home" className="text-white bg-white text-center flex z-40 mb-4 md:mb-8">
-            <h1 className="m-auto font-waterfall text-5xl text-white font-bold">{`${data?.[0].eventType.replace("_", " ")}`}<span>&#x27;</span>{`${data?.[0].createdAt.split("-")[0]}`}</h1>
+            <h1 className="m-auto font-waterfall text-5xl text-white font-bold">{`${data?.[0].eventType.replace("_", " ")}`}<span>&#x27;</span>{`${data?.[0].date_debut.split("-")[0]}`}</h1>
           </section>
           <div className='px-8 md:px-32 mb-4 md:mb-8 container mx-auto flex flex-col w-full space-y-4'>
 
@@ -69,7 +69,7 @@ const Home: React.FC<Props> = ({ data }) => {
             </section>
               <section id='counter' className='mb-8'>
                 <Counter date_fin={`${date_fin} ${heure_fin}:00`} date_limite={date_limite} />
-              </section></>:<h2 className='ml-32 text-xl'>Aucun événement...</h2>
+              </section></> : <h2 className='ml-32 text-xl'>Aucun événement...</h2>
           }
         </main>
       </HomeLayout>
@@ -81,6 +81,7 @@ export async function getServerSideProps() {
     // Fetch data from an API or perform other async operations
     const response = await axios.get(`${process.env.base_route_get}/events`);
     // const response = await axios.get(`http://localhost:8080/api/events`);
+
     const data = response.data;
 
     // Return the data as props
