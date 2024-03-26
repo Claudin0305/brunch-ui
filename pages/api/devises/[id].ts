@@ -7,9 +7,12 @@ export default async function handler( req: NextApiRequest,
     const cookie = getCookie('token', {req, res})
 
     const {id} = req.query
+      const formData = new FormData();
+      formData.append("devise", req.body.devise);
+      formData.append("code_devise", req.body.code_devise);
     if(req.method === 'PUT'){
       axios
-          .put(`${process.env.base_route_get}/devises/${id}`, req.body, {
+          .put(`${process.env.base_route_get}/devises/${id}`, formData, {
     headers: {
           withCredentials: true,
           Cookie: cookie
