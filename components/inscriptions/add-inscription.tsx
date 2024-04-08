@@ -109,6 +109,7 @@ const mode_paiements: option[] = [
 let errNext: errType = {};
 const champ = 'Ce champ est obligatoire!';
 const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civilites, event, locaux, participants, affiliations }) => {
+  console.log(pays)
   const { register, handleSubmit, watch, reset, setValue, getValues, control, formState: { errors } } = useForm<Inputs>();
   const [errorNext, setErrorNext] = useState<any>({});
   const [show, setShow] = useState<boolean>(false);
@@ -340,7 +341,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
   useEffect(() => {
     if (event !== null) {
       //do something
-      if (event.format_event === 'HYBRIDE') {
+      if (event?.format_event === 'HYBRIDE') {
         const tableOptions: option[] = [{
           value: "PRESENTIEL",
           label: "Présentiel"
@@ -351,7 +352,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
         },];
         setFormatEventOptions(tableOptions)
       } else {
-        const result = format_events.filter(f => f.value === event.format_event);
+        const result = format_events.filter(f => f.value === event?.format_event);
         setFormatEventOptions(result)
       }
     }
