@@ -109,7 +109,7 @@ const mode_paiements: option[] = [
 let errNext: errType = {};
 const champ = 'Ce champ est obligatoire!';
 const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civilites, event, locaux, participants, affiliations }) => {
-  console.log(pays)
+  // console.log(pays)
   const { register, handleSubmit, watch, reset, setValue, getValues, control, formState: { errors } } = useForm<Inputs>();
   const [errorNext, setErrorNext] = useState<any>({});
   const [show, setShow] = useState<boolean>(false);
