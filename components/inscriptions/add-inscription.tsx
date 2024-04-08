@@ -60,9 +60,9 @@ type errType = {
   tel_invalid?: any
   newsletter?: any
   authorisation_liste?: any;
-  email_conf_null?:any
-  invalid_nom?:any
-  invalid_prenom?:any
+  email_conf_null?: any
+  invalid_nom?: any
+  invalid_prenom?: any
 }
 type Props = {
   data_props: any | null;
@@ -489,19 +489,19 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
         errNext = {};
 
         // setSelectedLocal(null);
-        const sendMessage = ()=>{
+        const sendMessage = () => {
           axios.post('/api/messages/send-message', { id_event: response.data.data.idEvent, id_participant: response.data.data.id_participant }, {
             headers: {
               "Access-Control-Allow-Origin": "*",
             },
           })
-          .then(answer=>{
-            if(answer.status === 201){
-              console.log("Message envoyer")
-            }
-          }).catch(errorSend=>{
-            console.log(errorSend)
-          })
+            .then(answer => {
+              if (answer.status === 201) {
+                console.log("Message envoyer")
+              }
+            }).catch(errorSend => {
+              console.log(errorSend)
+            })
         }
         sendMessage()
       }
@@ -530,12 +530,12 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
     let formData = new FormData()
     const values = getValues()
     // console.log(values, errNext)
-    if (values.abonnement_newsletter === null || values.abonnement_newsletter === undefined || values.abonnement_newsletter ==="") {
+    if (values.abonnement_newsletter === null || values.abonnement_newsletter === undefined || values.abonnement_newsletter === "") {
       errNext = { ...errNext, newsletter: true }
     } else {
       errNext = { ...errNext, newsletter: false }
     }
-    if (values.mode_participation === null || values.mode_participation === undefined || values.mode_participation ==="") {
+    if (values.mode_participation === null || values.mode_participation === undefined || values.mode_participation === "") {
       errNext = { ...errNext, mode_participation: true }
     } else {
       errNext = { ...errNext, mode_participation: false }
@@ -699,7 +699,6 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
         <div className="block">
 
           <TextField
-            required
             autoComplete="given-name"
             fullWidth
             id="tel_participant"
@@ -707,9 +706,9 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
             type="text"
             label="Téléphone"
             {...register("tel_participant", {
-              required: "Ce champ est obligatoire", pattern: {
+              pattern: {
                 value: /^[+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[-\s\\./0-9]*$/g,
-                message: "Le format du "
+                message: "Le format du telephone est incorrect"
               }
             })}
             className=""
@@ -782,7 +781,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
           {/* {errors?.email_confirmation && <Error text={errors.email_confirmation.message} />}
           {!identiqueEmail && <Error text={"Le courriel que vous avez spécifié dans le champ \"Confirmation de courriel\" ne correspond pas à celui que vous avez indiqué dans le champ courriel.  Veuillez entrer la même valeur dans les 2 champs."} />} */}
         </div>
-        <div className="flex-col flex md:-mt-4 z-40">
+        {/* <div className="flex-col flex md:-mt-4 z-40">
           <label
             className="mb-2"
             htmlFor={`id_tranche_age`}
@@ -808,9 +807,38 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
               />
             )}
           />{" "}
-          {/* {errors?.id_tranche_age && <Error text={errors.id_tranche_age.message} />} */}
+
           {errNext?.tranche_age && <Error text={champ} />}
-        </div>
+        </div> */}
+        {/* <div className="flex-col flex md:-mt-4 z-40">
+          <label
+            className="mb-2"
+            htmlFor={`id_tranche_age`}
+          >
+            {" "}
+            Tranche d'âge{" "}
+          </label>
+          <Controller
+            name={`id_tranche_age`}
+            control={control}
+            // rules={{
+            //   required: "Ce champ est obligatoire",
+            // }}
+
+            render={({ field }) => (
+              <Select
+                {...field}
+                placeholder={
+                  "Choisir tranche d'âge..."
+                }
+                isClearable
+                options={optionsTrancheAge}
+              />
+            )}
+          />{" "}
+
+          {errNext?.tranche_age && <Error text={champ} />}
+        </div> */}
         <div className="flex-col flex md:-mt-4 z-30 ">
           <label
             className="mb-2"
@@ -1227,7 +1255,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
     } else {
       errNext = { ...errNext, civilite: false }
     }
-    if (values.email_confirmation === null || values.email_confirmation === undefined || values.email_confirmation ==="") {
+    if (values.email_confirmation === null || values.email_confirmation === undefined || values.email_confirmation === "") {
       errNext = { ...errNext, email_conf_null: true }
     } else {
       errNext = { ...errNext, email_conf_null: false }
@@ -1248,11 +1276,11 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
     } else {
       errNext = { ...errNext, departement: false }
     }
-    if (values.id_tranche_age === null || values.id_tranche_age === undefined) {
-      errNext = { ...errNext, tranche_age: true }
-    } else {
-      errNext = { ...errNext, tranche_age: false }
-    }
+    // if (values.id_tranche_age === null || values.id_tranche_age === undefined) {
+    //   errNext = { ...errNext, tranche_age: true }
+    // } else {
+    //   errNext = { ...errNext, tranche_age: false }
+    // }
     if (values.nom.trim() === "") {
       errNext = { ...errNext, nom: true }
     } else {
@@ -1268,13 +1296,14 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
     } else {
       errNext = { ...errNext, email: false }
     }
-    if (values.tel_participant.trim() === "") {
-      errNext = { ...errNext, tel_participant: true }
-    } else {
-      errNext = { ...errNext, tel_participant: false }
+
+    // errNext = { ...errNext, tel_participant: false }
+    if (values.tel_participant.trim() !== "") {
+
       let reg = /^[+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[-\s\\./0-9]*$/g
       errNext = { ...errNext, tel_invalid: !reg.test(values.tel_participant) }
     }
+
 
     const keys = Object.keys(errNext);
 
@@ -1326,9 +1355,9 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
 
   return (
     <div className="container">
-      <p className="text-center text-lg text-red-600 mb-4 mt-4">Veuillez noter que les <span className="font-bold">inscriptions en présentiel</span> au Centre de Congrès Palace (Laval, Canada) sont terminées.  Il est désormais uniquement possible de s’inscrire pour une participation à distance via vidéoconférence Zoom.</p>
+      {/* <p className="text-center text-lg text-red-600 mb-4 mt-4">Veuillez noter que les <span className="font-bold">inscriptions en présentiel</span> au Centre de Congrès Palace (Laval, Canada) sont terminées.  Il est désormais uniquement possible de s’inscrire pour une participation à distance via vidéoconférence Zoom.</p> */}
       <h1 className="font-bold text-md text-center md:text-left md:text-lg capitalize mb-4">
-        {data_props === null ? '' : 'Modifier'} Inscription Brunch'2023
+        {data_props === null ? '' : 'Modifier'} Inscription Brunch'2024
       </h1>
       <hr />
       <form onSubmit={handleSubmit(onSubmit)} className="center">
