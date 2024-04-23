@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useMemo } from "react";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import TextField from "@mui/material/TextField";
@@ -126,7 +127,7 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
       setValue('heure_fin', data_props.heure_fin)
       const image = data_props.imageDatas?.filter((img: any) => img.active === true)?.[0]
       setPreviewImage(`${process.env.base_route}/events/images/${image?.name}`)
-      setValue('image_event', image.name)
+      setValue('image_event', image?.name)
 
     }
   }, [])
@@ -159,7 +160,7 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
 
 
 
-  const updateEvent = (data: FormData|Inputs) => {
+  const updateEvent = (data: FormData | Inputs) => {
     axios
       .put(`/api/evenements/${data_props.id_event}`, data)
       .then((response) => {
@@ -281,326 +282,325 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
   }, [dateDebut, dateFin])
   // console.log(previewImage)
   return (
+
     <>
-      <div className="container">
-        <h1 className="font-bold text-sm md:text-lg capitalize mb-8">
-          {data_props === null ? 'Ajouter' : 'Modifier'} Evènement
-        </h1>
+      <h1 className={`font-bold text-sm md:text-lg capitalize mb-8`}>
+        {data_props === null ? 'Ajouter' : 'Modifier'} Evènement
+      </h1>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="center">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="grid col-span-1 md:col-span-2 grid-cols-1 md:grid-cols-4 gap-8">
-              <div className="block">
-                <TextField
-                  required
-                  autoComplete="given-name"
-                  fullWidth
-                  id="date_debut"
-                  size="small"
-                  label="Date debut"
-                  defaultValue={defaultDate}
-                  type="date"
-                  value={dateDebut}
-                  {...register("date_debut", { required: 'Ce champ est obligatoire!' })}
-                  onChange={e => {
-                    setDateFin(defaultDate);
-                    setDateDebut(e.target.value.trim())
-                    register('date_debut').onChange(e)
-                    setErrorDate(false)
-                  }}
-                />
-                {errors?.date_debut && <Error text={errors.date_debut.message} />}
-                {responseError !== null && <Error text={responseError?.libelle} />}
-              </div>
-              <div className="block">
-                <TextField
-                  required
-                  autoComplete="given-name"
-                  fullWidth
-                  size="small"
-                  id="heure_debut"
-                  label="Heure debut"
-                  type="time"
-                  defaultValue={"00:00"}
-                  {...register("heure_debut", { required: true })}
-                />
-              </div>
-              <div className="block">
-                <TextField
-                  required
-                  autoComplete="given-name"
-                  fullWidth
-                  size="small"
-                  id="date_fin"
-                  label="Date fin"
-                  defaultValue={defaultDate}
-                  type="date"
-                  value={dateFin}
-                  {...register("date_fin", { required: 'Ce champ est obligatoire' })}
-                  onChange={e => {
-                    setDateFin(e.target.value.trim());
-                    register('date_fin').onChange(e);
-
-
-                    // console.log(errorDate, 'fin: '+fin.getTime(), 'debut: ' +debut.getTime())
-                  }}
-                />
-                {errors?.date_fin && <Error text={errors.date_fin.message} />}
-                {responseError !== null && <Error text={responseError?.libelle} />}
-                {errorDate && <Error text={'La valeur de la date de fin est incorrecte!'} />}
-              </div>
-              <div className="block">
-                <TextField
-                  required
-                  autoComplete="given-name"
-                  fullWidth
-                  size="small"
-                  id="heure_fin"
-                  label="Heure fin"
-                  type="time"
-
-                  defaultValue={"00:00"}
-                  {...register("heure_fin", { required: true })}
-                />
-
-                {responseError !== null && <Error text={responseError?.libelle} />}
-              </div>
-            </div>
-            <div className="grid grid-cols-1 col-span-1 md:col-span-2 md:grid-cols-4 gap-8">
-              <div className="flex-col flex md:-mt-4 ">
-                <label
-                  className="mb-2"
-                  htmlFor={`format_event`}
-                >
-                  {" "}
-                  Format événement<Star/>{" "}
-                </label>
-                <Controller
-                  name={`format_event`}
-                  control={control}
-                  rules={{
-                    required: "Ce champ est obligatoire",
-                  }}
-
-                  render={({ field }) => (
-                    <Select
-                      {...field}
-                      placeholder={
-                        "Choisir le format..."
-                      }
-                      isClearable
-                      options={format_events}
-                      className="z-50"
-                    />
-                  )}
-                />{" "}
-                {errors?.format_event && <Error text={errors.format_event.message} />}
-              </div>
-              <div className="flex-col flex md:-mt-4 ">
-                <label
-                  className="mb-2"
-                  htmlFor={`event_type`}
-                >
-                  {" "}
-                  Type événement<Star/>{" "}
-                </label>
-                <Controller
-                  name={`event_type`}
-                  control={control}
-                  rules={{
-                    required: "Ce champ est obligatoire",
-                  }}
-
-                  render={({ field }) => (
-                    <Select
-                      {...field}
-                      placeholder={
-                        "Choisir le type..."
-                      }
-                      isClearable
-                      options={type_events}
-                      className="z-50"
-                    />
-                  )}
-                />{" "}
-                {errors?.format_event && <Error text={errors.event_type?.message} />}
-              </div>
-              <div className="block md:mt-4">
-                <TextField
-                  required
-                  autoComplete="given-name"
-                  fullWidth
-                  id="cible_participation"
-                  label="Cible participation"
-                  type="number"
-                  size="small"
-                  inputProps={{ min }}
-                  {...register("cible_participation", {
-                    required: true, min: {
-                      value: 1,
-                      message: 'La valeur doit être plus grande que 1'
-                    }
-                  })}
-                />
-
-                {errors?.cible_participation && <Error text={errors.cible_participation.message} />}
-              </div>
-              <div className="block md:mt-4">
-                <TextField
-                  required
-                  autoComplete="given-name"
-                  fullWidth
-                  id="adr_email_event"
-                  label="Email événement"
-                  type="email"
-                  size="small"
-                  {...register("adr_email_event", {
-                    required: true, pattern: {
-                      value: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-                      message: "L'email est invalide!"
-                    }
-                  })}
-                />
-
-                {errors?.adr_email_event && <Error text={errors.adr_email_event.message} />}
-              </div>
-
-              <div className="block">
-
-
-                <TextField
-                  required
-                  autoComplete="given-name"
-                  fullWidth
-                  id="url"
-                  size="small"
-                  label="Site web"
-                  type="url"
-
-                  {...register("url", { required: true })}
-                />
-
-                {responseError !== null && <Error text={responseError?.libelle} />}
-              </div>
-            </div>
-            {/* debut */}
-            <div className="row-span-4">
-              <div className="block">
-                {previewImage !== "" && <div className="mb-8 text-center">
-                  <div className="flex justify-center item-center">
-                    <Image
-                      src={previewImage}
-                      width={300}
-                      height={300}
-                      alt={""}
-
-                    />
-                  </div>
-                  <Button
-                    variant="outlined"
-                    color="error"
-                    className="hover:bg-red-600 hover:text-white mt-8"
-                    onClick={e => {
-                      if (data_props === null) {
-                        setValue('image_event', null);
-                        setPreviewImage("");
-                      } else {
-                        const image = data_props.imageDatas?.filter((img: any) => img.active === true)?.[0]
-                        setPreviewImage(`${process.env.base_route}/events/images/${image?.name}`)
-                        setValue('image_event', image.name)
-                      }
-                    }}
-                  >
-                    Effacer
-                  </Button>
-                </div>}
-              </div>
-              <div className="-mt-4">
-                <label
-                  htmlFor="image_event"
-                  className="mb-2 inline-block text-neutral-700 dark:text-neutral-200"
-                >Image Evènement{data_props === null && <Star/> } </label
-                >
-                <input
-                  className="relative m-0 block w-full min-w-0 flex-auto cursor-pointer rounded border border-solid border-neutral-300 bg-clip-padding px-3 py-[0.32rem] font-normal leading-[2.15] text-neutral-700 transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:cursor-pointer file:overflow-hidden file:rounded-none file:border-0 file:border-solid file:border-inherit file:bg-neutral-100 file:px-3 file:mr-1 file:py-[0.32rem] file:text-neutral-700 file:transition file:duration-150 file:ease-in-out file:[border-inline-end-width:1px] file:[margin-inline-end:0.75rem] hover:file:bg-neutral-200 focus:border-primary focus:text-neutral-700 focus:shadow-te-primary focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:file:bg-neutral-700 dark:file:text-neutral-100 dark:focus:border-primary"
-                  id="image_event"
-                  type="file"
-                  accept="image/png, image/jpeg"
-                  required={data_props === null}
-                  {...register("image_event", {
-                    required: {
-                      value: data_props === null,
-                      message: "Ce champ est obligatoire!"
-                    }
-                  })}
-                  onChange={e => {
-                    // setCurrentImage(e.target.files?.[0]);
-                    if (e !== undefined && e !== null) {
-                      if (e.target !== undefined && e.target !== null) {
-                        if (e.target.files !== undefined && e.target.files !== null) {
-                          setPreviewImage(URL?.createObjectURL(e.target.files[0]));
-                        }
-                      }
-                    }
-                    register("image_event").onChange(e)
-                  }}
-                />
-              </div>
-              {/* </div> */}
-
-              {errors?.image_event && <Error text={errors.image_event.message} />}
+      <form onSubmit={handleSubmit(onSubmit)} className="center">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid col-span-1 md:col-span-2 grid-cols-1 md:grid-cols-4 gap-8">
+            <div className="block">
+              <TextField
+                required
+                autoComplete="given-name"
+                fullWidth
+                id="date_debut"
+                size="small"
+                label="Date debut"
+                defaultValue={defaultDate}
+                type="date"
+                value={dateDebut}
+                {...register("date_debut", { required: 'Ce champ est obligatoire!' })}
+                onChange={e => {
+                  setDateFin(defaultDate);
+                  setDateDebut(e.target.value.trim())
+                  register('date_debut').onChange(e)
+                  setErrorDate(false)
+                }}
+              />
+              {errors?.date_debut && <Error text={errors.date_debut.message} />}
               {responseError !== null && <Error text={responseError?.libelle} />}
             </div>
-            {/* Fin */}
-            <div className="row-span-5">
-              <QuillNoSSRWrapper
-                modules={modules}
-                theme="snow"
-                placeholder="Text descriptif...*"
+            <div className="block">
+              <TextField
+                required
+                autoComplete="given-name"
+                fullWidth
+                size="small"
+                id="heure_debut"
+                label="Heure debut"
+                type="time"
+                defaultValue={"00:00"}
+                {...register("heure_debut", { required: true })}
+              />
+            </div>
+            <div className="block">
+              <TextField
+                required
+                autoComplete="given-name"
+                fullWidth
+                size="small"
+                id="date_fin"
+                label="Date fin"
+                defaultValue={defaultDate}
+                type="date"
+                value={dateFin}
+                {...register("date_fin", { required: 'Ce champ est obligatoire' })}
                 onChange={e => {
-                  // console.log(e.targe)
-                  if (e !== null) {
-                    setValueText(e)
+                  setDateFin(e.target.value.trim());
+                  register('date_fin').onChange(e);
 
-                  }
-                  if(e !== undefined && e !== null){
-                    setValue('text_descriptif', e);
-                  }
+
+                  // console.log(errorDate, 'fin: '+fin.getTime(), 'debut: ' +debut.getTime())
                 }}
-                value={valueText}
+              />
+              {errors?.date_fin && <Error text={errors.date_fin.message} />}
+              {responseError !== null && <Error text={responseError?.libelle} />}
+              {errorDate && <Error text={'La valeur de la date de fin est incorrecte!'} />}
+            </div>
+            <div className="block">
+              <TextField
+                required
+                autoComplete="given-name"
+                fullWidth
+                size="small"
+                id="heure_fin"
+                label="Heure fin"
+                type="time"
+
+                defaultValue={"00:00"}
+                {...register("heure_fin", { required: true })}
               />
 
               {responseError !== null && <Error text={responseError?.libelle} />}
-
-              {errors?.text_descriptif && <Error text={errors.text_descriptif.message} />}
-            </div>
-
-
-
-            <div className="flex justify-end flex-col mt-8 md:flex-row gap-8 mb-8">
-              <Button
-                type="reset"
-                className="text-blue-600 border-blue-600 capitalize"
-                variant="outlined"
-              >
-                Reinitialiser
-              </Button>
-
-              <Button
-                disabled={isSubmit || errorDate}
-                type="submit"
-                className={`${isSubmit || errorDate ? 'bg-blue-300' : 'bg-blue-600 '} capitalize text-white flex items-center justify-center gap-x-2`}
-                variant="contained"
-              >
-                {isSubmit && <CircularIndeterminate />} <span>{data_props === null ? 'Ajouter' : 'Modifier'}</span>
-              </Button>
             </div>
           </div>
-        </form>
+          <div className="grid grid-cols-1 col-span-1 md:col-span-2 md:grid-cols-4 gap-8">
+            <div className="flex-col flex md:-mt-4 ">
+              <label
+                className="mb-2"
+                htmlFor={`format_event`}
+              >
+                {" "}
+                Format événement<Star />{" "}
+              </label>
+              <Controller
+                name={`format_event`}
+                control={control}
+                rules={{
+                  required: "Ce champ est obligatoire",
+                }}
+
+                render={({ field }) => (
+                  <Select
+                    {...field}
+                    placeholder={
+                      "Choisir le format..."
+                    }
+                    isClearable
+                    options={format_events}
+                    className="z-50"
+                  />
+                )}
+              />{" "}
+              {errors?.format_event && <Error text={errors.format_event.message} />}
+            </div>
+            <div className="flex-col flex md:-mt-4 ">
+              <label
+                className="mb-2"
+                htmlFor={`event_type`}
+              >
+                {" "}
+                Type événement<Star />{" "}
+              </label>
+              <Controller
+                name={`event_type`}
+                control={control}
+                rules={{
+                  required: "Ce champ est obligatoire",
+                }}
+
+                render={({ field }) => (
+                  <Select
+                    {...field}
+                    placeholder={
+                      "Choisir le type..."
+                    }
+                    isClearable
+                    options={type_events}
+                    className="z-50"
+                  />
+                )}
+              />{" "}
+              {errors?.format_event && <Error text={errors.event_type?.message} />}
+            </div>
+            <div className="block md:mt-4">
+              <TextField
+                required
+                autoComplete="given-name"
+                fullWidth
+                id="cible_participation"
+                label="Cible participation"
+                type="number"
+                size="small"
+                inputProps={{ min }}
+                {...register("cible_participation", {
+                  required: true, min: {
+                    value: 1,
+                    message: 'La valeur doit être plus grande que 1'
+                  }
+                })}
+              />
+
+              {errors?.cible_participation && <Error text={errors.cible_participation.message} />}
+            </div>
+            <div className="block md:mt-4">
+              <TextField
+                required
+                autoComplete="given-name"
+                fullWidth
+                id="adr_email_event"
+                label="Email événement"
+                type="email"
+                size="small"
+                {...register("adr_email_event", {
+                  required: true, pattern: {
+                    value: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+                    message: "L'email est invalide!"
+                  }
+                })}
+              />
+
+              {errors?.adr_email_event && <Error text={errors.adr_email_event.message} />}
+            </div>
+
+            <div className="block">
 
 
-      </div>
-    </>
+              <TextField
+                required
+                autoComplete="given-name"
+                fullWidth
+                id="url"
+                size="small"
+                label="Site web"
+                type="url"
+
+                {...register("url", { required: true })}
+              />
+
+              {responseError !== null && <Error text={responseError?.libelle} />}
+            </div>
+          </div>
+          {/* debut */}
+          <div className="row-span-4">
+            <div className="block">
+              {previewImage !== "" && <div className="mb-8 text-center">
+                <div className="flex justify-center item-center">
+                  <Image
+                    src={previewImage}
+                    width={300}
+                    height={300}
+                    alt={""}
+
+                  />
+                </div>
+                <Button
+                  variant="outlined"
+                  color="error"
+                  className="hover:bg-red-600 hover:text-white mt-8"
+                  onClick={e => {
+                    if (data_props === null) {
+                      setValue('image_event', null);
+                      setPreviewImage("");
+                    } else {
+                      const image = data_props.imageDatas?.filter((img: any) => img.active === true)?.[0]
+                      setPreviewImage(`${process.env.base_route}/events/images/${image?.name}`)
+                      setValue('image_event', image.name)
+                    }
+                  }}
+                >
+                  Effacer
+                </Button>
+              </div>}
+            </div>
+            <div className="-mt-4">
+              <label
+                htmlFor="image_event"
+                className="mb-2 inline-block text-neutral-700 dark:text-neutral-200"
+              >Image Evènement{data_props === null && <Star />} </label
+              >
+              <input
+                className="relative m-0 block w-full min-w-0 flex-auto cursor-pointer rounded border border-solid border-neutral-300 bg-clip-padding px-3 py-[0.32rem] font-normal leading-[2.15] text-neutral-700 transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:cursor-pointer file:overflow-hidden file:rounded-none file:border-0 file:border-solid file:border-inherit file:bg-neutral-100 file:px-3 file:mr-1 file:py-[0.32rem] file:text-neutral-700 file:transition file:duration-150 file:ease-in-out file:[border-inline-end-width:1px] file:[margin-inline-end:0.75rem] hover:file:bg-neutral-200 focus:border-primary focus:text-neutral-700 focus:shadow-te-primary focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:file:bg-neutral-700 dark:file:text-neutral-100 dark:focus:border-primary"
+                id="image_event"
+                type="file"
+                accept="image/png, image/jpeg"
+                required={data_props === null}
+                {...register("image_event", {
+                  required: {
+                    value: data_props === null,
+                    message: "Ce champ est obligatoire!"
+                  }
+                })}
+                onChange={e => {
+                  // setCurrentImage(e.target.files?.[0]);
+                  if (e !== undefined && e !== null) {
+                    if (e.target !== undefined && e.target !== null) {
+                      if (e.target.files !== undefined && e.target.files !== null) {
+                        setPreviewImage(URL?.createObjectURL(e.target.files[0]));
+                      }
+                    }
+                  }
+                  register("image_event").onChange(e)
+                }}
+              />
+              {/* </div> */}
+            </div>
+
+            {errors?.image_event && <Error text={errors.image_event.message} />}
+            {responseError !== null && <Error text={responseError?.libelle} />}
+          </div>
+          {/* Fin */}
+          <div className="row-span-5">
+            <QuillNoSSRWrapper
+              modules={modules}
+              theme="snow"
+              placeholder="Text descriptif...*"
+              onChange={e => {
+                // console.log(e.targe)
+                if (e !== null) {
+                  setValueText(e)
+
+                }
+                if (e !== undefined && e !== null) {
+                  setValue('text_descriptif', e);
+                }
+              }}
+              value={valueText}
+            />
+
+            {responseError !== null && <Error text={responseError?.libelle} />}
+
+            {errors?.text_descriptif && <Error text={errors.text_descriptif.message} />}
+          </div>
+
+
+
+          <div className="flex justify-end flex-col mt-8 md:flex-row gap-8 mb-8">
+            <Button
+              type="reset"
+              className="text-blue-600 border-blue-600 capitalize"
+              variant="outlined"
+            >
+              Reinitialiser
+            </Button>
+
+            <Button
+              disabled={isSubmit || errorDate}
+              type="submit"
+              className={`${isSubmit || errorDate ? 'bg-blue-300' : 'bg-blue-600 '} capitalize text-white flex items-center justify-center gap-x-2`}
+              variant="contained"
+            >
+              {isSubmit && <CircularIndeterminate />} <span>{data_props === null ? 'Ajouter' : 'Modifier'}</span>
+            </Button>
+          </div>
+        </div>
+      </form>
+      </>
+
+
   );
 };
 
