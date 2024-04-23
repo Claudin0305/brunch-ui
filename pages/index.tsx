@@ -23,6 +23,7 @@ const Home: React.FC<Props> = ({ data }) => {
     <>
       <Head>
         <title>Evenements</title>
+        <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
         <meta name="description" content="Brunch" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
