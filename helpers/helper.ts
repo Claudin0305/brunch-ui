@@ -3,7 +3,7 @@ export const replaceSpecialChars = (email: string) => {
     .replace(/[áâãäåàÀÁÂÃÅ]/gi, "a")
     .replace(/[ÈÉÊËèëêé]/gi, "e")
     .replace(/[ÌÍÎÏìíîï]/gi, "i")
-    .replace(/[ÔÕÖÒÓöõôóò]/, "o")
-    .replace(/[ùúûüŨũŪūŬŭŮůŰű]/, "u");
+    .replace(/[ÔÕÖÒÓöõôóò]/gi, "o")
+    .replace(/[ùúûüŨũŪūŬŭŮůŰű]/gi, "u");
   return email;
 };
