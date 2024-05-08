@@ -161,7 +161,7 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
 
 
 
-  const updateEvent = (data: FormData | Inputs) => {
+  const updateEvent = (data: FormData) => {
     axios
       .put(`/api/evenements/${data_props.id_event}`, data)
       .then((response) => {
@@ -200,7 +200,7 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
 
   };
 
-  const createEvent = (data: FormData | Inputs) => {
+  const createEvent = (data: FormData) => {
 
     axios.post(`${process.env.base_route_get}/events`, data, {
       // headers: {
