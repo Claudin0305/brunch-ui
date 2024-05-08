@@ -18,6 +18,7 @@ import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import PeopleIcon from '@mui/icons-material/People';
+import PaymentsIcon from '@mui/icons-material/Payments';
 type nav = {
   path: string;
   name: string;
@@ -40,6 +41,11 @@ const SideBare: React.FC = () => {
       path: "/participants",
       icon: <PeopleIcon />,
       name: "Participants",
+    },
+    {
+      path: "/paiement-repas",
+      icon: <PaymentsIcon />,
+      name: "Paiements",
     },
     {
       path: "/locaux-brunch",

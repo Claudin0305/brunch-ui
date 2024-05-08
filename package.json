@@ -24,6 +24,7 @@
     "cookies-next": "^2.1.2",
     "eslint": "8.39.0",
     "eslint-config-next": "13.3.4",
+    "formidable": "^3.5.1",
     "next": "13.3.4",
     "next-cookies": "^2.0.3",
     "postcss": "8.4.23",
@@ -38,5 +39,8 @@
     "tailwindcss": "3.3.2",
     "typescript": "5.0.4",
     "undici": "^5.22.1"
+  },
+  "devDependencies": {
+    "@types/formidable": "^3.4.5"
   }
 }

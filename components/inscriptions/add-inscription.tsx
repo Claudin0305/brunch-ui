@@ -20,6 +20,7 @@ import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import ModalRecap from "@/components/core/modal-recap";
 import ModalAddVille from "@/components/core/modal-add-ville";
 import ModalAddAffiliation from "@/components/core/modal-add-affiliation";
+import { replaceSpecialChars } from "@/helpers/helper";
 
 
 type Inputs = {
@@ -665,7 +666,12 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
             size="small"
             type="text"
             label="Nom"
-            {...register("nom", { required: "Ce champ est obligatoire" })}
+            {...register("nom", {
+              required: "Ce champ est obligatoire", minLength: {
+                value: 2,
+                message: "Ce champ doit avoir au moins 2 caractères"
+              }
+            })}
             className="md:mt-3"
             onChange={e => {
               if (e?.target.value !== "") {
@@ -738,12 +744,12 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
             onChange={e => {
               //do something
               let pattern = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
-              setErrorEmail(!pattern.test(e?.target.value))
-              setEmail(e?.target.value);
-              // setValue('email_confirmation', "")
-              // console.log(participants)
-              const result = participants?.filter((p: any) => p.email === e.target.value && p.idEvent === event.id_event)
-              setExistEmail(result.length > 0);
+              setErrorEmail(!pattern.test(e.currentTarget.value))
+              setEmail(replaceSpecialChars(e.currentTarget.value));
+
+              setValue("email", replaceSpecialChars(e.currentTarget.value))
+              const result = participants?.filter((p: any) => p.email === e.currentTarget.value && p.idEvent === event.id_event)
+              setExistEmail(result?.length > 0);
               register('email').onChange(e);
             }}
           />
@@ -753,13 +759,13 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
           {errNext?.email_invalid && <div className="block"> <Error text={'Le format du courriel que vous avez spécifié est incorrect.  Veuillez entrer un courriel valide.'} /> </div>}
           {/* {existEmail && <Error text={"Ce courriel existe déjà dans notre système!"} />} */}
         </div>
-        <div className="block">
+        {!errorEmail && <div className="block">
 
           <TextField
             required
             autoComplete="given-name"
             size="small"
-            // disabled={errorEmail}
+            disabled={errorEmail}
             fullWidth
             id="email_confirmation"
             type="email"
@@ -781,65 +787,66 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
           {errNext?.email_confirmation && <Error text={'Le courriel que vous avez spécifié dans le champ "Confirmation de courriel" ne correspond pas à celui que vous avez indiqué dans le champ courriel.  Veuillez entrer la même valeur dans les 2 champs.'} />}
           {/* {errors?.email_confirmation && <Error text={errors.email_confirmation.message} />}
           {!identiqueEmail && <Error text={"Le courriel que vous avez spécifié dans le champ \"Confirmation de courriel\" ne correspond pas à celui que vous avez indiqué dans le champ courriel.  Veuillez entrer la même valeur dans les 2 champs."} />} */}
+        </div>}
+
+        {/* <div className="flex-col flex md:-mt-4 z-40">
+          <label
+            className="mb-2"
+            htmlFor={`id_tranche_age`}
+          >
+            {" "}
+            Tranche d'âge{" "}
+          </label>
+          <Controller
+            name={`id_tranche_age`}
+            control={control}
+            // rules={{
+            //   required: "Ce champ est obligatoire",
+            // }}
+
+            render={({ field }) => (
+              <Select
+                {...field}
+                placeholder={
+                  "Choisir tranche d'âge..."
+                }
+                isClearable
+                options={optionsTrancheAge}
+              />
+            )}
+          />{" "}
+
+          {errNext?.tranche_age && <Error text={champ} />}
+        </div> */}
+        <div className="flex-col flex md:-mt-4 z-40">
+          <label
+            className="mb-2"
+            htmlFor={`id_tranche_age`}
+          >
+            {" "}
+            Tranche d'âge{" "}
+          </label>
+          <Controller
+            name={`id_tranche_age`}
+            control={control}
+            // rules={{
+            //   required: "Ce champ est obligatoire",
+            // }}
+
+            render={({ field }) => (
+              <Select
+                {...field}
+                placeholder={
+                  "Choisir tranche d'âge..."
+                }
+                isClearable
+                options={optionsTrancheAge}
+              />
+            )}
+          />{" "}
+
+          {errNext?.tranche_age && <Error text={champ} />}
         </div>
-        {/* <div className="flex-col flex md:-mt-4 z-40">
-          <label
-            className="mb-2"
-            htmlFor={`id_tranche_age`}
-          >
-            {" "}
-            Tranche d'âge{" "}
-          </label>
-          <Controller
-            name={`id_tranche_age`}
-            control={control}
-            // rules={{
-            //   required: "Ce champ est obligatoire",
-            // }}
-
-            render={({ field }) => (
-              <Select
-                {...field}
-                placeholder={
-                  "Choisir tranche d'âge..."
-                }
-                isClearable
-                options={optionsTrancheAge}
-              />
-            )}
-          />{" "}
-
-          {errNext?.tranche_age && <Error text={champ} />}
-        </div> */}
-        {/* <div className="flex-col flex md:-mt-4 z-40">
-          <label
-            className="mb-2"
-            htmlFor={`id_tranche_age`}
-          >
-            {" "}
-            Tranche d'âge{" "}
-          </label>
-          <Controller
-            name={`id_tranche_age`}
-            control={control}
-            // rules={{
-            //   required: "Ce champ est obligatoire",
-            // }}
-
-            render={({ field }) => (
-              <Select
-                {...field}
-                placeholder={
-                  "Choisir tranche d'âge..."
-                }
-                isClearable
-                options={optionsTrancheAge}
-              />
-            )}
-          />{" "}
-
-          {errNext?.tranche_age && <Error text={champ} />}
-        </div> */}
         <div className="flex-col flex md:-mt-4 z-30 ">
           <label
             className="mb-2"

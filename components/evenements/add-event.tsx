@@ -33,6 +33,7 @@ type Inputs = {
   image_event: any;
   image_change: any;
   image: any;
+  file?: any
 
 
 };
@@ -175,6 +176,14 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
             confirmButtonColor: "#2563eb",
             confirmButtonText: "Fermer",
           })
+          if(data.get("image_change")==="1"){
+            const d = {event_id:response.data.id_event, file:data.get('file')}
+            axios.post(`${process.env.base_route}/events/upload`, d, {
+      headers: {
+        "Content-Type": "multipart/form-data"
+      }
+    })
+          }
           router.push('/evenements')
           reset();
         }
@@ -193,7 +202,11 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
 
   const createEvent = (data: FormData | Inputs) => {
 
-    axios.post(`/api/evenements`, data).then(response => {
+    axios.post(`${process.env.base_route_get}/events`, data, {
+      // headers: {
+      //   "Content-Type": "multipart/form-data; boundary=----WebKitFormBoundaryABC123"
+      // }
+    }).then( response => {
       if (response.status === 201) {
         Swal.fire({
           // position: 'top-end',
@@ -207,12 +220,18 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
           confirmButtonText: "Fermer",
         })
         setIsSubmit(false);
+        const d = {event_id:response.data.id_event, file:data.get('file')}
         reset();
         setValue('format_event', "");
         setValueText("");
         setPreviewImage("")
+        // console.log(response, "Testttttttttttttttttttt")
+        axios.post(`${process.env.base_route}/events/upload`, d, {
+      headers: {
+        "Content-Type": "multipart/form-data"
       }
-    }).catch(err => {
+    })
+    }}).catch(err => {
       setIsSubmit(false);
       // console.log(err)
       // if (err.response.status === 400) {
@@ -224,11 +243,7 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
 
 
   };
-  //ReactQuill
-  //  const handleQuillChange = (content:any, delta:any, source:any, editor:any) => {
-  //   //  setValueText(content)
-  //    setValue('text_descriptif', content);
-  // };
+
   const onSubmit: SubmitHandler<Inputs> = data => {
     // console.log(data)
 
@@ -236,22 +251,24 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
     data.event_type = data.event_type?.value
     data.format_event = data.format_event?.value
     let formData = new FormData()
-    // formData.append("date_debut", data.date_debut)
-    // formData.append('date_fin', data.date_fin)
-    // formData.append('heure_debut', data.heure_debut)
-    // formData.append('heure_fin', data.heure_fin)
-    // formData.append('url', data.url)
-    // formData.append('adr_email_event', data.adr_email_event)
-    // formData.append('format_event', data.format_event?.value)
-    // formData.append('eventType', data.event_type?.value)
-    // formData.append('cible_participation', data.cible_participation)
-    // formData.append('text_descriptif', data.text_descriptif);
+    formData.append("date_debut", data.date_debut)
+    formData.append('date_fin', data.date_fin)
+    formData.append('heure_debut', data.heure_debut)
+    formData.append('heure_fin', data.heure_fin)
+    formData.append('url', data.url)
+    formData.append('adr_email_event', data.adr_email_event)
+    formData.append('format_event', data.format_event)
+    formData.append('eventType', data.event_type)
+    formData.append('cible_participation', data.cible_participation)
+    formData.append('text_descriptif', data.text_descriptif);
     setValueText(data.text_descriptif)
 
     if (data_props === null) {
       data.image_event = data.image_event[0]
-      // formData.append('image', data.image_event[0])
-      createEvent(data);
+      data.file = data.image_event
+      formData.append('file', data.image_event)
+      // console.log(data)
+      createEvent(formData);
     } else {
       // if(data.image_event)
       formData.append('id_event', data_props.id_event)
@@ -259,14 +276,15 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
         // console.log(data.image_event);
         data.image = data.image_event[0];
         data.image_change = '1'
-        // formData.append('image', data.image_event[0])
-        // formData.append('image_change', '1');
+        formData.append('image', data.image_event[0])
+        formData.append('file', data.image_event[0])
+        formData.append('image_change', '1');
       } else {
         data.image_change = '0'
         // formData.append('image_change', '0');
 
       }
-      updateEvent(data)
+      updateEvent(formData)
       console.log(data)
       // console.log(typeof(data.image_event));
 
@@ -598,7 +616,7 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
           </div>
         </div>
       </form>
-      </>
+    </>
 
 
   );
