@@ -21,16 +21,15 @@ export default async function handler( req: NextApiRequest,
     formData.append('cible_participation', req.body.cible_participation)
     formData.append('text_descriptif', req.body.text_descriptif);
      formData.append('image_change', req.body.image_change);
-     if(req.body.image_change == '1'){
-      formData.append('image', req.body.image);
-     }
+    //  if(req.body.image_change == '1'){
+    //   formData.append('image', req.body.image);
+    //  }
     if(req.method === 'PUT'){
       axios
           .put(`${process.env.base_route_get}/events/${id}`, formData, {
     headers: {
           withCredentials: true,
           Cookie: cookie,
-          "Content-Type": "multipart/form-data; boundary=----WebKitFormBoundary7MAn6ue492Pmade",
         }
   })
           .then((response) => {

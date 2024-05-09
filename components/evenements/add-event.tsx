@@ -161,7 +161,7 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
 
 
 
-  const updateEvent = (data: FormData) => {
+  const updateEvent = (data: FormData|Inputs) => {
     axios
       .put(`/api/evenements/${data_props.id_event}`, data)
       .then((response) => {
@@ -176,8 +176,9 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
             confirmButtonColor: "#2563eb",
             confirmButtonText: "Fermer",
           })
-          if(data.get("image_change")==="1"){
-            const d = {event_id:response.data.id_event, file:data.get('file')}
+          // console.log(response.data)
+          if(data.image_change==="1"){
+            const d = {event_id:response.data.data.id_event, file:data.file}
             axios.post(`${process.env.base_route}/events/upload`, d, {
       headers: {
         "Content-Type": "multipart/form-data"
@@ -220,6 +221,7 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
           confirmButtonText: "Fermer",
         })
         setIsSubmit(false);
+        console.log(response)
         const d = {event_id:response.data.id_event, file:data.get('file')}
         reset();
         setValue('format_event', "");
@@ -274,17 +276,18 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
       formData.append('id_event', data_props.id_event)
       if (typeof (data.image_event) !== 'string') {
         // console.log(data.image_event);
-        data.image = data.image_event[0];
+        data.image = data?.image_event[0];
         data.image_change = '1'
-        formData.append('image', data.image_event[0])
-        formData.append('file', data.image_event[0])
+        data.file = data.image
+        // formData.append('image', data.image_event[0])
+        // formData.append('file', data.image_event[0])
         formData.append('image_change', '1');
       } else {
         data.image_change = '0'
         // formData.append('image_change', '0');
 
       }
-      updateEvent(formData)
+      updateEvent(data)
       console.log(data)
       // console.log(typeof(data.image_event));
 
