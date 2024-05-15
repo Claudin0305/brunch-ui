@@ -3,3 +3,22 @@
   to = "http://isteah-tech.ddns.net:9094/:splat"
   status = 301
   force = true
+
+
+[build]
+  publish = "out"
+  command = "npm run build"
+
+[[redirects]]
+  from = "https://isteah-tech.ddns.net:9094/*"
+  to = "http://isteah-tech.ddns.net:9094/:splat"
+  status = 301
+  force = true
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Content-Security-Policy = "block-all-mixed-content"
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
