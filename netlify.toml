@@ -1,0 +1,5 @@
+[[redirects]]
+  from = "https://isteah-tech.ddns.net:9094/*"
+  to = "http://isteah-tech.ddns.net:9094/:splat"
+  status = 301
+  force = true
