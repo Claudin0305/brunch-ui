@@ -17,6 +17,14 @@ const nextConfig = {
   //   // Increase the timeout for getServerSideProps to 60 seconds.
   //   getServerSidePropsTimeout: 90000,
   // },
+  async rewrites() {
+    return [
+      {
+        source: '/api/:path*',
+        destination: 'http://isteah-tech.ddns.net:9094/api/api/:path*', // URL de votre API HTTP
+      },
+    ];
+  },
 }
 
 module.exports = nextConfig
