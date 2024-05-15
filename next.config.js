@@ -8,7 +8,7 @@ const nextConfig = {
     //base_route: "http://localhost:8080/api",
     //base_route_get: "http://localhost:8080/api",
    //  base_route_get: "http://localhost:8080/api/api",
-   // NEXT_EXTERNAL_REWRITES: true
+    NEXT_EXTERNAL_REWRITES: false
   },
   images: {
     domains: ['localhost', "grahn-brunch.ddns.net", "isteah-tech.ddns.net"],
