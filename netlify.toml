@@ -1,0 +1,10 @@
+
+  
+[[redirects]]
+  from = "/api/*"
+  to = "http://isteah-tech.ddns.net:9094/:splat"
+  status = 200
+  force = true
+
+
+
