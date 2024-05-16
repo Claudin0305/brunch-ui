@@ -32,15 +32,8 @@ console.log(req.method)
 
   try {
     // Fetch data from an API or perform other async operations
-    const [civiliteResp, trancheAgeResp, paysResp, locauxResp, eventResp, respPart, respAff] = await Promise.all([
-      axios.get(`${process.env.base_route_get}/civilites`),
-      axios.get(`${process.env.base_route_get}/tranche-ages`),
-      axios.get(`${process.env.base_route_get}/pays`),
-      axios.get(`${process.env.base_route_get}/locaux`),
-      axios.get(`${process.env.base_route_get}/events/${context?.params?.id_event}`),
-      axios.get(`${process.env.base_route_get}/participants`),
-      axios.get(`${process.env.base_route_get}/affiliations`),
-    ])
+    const civiliteResp = await axios.get(`${process.env.base_route_get}/civilites`);
+    const trancheAgeResp = await axios.get(`${process.env.base_route_get}/tranche-ages`), paysResp = await axios.get(`${process.env.base_route_get}/pays`), locauxResp = await axios.get(`${process.env.base_route_get}/locaux`), eventResp = await axios.get(`${process.env.base_route_get}/events/${context?.params?.id_event}`), respPart = await axios.get(`${process.env.base_route_get}/participants`), respAff = await axios.get(`${process.env.base_route_get}/affiliations`)
     // const response = await axios.get(`http://localhost:8080/api/events`);
     const civilites = civiliteResp.data;
     const trancheAges = trancheAgeResp.data;
@@ -49,7 +42,6 @@ console.log(req.method)
     const event = eventResp.data;
     const participants = respPart.data;
     const affiliations = respAff.data;
-
     const data = { trancheAges: trancheAges, pays: pays, civilites: civilites, locaux: locaux, event: event, participants: participants, affiliations: affiliations }
 
     // Return the data as props

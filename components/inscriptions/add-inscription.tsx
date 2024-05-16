@@ -143,7 +143,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
   });
   const [activeStep, setActiveStep] = React.useState(0);
   const [formatEventOptions, setFormatEventOptions] = useState<option[] | any>()
-  const [errorEmail, setErrorEmail] = useState<boolean>(false);
+  const [errorEmail, setErrorEmail] = useState<boolean>(true);
   const [existEmail, setExistEmail] = useState<boolean>(false);
   const [identiqueEmail, setIdentiqueEmail] = useState<boolean>(true);
   const [email, setEmail] = useState<String | null>(null)
