@@ -221,6 +221,11 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
 
     }
   }, [optionsPays])
+  useEffect(()=>{
+    if(data_props=== null){
+      setValue('email', '')
+    }
+  },[])
 
   useEffect(() => {
     const tableOptions: option[] = [];
@@ -744,8 +749,9 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
             onChange={e => {
               //do something
               let pattern = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
-              setErrorEmail(!pattern.test(e.currentTarget.value))
+              console.log(!pattern.test(e.currentTarget.value))
               setEmail(replaceSpecialChars(e.currentTarget.value));
+              setErrorEmail(!pattern.test(replaceSpecialChars(e.currentTarget.value)))
 
               setValue("email", replaceSpecialChars(e.currentTarget.value))
               const result = participants?.filter((p: any) => p.email === e.currentTarget.value && p.idEvent === event.id_event)

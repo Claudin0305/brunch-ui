@@ -84,7 +84,7 @@ const AddPaiement: React.FC<Props> = ({ data_props, devises, statuts, participan
             return 0;
         });
         statuts?.forEach((p:any )=> {
-            tableOptions.push({
+            tableOptionStatuts.push({
                 label: p.libelle,
                 value: p.id_statut
             })
