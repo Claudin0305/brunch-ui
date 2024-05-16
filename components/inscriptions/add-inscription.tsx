@@ -224,6 +224,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
   useEffect(()=>{
     if(data_props=== null){
       setValue('email', '')
+      setErrorEmail(true)
     }
   },[])
 
