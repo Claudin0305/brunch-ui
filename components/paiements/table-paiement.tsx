@@ -43,6 +43,34 @@ const TablePaiement: React.FC<Props> = ({ data }) => {
   };
    const columns: GridColDef[] = [
     {
+      field: "prenom",
+      headerName: "Prénom",
+      // renderCell: (value) => <PersoToolTip value={value} />,
+      // width:100,
+      flex:1,
+    },
+    {
+      field: "nom",
+      headerName: "Nom",
+      // renderCell: (value) => <PersoToolTip value={value} />,
+      // width:100,
+      flex:1,
+    },
+    {
+      field: "payeur",
+      headerName: "Payeur",
+      // renderCell: (value) => <PersoToolTip value={value} />,
+      // width:100,
+      flex:1,
+    },
+    {
+      field: "email_payeur",
+      headerName: "Email Payeur",
+      // renderCell: (value) => <PersoToolTip value={value} />,
+      // width:100,
+      flex:1,
+    },
+    {
       field: "montant_du",
       headerName: "montant dû",
       // renderCell: (value) => <PersoToolTip value={value} />,
@@ -51,16 +79,31 @@ const TablePaiement: React.FC<Props> = ({ data }) => {
     },
     {
       field: "montant_paye",
-      headerName: "montant payer",
+      headerName: "montant payé",
       // renderCell: (value) => <PersoToolTip value={value} />,
       // width:100,
       flex:1,
     },
     {
-      field: "dept_abbreviation",
-      headerName: "Abréviation",
+      field: "libelle",
+      headerName: "Devise",
       // renderCell: (value) => <PersoToolTip value={value} />,
       // width:100,
+      // renderCell: value=>{
+      //   console.log(value)
+      //   return 'Dollar'
+      // },
+      flex:1,
+    },
+    {
+      field: "libelleStatut",
+      headerName: "Statut",
+      // renderCell: (value) => <PersoToolTip value={value} />,
+      // width:100,
+      // renderCell: value=>{
+      //   console.log(value)
+      //   return 'Dollar'
+      // },
       flex:1,
     },
 

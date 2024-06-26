@@ -13,23 +13,49 @@ import Star from "@/components/core/star";
 type option = {
     label: string;
     value: string;
+    details?: any
 }
 type Inputs = {
     montant_du: number;
-    montant_paye: string;
+    montant_paye: number;
+    don: number;
     id_statut: option | string | any;
     id_devise: option | string | any;
+    id_event: option | string | any;
     id_participant: option | string | any;
+    mode_paiement: option | string | any;
 };
 type Props = {
     data_props: any | null;
     devises: any;
     statuts: any;
     participants: any;
+    event: any;
 }
+type optionEvent = {
+    label: string;
+    value: string;
+    participant: option[] | any;
+}
+type detailMontant = {
+    for_me?: number;
+    for_me_and_other?: number;
+    for_other?: number;
+    nb_incrits?: number;
+    devise?: string
+}
+const modePaimentOption: option[] = [
+    {
+        label: "DIFFERE",
+        value: "DIFFERE",
+    },
+    {
+        label: 'IMMEDIAT',
+        value: 'IMMEDIAT'
 
-
-const AddPaiement: React.FC<Props> = ({ data_props, devises, statuts, participants }) => {
+    }
+]
+const AddPaiement: React.FC<Props> = ({ data_props, devises, statuts, event, participants }) => {
     const router = useRouter()
     const { register, handleSubmit, watch, reset, setValue, control, formState: { errors } } = useForm<Inputs>();
     const [isSubmit, setIsSubmit] = useState<boolean>(false);
@@ -37,6 +63,12 @@ const AddPaiement: React.FC<Props> = ({ data_props, devises, statuts, participan
     const [options, setOptions] = useState<option[] | null | any>();
     const [optionDevises, setOptionDevises] = useState<option[] | null | any>();
     const [optionStatuts, setOptionStatuts] = useState<option[] | null | any>();
+    const [errorMontant, setErrorMontant] = useState<boolean>(false);
+    const [selectedEvent, setSelectedEvent] = useState<optionEvent | any>(null);
+    const [selectedParticipant, setSelectedParticipant] = useState<option | null>(null)
+    const [isRequired, setIsRequired] = useState<boolean>(false);
+    const [optionEvent, setOptionEvent] = useState<optionEvent[] | null | any>();
+    const [details, setDetails] = useState<detailMontant | any>(null)
 
     useEffect(() => {
 
@@ -47,10 +79,42 @@ const AddPaiement: React.FC<Props> = ({ data_props, devises, statuts, participan
 
         }
     }, [])
+    const resetData = ()=>{
+        reset();
+        setSelectedEvent(null)
+        setSelectedParticipant(null)
+        setDetails(null)
+    }
+    useEffect(() => {
+        if (selectedParticipant !== null) {
+            const montant_du: number = selectedParticipant.details.montant_participation;
+            const devise: string = selectedParticipant.details.devise
+            const username: string = selectedParticipant.details.username
+            const result = selectedEvent?.participant?.filter((p: any) => p.details.username === username);
+            let s: number = 0;
 
+            if (result.lenght > 0) {
+                result.forEach((p: any) => {
+                    if (p?.montant_participation !== null && p?.montant_participation > 0) {
+                        s += p.montant_participation
+                    }
+                })
+            }
+            setIsRequired(montant_du + s > 0)
+
+            setDetails({
+                for_me: montant_du,
+                for_me_and_other: montant_du + s,
+                for_other: s,
+                nb_incrits: result.lenght,
+                devise
+            })
+        }
+    }, [selectedParticipant, selectedEvent])
+    console.log(selectedParticipant)
     useEffect(() => {
         const tableOptions: option[] = [];
-        devises?.sort((a:any, b:any) => {
+        devises?.sort((a: any, b: any) => {
             let fa = a.devise.toLowerCase(),
                 fb = b.devise.toLowerCase();
 
@@ -62,7 +126,7 @@ const AddPaiement: React.FC<Props> = ({ data_props, devises, statuts, participan
             }
             return 0;
         });
-        devises?.forEach((p:any )=> {
+        devises?.forEach((p: any) => {
             tableOptions.push({
                 label: p.devise,
                 value: p.id_devise
@@ -71,7 +135,7 @@ const AddPaiement: React.FC<Props> = ({ data_props, devises, statuts, participan
 
         setOptionDevises(tableOptions);
         const tableOptionStatuts: option[] = [];
-        statuts?.sort((a:any, b:any) => {
+        statuts?.sort((a: any, b: any) => {
             let fa = a.libelle.toLowerCase(),
                 fb = b.libelle.toLowerCase();
 
@@ -83,7 +147,7 @@ const AddPaiement: React.FC<Props> = ({ data_props, devises, statuts, participan
             }
             return 0;
         });
-        statuts?.forEach((p:any )=> {
+        statuts?.forEach((p: any) => {
             tableOptionStatuts.push({
                 label: p.libelle,
                 value: p.id_statut
@@ -92,26 +156,60 @@ const AddPaiement: React.FC<Props> = ({ data_props, devises, statuts, participan
 
         setOptionStatuts(tableOptionStatuts);
         const tableOptionParticipants: option[] = [];
-        participants?.sort((a:any, b:any) => {
-            let fa = a.prenom.toLowerCase(),
-                fb = b.prenom.toLowerCase();
+        // participants?.sort((a: any, b: any) => {
+        //     let fa = a.prenom.toLowerCase(),
+        //         fb = b.prenom.toLowerCase();
 
-            if (fa < fb) {
-                return -1;
-            }
-            if (fa > fb) {
-                return 1;
-            }
-            return 0;
-        });
-        participants?.forEach((p:any )=> {
-            tableOptionParticipants.push({
-                label: `${p.prenom} ${p.nom} ${p.email}`,
-                value: p.id_participant
+        //     if (fa < fb) {
+        //         return -1;
+        //     }
+        //     if (fa > fb) {
+        //         return 1;
+        //     }
+        //     return 0;
+        // });
+        // participants?.forEach((p: any) => {
+        //     tableOptionParticipants.push({
+        //         label: `${p.prenom} ${p.nom} ${p.email}`,
+        //         value: p.id_participant
+        //     })
+        // })
+
+        // setOptions(tableOptionParticipants);
+
+        const tableOptionEvent: optionEvent[] = []
+        event?.forEach((e: any) => {
+            const participant_list = participants?.filter((p: any) => p.idEvent === e.id_event && p.mode_participation	!=="DISTANCIEL" && p.paiementRepas.length==0)
+            participant_list?.forEach((p: any) => {
+                // console.log(p.paiementRepas.length)
+                tableOptionParticipants.push({
+                    label: `${p.prenom} ${p.nom} ${p.email}`,
+                    value: p.id_participant,
+                    details: p
+                })
+            })
+            tableOptionParticipants.sort((a: any, b: any) => {
+                let fa = a.label,
+                    fb = b.label;
+
+                if (fa < fb) {
+                    return -1;
+                }
+                if (fa > fb) {
+                    return 1;
+                }
+                return 0;
+            });
+            // console.log(tableOptionParticipants)
+            tableOptionEvent.push({
+                value: e.id_event,
+                label: `${e.eventType}-${e.date_fin.split('-')[0]}`,
+                participant: tableOptionParticipants
             })
         })
+        // console.log(tableOptionEvent)
+        setOptionEvent(tableOptionEvent)
 
-        setOptions(tableOptionParticipants);
     }, []);
 
 
@@ -132,7 +230,7 @@ const AddPaiement: React.FC<Props> = ({ data_props, devises, statuts, participan
                         confirmButtonText: "Fermer",
                     })
                     router.push('/paiement-repas')
-                    reset();
+                    resetData();
                 }
 
             })
@@ -162,7 +260,7 @@ const AddPaiement: React.FC<Props> = ({ data_props, devises, statuts, participan
                     confirmButtonText: "Fermer",
                 })
                 setIsSubmit(false);
-                reset();
+                resetData();
                 setValue('id_devise', null)
                 setValue('id_participant', null)
                 setValue('id_statut', null)
@@ -178,6 +276,11 @@ const AddPaiement: React.FC<Props> = ({ data_props, devises, statuts, participan
 
 
     };
+    const Span: React.FC<{ name: string, value: string }> = ({ name, value }) => {
+        return <div className="grid grid-cols-2 gap-1">
+            <span className="font-semibold">{name}:</span><span>{value}</span>
+        </div>
+    }
     const onSubmit: SubmitHandler<Inputs> = data => {
         // console.log(data)
 
@@ -185,10 +288,18 @@ const AddPaiement: React.FC<Props> = ({ data_props, devises, statuts, participan
         data.id_devise = data.id_devise?.value
         data.id_participant = data.id_participant?.value
         data.id_statut = data.id_statut?.value
-        if (data_props === null) {
-            createPaiement(data);
+        data.mode_paiement = data.mode_paiement?.value
+        data.montant_du = details?.for_me_and_other
+        if (data.montant_paye > details?.for_me_and_other) {
+            setErrorMontant(true);
         } else {
-            updatePaiement(data)
+
+            if (data_props === null) {
+                createPaiement(data);
+            } else {
+                updatePaiement(data)
+            }
+            setErrorMontant(false);
         }
 
     };
@@ -204,13 +315,13 @@ const AddPaiement: React.FC<Props> = ({ data_props, devises, statuts, participan
                     <div className="flex-col flex z-50">
                         <label
                             className="mb-2"
-                            htmlFor={`id_participant`}
+                            htmlFor={`id_event`}
                         >
                             {" "}
-                            Participant<Star/>{" "}
+                            Evenement<Star />{" "}
                         </label>
                         <Controller
-                            name={`id_participant`}
+                            name={`id_event`}
                             control={control}
                             rules={{
                                 required: true,
@@ -220,101 +331,195 @@ const AddPaiement: React.FC<Props> = ({ data_props, devises, statuts, participan
                                 <Select
                                     {...field}
                                     placeholder={
-                                        "Choisir le participant..."
+                                        "Choisir l'evenement..."
                                     }
                                     isClearable
-                                    options={options}
+                                    options={optionEvent}
+                                    value={selectedEvent}
+                                    onChange={e => {
+                                        setSelectedEvent(e);
+                                        setValue('id_event', e)
+                                        if (e === null) {
+                                            setSelectedParticipant(null)
+                                            setDetails(null)
+                                        }
+
+                                            // register('id_event').onChange(e)
+                                    }}
                                 />
                             )}
                         />{" "}
 
                     </div>
-                    <div className="flex-col flex z-40">
-                        <label
-                            className="mb-2"
-                            htmlFor={`id_statut`}
-                        >
-                            {" "}
-                            Statut<Star/>{" "}
-                        </label>
-                        <Controller
-                            name={`id_statut`}
-                            control={control}
-                            rules={{
-                                required: true,
-                            }}
+                    {selectedEvent && <>
+                        <div className="flex-col flex z-50">
+                            <label
+                                className="mb-2"
+                                htmlFor={`id_participant`}
+                            >
+                                {" "}
+                                Participant<Star />{" "}
+                            </label>
+                            <Controller
+                                name={`id_participant`}
+                                control={control}
+                                rules={{
+                                    required: true,
+                                }}
 
-                            render={({ field }) => (
-                                <Select
-                                    {...field}
-                                    placeholder={
-                                        "Choisir le statut..."
-                                    }
-                                    isClearable
-                                    options={optionStatuts}
+                                render={({ field }) => (
+                                    <Select
+                                        {...field}
+                                        placeholder={
+                                            "Choisir le participant..."
+                                        }
+                                        isClearable
+                                        options={selectedEvent.participant}
+                                        value={selectedParticipant}
+                                        onChange={e => {
+                                            // console.log(e)
+                                            setSelectedParticipant(e);
+                                            // register('id_participant').onChange(e)
+                                            setValue('id_participant', e)
+                                        }}
+                                    />
+                                )}
+                            />{" "}
+
+                        </div>
+                        {selectedParticipant && <>
+                            <div className="md:col-span-2">
+                                <h3 className="text-center font-semibold text-2xl mb-4">Détails sur le participant</h3>
+                                <hr />
+                                <div className="grid gap-8 md:grid-cols-4 grid-cols-1">
+                                    <Span name="Prénom" value={selectedParticipant?.details?.prenom} />
+                                    <Span name="Nom" value={selectedParticipant?.details?.nom} />
+                                    {/* <Span name="Email" value={selectedParticipant?.details?.email} /> */}
+                                    {details && <>
+                                        <Span name="NB pers. inscrit" value={details?.nb_inscrit} />
+                                        <Span name="Montant dû" value={`${details?.for_me} ${details?.devise}`} />
+                                    </>}
+
+                                </div>
+                                <h3 className="text-center font-semibold text-2xl mb-4">Information du paiement</h3>
+                                <hr />
+                            </div>
+                            <div className="flex-col flex z-40">
+                                <label
+                                    className="mb-2"
+                                    htmlFor={`id_statut`}
+                                >
+                                    {" "}
+                                    Statut<Star />{" "}
+                                </label>
+                                <Controller
+                                    name={`id_statut`}
+                                    control={control}
+                                    rules={{
+                                        required: true,
+                                    }}
+
+                                    render={({ field }) => (
+                                        <Select
+                                            {...field}
+                                            placeholder={
+                                                "Choisir le statut..."
+                                            }
+                                            isClearable
+                                            options={optionStatuts}
+                                        />
+                                    )}
+                                />{" "}
+
+                            </div>
+                            <div className="flex-col flex z-30">
+                                <label
+                                    className="mb-2"
+                                    htmlFor={`id_devise`}
+                                >
+                                    {" "}
+                                    Devise<Star />{" "}
+                                </label>
+                                <Controller
+                                    name={`id_devise`}
+                                    control={control}
+                                    rules={{
+                                        required: true,
+                                    }}
+
+                                    render={({ field }) => (
+                                        <Select
+                                            {...field}
+                                            placeholder={
+                                                "Choisir la devise..."
+                                            }
+                                            isClearable
+                                            options={optionDevises}
+                                        />
+                                    )}
+                                />{" "}
+
+                            </div>
+                            <div className="flex-col flex z-30">
+                                <label
+                                    className="mb-2"
+                                    htmlFor={`mode_paiement`}
+                                >
+                                    {" "}
+                                    Mode paiement<Star />{" "}
+                                </label>
+                                <Controller
+                                    name={`mode_paiement`}
+                                    control={control}
+                                    rules={{
+                                        required: true,
+                                    }}
+
+                                    render={({ field }) => (
+                                        <Select
+                                            {...field}
+                                            placeholder={
+                                                "Choisir le mode de paiement..."
+                                            }
+                                            isClearable
+                                            options={modePaimentOption}
+                                        />
+                                    )}
+                                />{" "}
+
+                            </div>
+                            <div className="block md:mt-8">
+
+                                <TextField
+                                    required={isRequired}
+                                    autoComplete="given-name"
+                                    fullWidth
+                                    size="small"
+                                    id="montant_paye"
+                                    label="Montant payé"
+                                    {...register("montant_paye", { required: true })}
                                 />
-                            )}
-                        />{" "}
+                                {responseError !== null && <Error text={responseError?.montant_paye} />}
+                            </div>
+                            <div className="block">
 
-                    </div>
-                    <div className="flex-col flex z-30">
-                        <label
-                            className="mb-2"
-                            htmlFor={`id_devise`}
-                        >
-                            {" "}
-                            Devise<Star/>{" "}
-                        </label>
-                        <Controller
-                            name={`id_devise`}
-                            control={control}
-                            rules={{
-                                required: true,
-                            }}
-
-                            render={({ field }) => (
-                                <Select
-                                    {...field}
-                                    placeholder={
-                                        "Choisir la devise..."
-                                    }
-                                    isClearable
-                                    options={optionDevises}
+                                <TextField
+                                    autoComplete="given-name"
+                                    fullWidth
+                                    size="small"
+                                    id="don"
+                                    label="Don"
+                                    {...register("don", { required: false })}
                                 />
-                            )}
-                        />{" "}
+                                {responseError !== null && <Error text={responseError?.don} />}
+                            </div>
+                        </>}
+                    </>}
 
-                    </div>
-                    <div className="block md:mt-8 z-20">
-
-                        <TextField
-                            required
-                            autoComplete="given-name"
-                            fullWidth
-                            size="small"
-                            id="libelle"
-                            label="Montant dû"
-                            {...register("montant_du", { required: true })}
-                        />
-                        {responseError !== null && <Error text={responseError?.montant_du} />}
-                    </div>
-                    <div className="block">
-
-                        <TextField
-                            required
-                            autoComplete="given-name"
-                            fullWidth
-                            size="small"
-                            id="libelle"
-                            label="Montant payer"
-                            {...register("montant_paye", { required: true })}
-                        />
-                        {responseError !== null && <Error text={responseError?.montant_paye} />}
-                    </div>
 
 
                 </div>
-                <div className="flex justify-end flex-col mt-8 md:flex-row gap-8 mb-8">
+                {selectedEvent && selectedParticipant && <div className="flex justify-end flex-col mt-8 md:flex-row gap-8 mb-8">
                     <Button
                         type="reset"
                         className="text-blue-600 border-blue-600 capitalize"
@@ -331,7 +536,8 @@ const AddPaiement: React.FC<Props> = ({ data_props, devises, statuts, participan
                     >
                         {isSubmit && <CircularIndeterminate />} <span>{data_props === null ? 'Ajouter' : 'Modifier'}</span>
                     </Button>
-                </div>
+                </div>}
+
 
             </form>
         </div>

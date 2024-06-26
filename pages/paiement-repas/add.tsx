@@ -19,7 +19,7 @@ const Add:React.FC<Props> = ({data}) => {
       </Head>
       <PaiementLayout>
         <div className="bg-white px-8 py-4 shadow-md overflow-y-scroll h-[calc(100vh_-_200px)]">
-          <AddPaiement data_props={null} devises={data?.devises} statuts={data?.statuts} participants={data?.participants}/>
+          <AddPaiement data_props={null} devises={data?.devises} statuts={data?.statuts} participants={data?.participants} event={data?.event}/>
         </div>
       </PaiementLayout>
     </Layout> : <Loader/>}
@@ -52,11 +52,18 @@ export async function getServerSideProps(context: any) {
         Cookie: cookie
       }
     });
+    const responseEvents = await axios.get(`${process.env.base_route_get}/events`, {
+      headers: {
+        withCredentials: true,
+        Cookie: cookie
+      }
+    });
     // const response = await axios.get(`http://localhost:8080/api/events`);
     const data = {
       devises:response.data,
       statuts:responseStatus.data,
-      participants:responseParticipants.data
+      participants:responseParticipants.data,
+      event: responseEvents.data
     };
 
     // Return the data as props
