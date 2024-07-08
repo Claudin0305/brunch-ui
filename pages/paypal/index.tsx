@@ -21,6 +21,7 @@ type Inputs = {
 const Page: React.FC = () => {
     const steps = ['Informations participants', 'Fecapitulatif montant', 'Paiement'];
     const [activeStep, setActiveStep] = React.useState(0);
+    const [errorRes, setErrorRes] = React.useState<any>(null)
     const [errorRequired, setErrorRequired] = React.useState<boolean>(false);
     const [errorRequired2, setErrorRequired2] = React.useState<boolean>(false);
     const [errorNotFound, setErrorNotFound] = React.useState<boolean>(false);
@@ -37,6 +38,7 @@ const Page: React.FC = () => {
         setErrorNotFound(false);
         setErrorRequired(false);
         setErrorRequired2(false);
+        setErrorRes(null)
     }
     const handleNext = async () => {
         if (activeStep === 0) {
@@ -58,6 +60,11 @@ const Page: React.FC = () => {
                 } catch (error: any) {
                     if (error?.response?.status === 404) {
                         setErrorNotFound(true)
+                    }
+                    if (error?.response?.status === 400) {
+                        setErrorRes(error?.response?.data)
+                        // console.log(error)
+                        // setErrorNotFound(true)
                     }
                     console.log(error)
                 }
@@ -99,6 +106,7 @@ const Page: React.FC = () => {
                 />
                 {errorRequired && <Error text={'Ce champ est obligatoire!'} />}
                 {errorNotFound && <Error text={'Participant introuvable!'} />}
+                {errorRes && <Error text={errorRes.participant} />}
             </div>
         )
     }

@@ -1,5 +1,6 @@
 
 import Link from "next/link"
+import PaymentFinal from "@/pages/paypal/payment-final";
 type Props = {
     show: boolean;
     setShow: any;
@@ -49,10 +50,21 @@ const ModalRecap: React.FC<Props> = ({ show, setShow, data }) => {
                                         <p>Lieu: <span className="font-semibold">{`${data?.data?.nomPays}, ${data?.data?.ville?.libelleDepartement}, ${data?.data?.ville?.libelle}(${data?.data?.libelleLocal})`}</span></p>
                                         <p>Mode paiement: <span className="font-semibold">{data?.data?.modePaiement}</span></p>
                                         <p>Montant: <span className="font-semibold"> {data?.data?.montant_participation} {data?.data?.devise}</span></p>
-                                        {data?.data?.modePaiement === "IMMEDIAT" && <Link
-                                            className="text-blue-500 hover:text-blue-300 block my-4"
-                                            href={`/paiements`}
-                                        >Payer maintenant</Link>}
+                                        {data?.data?.modePaiement === "IMMEDIAT" &&
+                                            <div className="w-full">
+                                                <hr />
+                                                <h2 className="text-2xl">Paiement via PayPal</h2>
+                                                <hr />
+                                                <div>
+                                                    {/* <PaymentButton amount={montant} /> */}
+                                                    <PaymentFinal amount={data?.data?.montant_participation} data={data} />
+                                                </div>
+                                                <Link
+                                                    className="text-blue-500 hover:text-blue-300 block my-4"
+                                                    href={`/paiements`}
+                                                >Payer maintenant</Link>
+                                            </div>
+                                        }
 
                                     </>}
                                     <Link

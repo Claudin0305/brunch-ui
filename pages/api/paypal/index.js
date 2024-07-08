@@ -109,7 +109,7 @@ export default async function handler(req, res) {
             ).then(resp=>{
               // console.log(resp)
             });
-            return res.redirect("/success");
+            return res.redirect(`/success${d[0]}`);
           }
         }
       );

@@ -9,6 +9,7 @@ import { Button } from '@mui/material'
 import HowToRegIcon from '@mui/icons-material/HowToReg';
 import axios from 'axios';
 import EditIcon from '@mui/icons-material/Edit';
+import PaymentFinal from './paypal/payment-final'
 const inter = Inter({ subsets: ['latin'] })
 type Props = {
   data: any;
@@ -73,6 +74,7 @@ const Home: React.FC<Props> = ({ data }) => {
               </section></> : <h2 className='ml-32 text-xl'>Aucun événement...</h2>
           }
         </main>
+        {/* <PaymentFinal data={{}} amount={10} /> */}
       </HomeLayout>
     </>
   )
