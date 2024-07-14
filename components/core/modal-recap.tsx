@@ -8,6 +8,7 @@ type Props = {
 
 }
 const ModalRecap: React.FC<Props> = ({ show, setShow, data }) => {
+    console.log(data)
 
     return (
         <>
@@ -50,25 +51,25 @@ const ModalRecap: React.FC<Props> = ({ show, setShow, data }) => {
                                         <p>Lieu: <span className="font-semibold">{`${data?.data?.nomPays}, ${data?.data?.ville?.libelleDepartement}, ${data?.data?.ville?.libelle}(${data?.data?.libelleLocal})`}</span></p>
                                         <p>Mode paiement: <span className="font-semibold">{data?.data?.modePaiement}</span></p>
                                         <p>Montant: <span className="font-semibold"> {data?.data?.montant_participation} {data?.data?.devise}</span></p>
-                                        {data?.data?.modePaiement === "IMMEDIAT" &&
+                                        {data?.data?.montant_participation >0 &&
                                             <div className="w-full">
                                                 <hr />
                                                 <h2 className="text-2xl">Paiement via PayPal</h2>
                                                 <hr />
                                                 <div>
                                                     {/* <PaymentButton amount={montant} /> */}
-                                                    <PaymentFinal amount={data?.data?.montant_participation} data={data} />
+                                                    <PaymentFinal amount={data?.data?.montant_participation} data={data.data} />
                                                 </div>
-                                                <Link
+                                                {/* <Link
                                                     className="text-blue-500 hover:text-blue-300 block my-4"
                                                     href={`/paiements`}
-                                                >Payer maintenant</Link>
+                                                >Payer maintenant</Link> */}
                                             </div>
                                         }
 
                                     </>}
                                     <Link
-                                        className="text-blue-500 block hover:text-blue-300"
+                                        className="mt-4 text-blue-500 block hover:text-blue-300"
                                         href={`/liste-participants/${data?.data?.idEvent}`}
                                     >Tableau des inscrits</Link>
                                     {/* (hyperlien) Faire un don */}

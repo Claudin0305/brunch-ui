@@ -19,8 +19,9 @@ import {
 } from "@mui/x-data-grid";
 type Props = {
     data: any;
+    setSelectedRows: any
 };
-const TableParticipant: React.FC<Props> = ({ data }) => {
+const TableParticipant: React.FC<Props> = ({ data, setSelectedRows }) => {
     const handleCellClick = (param: any, event: MouseEvent) => {
         event.stopPropagation();
     };
@@ -85,7 +86,7 @@ const TableParticipant: React.FC<Props> = ({ data }) => {
             // renderCell: (value) => <PersoToolTip value={value} />,
             // width:100,
             renderCell: value => value.row.nomPays,
-            valueGetter: value=> value.row.nomPays,
+            valueGetter: value => value.row.nomPays,
             flex: 1,
         },
         {
@@ -94,7 +95,7 @@ const TableParticipant: React.FC<Props> = ({ data }) => {
             // renderCell: (value) => <PersoToolTip value={value} />,
             // width:100,
             renderCell: value => value.row.ville.libelleDepartement,
-            valueGetter: value=> value.row.ville.libelleDepartement,
+            valueGetter: value => value.row.ville.libelleDepartement,
             flex: 1,
         },
         {
@@ -103,7 +104,7 @@ const TableParticipant: React.FC<Props> = ({ data }) => {
             // renderCell: (value) => <PersoToolTip value={value} />,
             // width:100,
             renderCell: value => value.row.ville.libelle,
-            valueGetter: value=> value.row.ville.libelle,
+            valueGetter: value => value.row.ville.libelle,
             flex: 1,
         },
         {
@@ -114,7 +115,7 @@ const TableParticipant: React.FC<Props> = ({ data }) => {
             renderCell: value => value.row.libelleLocal
 
             ,
-            valueGetter: value=> value.row.libelleLocal,
+            valueGetter: value => value.row.libelleLocal,
             flex: 1,
         },
         {
@@ -127,17 +128,17 @@ const TableParticipant: React.FC<Props> = ({ data }) => {
             flex: 1,
         },
 
-{
+        {
             field: "abonnement_newsletter",
             headerName: "Newsletter",
-            renderCell: (value) => value.row.abonnement_newsletter ? <DoneIcon/> : <ClearIcon/>  ,
+            renderCell: (value) => value.row.abonnement_newsletter ? <DoneIcon /> : <ClearIcon />,
             // width:100,
             flex: 1,
         },
-{
+        {
             field: "authorisationListe",
             headerName: "Listing",
-            renderCell: (value) => value.row.authorisationListe ? <DoneIcon/> : <ClearIcon/>  ,
+            renderCell: (value) => value.row.authorisationListe ? <DoneIcon /> : <ClearIcon />,
             // width:100,
             flex: 1,
         },
@@ -192,7 +193,14 @@ const TableParticipant: React.FC<Props> = ({ data }) => {
                 localeText={frFR.components.MuiDataGrid.defaultProps.localeText}
                 onCellClick={handleCellClick}
                 onRowClick={handleRowClick}
-
+                onRowSelectionModelChange={(ids) => {
+                    const selectedIDs = new Set(ids);
+                    const selectedRows_ = data.filter((row: any) =>
+                        selectedIDs.has(row.id_participant),
+                    );
+                    const result = selectedRows_.filter((row: any) => !row.statut_participant)
+                    setSelectedRows(result);
+                }}
                 components={{
                     Toolbar: () => {
                         return (

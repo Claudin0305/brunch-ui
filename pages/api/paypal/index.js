@@ -18,15 +18,15 @@ export default async function handler(req, res) {
     // console.log(req.body);
     try {
       let amount = (await req.body.amount) + ".00";
-      console.log(amount);
+      // console.log(process.env.BASE_ROUTE_FRONT);
       let create_payment_json = {
         intent: "sale",
         payer: {
           payment_method: "paypal",
         },
         redirect_urls: {
-          return_url: "http://localhost:3000/api/paypal",
-          cancel_url: "http://localhost:3000/failed",
+          return_url: `${process.env.BASE_ROUTE_FRONT}/api/paypal`,
+          cancel_url: `${process.env.BASE_ROUTE_FRONT}/failed`,
         },
         transactions: [
           {
@@ -46,7 +46,7 @@ export default async function handler(req, res) {
               currency: "USD",
             },
             description: "This is the payment description",
-            custom: `${req.body.data.participant.id_participant}-${amount}`,
+            custom: `${req.body.data.id_participant}-${amount}`,
           },
         ],
       };
@@ -109,7 +109,7 @@ export default async function handler(req, res) {
             ).then(resp=>{
               // console.log(resp)
             });
-            return res.redirect(`/success${d[0]}`);
+            return res.redirect(`/success/${d[0]}`);
           }
         }
       );

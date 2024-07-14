@@ -11,7 +11,6 @@ import { TextField } from "@mui/material";
 import Error from "@/components/core/error";
 import axios from "axios";
 import Star from "@/components/core/star";
-import PaymentButton from './payment';
 import PaymentFinal from "./payment-final";
 type Inputs = {
     info: any,
@@ -31,6 +30,7 @@ const Page: React.FC = () => {
         return axios.get(`${process.env.base_route}/participants/find/${info}`)
 
     }
+    // console.log(data)
     const resetData = () => {
         reset();
         setActiveStep(0)
@@ -51,9 +51,9 @@ const Page: React.FC = () => {
                     if (response.status === 200) {
                         setData(response.data)
                         setMontant(response.data?.participant?.montant_participation)
-                        console.log(data)
+                        // console.log(data)
                         setErrorNotFound(false)
-                        console.log(response.data)
+                        // console.log(response.data)
                         setActiveStep(activeStep + 1)
                     }
 
@@ -75,7 +75,7 @@ const Page: React.FC = () => {
             }
         } else if (activeStep === 1) {
             const sold = getValues('montant')
-            console.log(sold)
+            // console.log(sold)
             if (sold !== null) {
                 setMontant(sold)
                 setActiveStep(activeStep + 1)
@@ -126,7 +126,7 @@ const Page: React.FC = () => {
         return (
             <div>
                 {/* <PaymentButton amount={montant} /> */}
-                <PaymentFinal amount={montant} data={data} />
+                <PaymentFinal amount={montant} data={data?.participant} />
             </div>
         )
     }

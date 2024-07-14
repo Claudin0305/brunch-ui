@@ -69,6 +69,14 @@ const AddMessage: React.FC<Props> = ({data_props}) => {
     useEffect(() => {
         const tableOptions: option[] = [
             {
+                label:'Annulation inscription',
+                value:'ANNULATION'
+            },
+            {
+                label:'Don',
+                value:'DON'
+            },
+            {
                 label:'Inscription',
                 value:'INSCRIPTION'
             },

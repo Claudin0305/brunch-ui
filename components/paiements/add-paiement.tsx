@@ -30,7 +30,7 @@ type Props = {
     devises: any;
     statuts: any;
     participants: any;
-    event: any;
+    event?: any;
 }
 type optionEvent = {
     label: string;

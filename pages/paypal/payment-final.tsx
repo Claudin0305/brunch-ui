@@ -15,6 +15,7 @@ type option = {
     value: number;
 }
 const PaymentFinal: React.FC<Props> = ({ amount, data }) => {
+    // console.log(amount)
     const { register, handleSubmit, watch, reset, setValue, getValues, control, formState: { errors } } = useForm<Inputs>();
     const [montantDon, setMontantDon] = useState<number>(0);
     const [seletedOption, setSelectedOption] = useState<any | option>(null)
@@ -38,8 +39,8 @@ const PaymentFinal: React.FC<Props> = ({ amount, data }) => {
     ]
     const handlePayment = async (e: any) => {
         // console.log('hello')
-        let res = await axios.post('/api/paypal', { amount: amount + montantDon, data })
-        // console.log(res)
+        // console.log(+(amount) + montantDon)
+        let res = await axios.post('/api/paypal', { amount:( +(amount) + montantDon), data })
         if (res && res.data) {
             let link = res.data.links[1].href
             window.location.href = link;
@@ -55,7 +56,7 @@ const PaymentFinal: React.FC<Props> = ({ amount, data }) => {
                     htmlFor={`don`}
                 >
                     {" "}
-                    Faire un don (end $ USD et optionnel)
+                    Faire un don (en $ USD et optionnel)
                 </label>
 
 
@@ -78,7 +79,7 @@ const PaymentFinal: React.FC<Props> = ({ amount, data }) => {
                                     setSelectedOption(e)
                                     // console.log(e)
                                     if (e !== null) {
-                                        setMontantDon(e.value)
+                                        setMontantDon(parseFloat(e.value))
                                     } else {
                                         setMontantDon(0)
                                     }
