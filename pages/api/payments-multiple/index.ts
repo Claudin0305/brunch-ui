@@ -7,7 +7,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const cookie = getCookie("token", { req, res });
-
+console.log(req.body.ids)
   const formData = new FormData();
   formData.append("ids", req.body.ids);
 
@@ -15,7 +15,7 @@ export default async function handler(
     axios
       .post(
         `${process.env.base_route_get}/participants/payments-multiple`,
-        formData,
+        {ids:req.body.ids},
         {
           headers: {
             withCredentials: true,

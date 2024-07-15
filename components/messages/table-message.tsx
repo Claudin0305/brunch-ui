@@ -45,7 +45,17 @@ const TableMessage: React.FC<Props> = ({ data }) => {
     {
       field: "message_type",
       headerName: "Type Message",
-      renderCell: value => value.row.messageType === 'INSCRIPTION' ? "Inscription" : "Paiement"
+      renderCell: value => {
+        if(value.row.messageType === 'INSCRIPTION' ){
+          return "Inscription"
+        }else if(value.row.messageType === 'DON' ){
+return "Don"
+        }else if(value.row.messageType === 'ANNULATION' ){
+          return 'Annulation'
+        }else{
+          return "Paiement"
+        }
+         }
       ,
       flex:1,
     },

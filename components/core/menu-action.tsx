@@ -72,11 +72,11 @@ const MenuAction: React.FC<Props_> = ({ path_details, path_edit, is_payment, sta
         //   'Your file has been deleted.',
         //   'success'
         // )
-        axios.post(`${process.env.base_route_get}/participants/payments`, { id: id }).then(response => {
+        axios.post(`/api/payments-multiple`, { ids: [id] }).then(response => {
           if (response.status === 200) {
 
             setAnchorEl(null);
-            axios.post(`${process.env.base_route_get}/participants/send-message/paiement`, {ids:[id]}).then(response=>{
+            axios.post(`/api/send-message/paiement`, {ids:[id]}).then(response=>{
 
             }).catch((err:any)=>{
               console.log(err)

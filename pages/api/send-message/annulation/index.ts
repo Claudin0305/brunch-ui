@@ -15,7 +15,7 @@ export default async function handler(
     axios
       .post(
         `${process.env.base_route_get}/participants/send-message/annulation`,
-        formData,
+        {ids:req.body.ids},
         {
           headers: {
             withCredentials: true,
