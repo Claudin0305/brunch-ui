@@ -40,14 +40,14 @@ const Page: React.FC<Props> = ({ data }) => {
           //   'Your file has been deleted.',
           //   'success'
           // )
-          axios.post(`${process.env.base_route_get}/participants/annulation-multiple`, { ids }).then(response => {
+          axios.post(`/api/annulation-multiple`, { ids }).then(response => {
             if (response.status === 200) {
 
               // setAnchorEl(null);
               // revalidatePath('/paiement-repas')
               // router.push('/paiement-repas')
               // console.log(response)
-              axios.post(`${process.env.base_route_get}/participants/send-message/annulation`, { ids }).then(response => {
+              axios.post(`/api/send-message/annulation`, { ids }).then(response => {
 
               }).catch((err: any) => {
                 console.log(err)
