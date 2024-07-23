@@ -19,7 +19,7 @@ export default async function handler(
   formData.append("abonnement_newsletter", "" + req.body.abonnement_newsletter);
   formData.append("authorisationListe", "" + req.body.authorisation_liste);
   formData.append("id_ville", req.body.id_ville);
-  formData.append("mode_participation", req.body.mode_participation);
+  formData.append("modeParticipation", req.body.mode_participation);
   formData.append("id_civilite", req.body.id_civilite);
   formData.append("id_local", req.body.id_local);
   formData.append("id_affiliation", req.body.id_affiliation);

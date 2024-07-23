@@ -8,13 +8,13 @@ type Props = {
     data: any
 }
 const Page: React.FC<Props> = ({ data }) => {
-    console.log(data)
+
     return (
         <HomeLayout>
             <Head>
                 <title>Confirmation paiement paypal</title>
             </Head>
-            <div className='flex items-center justify-center mt-24 h-[70vh]'>
+            <div className='flex flex-col items-center justify-center mt-24 h-[70vh]'>
                 <h1 className="text-3xl">Confirmation de paiement!</h1>
                 <p>{data?.nomCivilte} {data?.nom} {data?.prenom}, </p>
                 <p>Le commité du Brunch vous remercie pour votre paiement. Vous allez recevoir un email de confirmation avec les détails du paiement.</p>

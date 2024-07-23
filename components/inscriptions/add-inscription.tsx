@@ -615,6 +615,9 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
           formData.append("modePaiement", selectModePaiement?.value);
           data.mode_paiement = selectModePaiement?.value
         }
+        if(selectedMode !== null){
+          formData.append("modeParticipation", selectedMode?.value)
+        }
 
         setIsSubmit(true);
         if (data_props === null) {

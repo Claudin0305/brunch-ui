@@ -21,45 +21,65 @@ const Page: React.FC<Props> = ({ data }) => {
   const token = getCookie('token');
   const router = useRouter()
   const deleteParticipant = (id: number) => {
-    fetch(`${process.env.base_route}/participants/${id}`, {
-      method: "DELETE",
+     axios.post(`/api/annulation-multiple`, { ids:[id] }).then(response => {
+            if (response.status === 200) {
 
-      headers: {
-        "content-type": "application/json",
-      },
-    }).then(response => {
-      console.log(response)
-      if (response.status === 200) {
-        Swal.fire({
-          // position: 'top-end',
-          icon: 'success',
-          title: 'Suppression effectuée!',
-          // showConfirmButton: false,
-          // timer: 1500
-          // buttonColor:"#000000",
-          // buttons:[""]
-          confirmButtonColor: "#2563eb",
-          confirmButtonText: "Fermer",
-        })
+              // setAnchorEl(null);
+              // revalidatePath('/paiement-repas')
+              // router.push('/paiement-repas')
+              // console.log(response)
+              axios.post(`/api/send-message/annulation`, { ids:[id] }).then(response => {
+
+              }).catch((err: any) => {
+                console.log(err)
+              })
+              // ids = []
+              router.push('/participants')
+              // router.refresh();
+            }
+          }).catch((err: any) => {
+            console.log(err)
+          })
+
+    // fetch(`/api/participants/${id}`, {
+    //   method: "POST",
+
+    //   headers: {
+    //     "content-type": "application/json",
+    //   },
+    // }).then(response => {
+    //   console.log(response)
+    //   if (response.status === 200) {
+    //     Swal.fire({
+    //       // position: 'top-end',
+    //       icon: 'success',
+    //       title: 'Suppression effectuée!',
+    //       // showConfirmButton: false,
+    //       // timer: 1500
+    //       // buttonColor:"#000000",
+    //       // buttons:[""]
+    //       confirmButtonColor: "#2563eb",
+    //       confirmButtonText: "Fermer",
+    //     })
 
 
-        router.push('/participants')
+    //     router.push('/participants')
 
-      }
-    }).catch((e) => {
-      console.log(e)
-      Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'Echec de suppression!',
-        //   footer: '<a href="">Why do I have this issue?</a>'
-      })
-    });
+    //   }
+    // }).catch((e) => {
+    //   console.log(e)
+    //   Swal.fire({
+    //     icon: 'error',
+    //     title: 'Oops...',
+    //     text: 'Echec de suppression!',
+    //     //   footer: '<a href="">Why do I have this issue?</a>'
+    //   })
+    // });
   }
   const handleDelete = (event: MouseEvent) => {
     Swal.fire({
       title: 'Etes-vous sûr?',
-      text: "Supprimer " + data.prenom + " " + data.nom,
+      text: "Annuler  l'inscription de " + data.prenom + " " + data.nom,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#2563eb',
@@ -110,7 +130,7 @@ const Page: React.FC<Props> = ({ data }) => {
             </div>
             <div className="flex justify-between">
 
-              <p>Pays</p><p>{data.Pays}</p>
+              <p>Pays</p><p>{data.nomPays}</p>
             </div>
             <div className="flex justify-between">
 
@@ -126,11 +146,15 @@ const Page: React.FC<Props> = ({ data }) => {
             </div>
             <div className="flex justify-between">
 
-              <p>Téléphone</p><p>{data.tel_participant}</p>
+              <p>Téléphone</p><p>{data?.telParticipant}</p>
             </div>
             <div className="flex justify-between">
 
-              <p>Mode participation</p><p>{data.mode_participation}</p>
+              <p>Mode paiement</p><p>{data?.modePiement}</p>
+            </div>
+            <div className="flex justify-between">
+
+              <p>Mode participation</p><p>{data?.modeParticipation}</p>
             </div>
             <div className="flex justify-between">
 
@@ -144,7 +168,7 @@ const Page: React.FC<Props> = ({ data }) => {
           <div className={'flex flex-col gap-y-8 justify-center md:justify-end pt-4 mb-4 md:flex-row md:gap-x-8'}>
 
             <Button onClick={handleDelete} className="bg-red-600 capitalize" variant="contained" startIcon={<DeleteForeverIcon />}>
-              Supprimer
+              Annuler
             </Button>
 
             <Link href={`/inscriptions/edit/${data.idEvent}/${data.username}`}>
