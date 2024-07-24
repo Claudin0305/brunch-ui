@@ -15,14 +15,14 @@ export default async function handler(
   formData.append("prenom", req.body.prenom);
   formData.append("nom", req.body.nom);
   formData.append("email", req.body.email);
-  formData.append("tel_participant", req.body.tel_participant);
+  formData.append("telParticipant", req.body.tel_participant);
   if (req.body.affiliation !== undefined) {
     formData.append("affiliation", req.body.affiliation);
   }
   formData.append("abonnement_newsletter", "" + req.body.abonnement_newsletter);
   formData.append("authorisationListe", "" + req.body.authorisation_liste);
   formData.append("id_ville", req.body.id_ville);
-  formData.append("mode_participation", req.body.mode_participation);
+  formData.append("modeParticipation", req.body.mode_participation);
   formData.append("id_civilite", req.body.id_civilite);
   formData.append("id_local", req.body.id_local);
   formData.append("id_affiliation", req.body.id_affiliation);

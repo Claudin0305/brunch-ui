@@ -12,7 +12,7 @@ export default async function handler(
   formData.append("prenom", req.body.prenom);
   formData.append("nom", req.body.nom);
   formData.append("email", req.body.email);
-  formData.append("tel_participant", req.body.tel_participant);
+  formData.append("telParticipant", req.body.tel_participant);
   if (req.body.affiliation !== undefined) {
     formData.append("affiliation", req.body.affiliation);
   }
