@@ -79,12 +79,12 @@ const Page: React.FC<Props> = ({ data }) => {
   const handleDelete = (event: MouseEvent) => {
     Swal.fire({
       title: 'Etes-vous sûr?',
-      text: "Annuler  l'inscription de " + data.prenom + " " + data.nom,
+      text: "Annuler  l'inscription de: " + data.prenom + " " + data.nom,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#2563eb',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Supprimer!',
+      confirmButtonText: "Annuler l'inscription!",
       cancelButtonText: 'Annuler'
     }).then((result) => {
       if (result.isConfirmed) {

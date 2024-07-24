@@ -60,7 +60,7 @@ const Page: React.FC<Props> = ({ data }) => {
       showCancelButton: true,
       confirmButtonColor: '#2563eb',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Annuler inscription!',
+      confirmButtonText: 'Supprimer!',
       cancelButtonText: 'Annuler'
     }).then((result) => {
       if (result.isConfirmed) {
