@@ -19,7 +19,7 @@ const Page: React.FC<Props> = ({ data }) => {
                 <p>{data?.nomCivilte} {data?.nom} {data?.prenom}, </p>
                 <p>Le commité du Brunch vous remercie pour votre paiement. Vous allez recevoir un email de confirmation avec les détails du paiement.</p>
                 <p>Pour afficher la liste des inscrit, <Link href={`/liste-participants/${data?.idEvent}`}>Cliquez ici</Link></p>
-        </div>
+            </div>
         </HomeLayout >
     )
 }
@@ -36,7 +36,22 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         const response = await axios.get(`${process.env.base_route_get}/participants/${context?.params?.id}`);
         // const response = await axios.get(`http://localhost:8080/api/events`);
         const data = response.data;
-
+        // console.log(data);
+        const formData = new FormData();
+        formData.append("id_participant", data.id_participant);
+        formData.append('id_event', data.idEvent)
+        axios.post(`${process.env.base_route_get}/participants/send-message`, formData, {
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+            },
+        })
+            .then(answer => {
+                if (answer.status === 201) {
+                    console.log("Message envoyer")
+                }
+            }).catch(errorSend => {
+                console.log(errorSend)
+            })
         // Return the data as props
         return {
             props: {

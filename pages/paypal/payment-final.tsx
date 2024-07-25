@@ -6,6 +6,7 @@ import axios from 'axios'
 type Props = {
     amount: number;
     data: any
+    from?:string;
 }
 type Inputs = {
     don: option | any
@@ -14,7 +15,7 @@ type option = {
     label: string;
     value: number;
 }
-const PaymentFinal: React.FC<Props> = ({ amount, data }) => {
+const PaymentFinal: React.FC<Props> = ({ amount, data, from }) => {
     // console.log(amount)
     const { register, handleSubmit, watch, reset, setValue, getValues, control, formState: { errors } } = useForm<Inputs>();
     const [montantDon, setMontantDon] = useState<number>(0);
@@ -42,6 +43,7 @@ const PaymentFinal: React.FC<Props> = ({ amount, data }) => {
         // console.log(+(amount) + montantDon)
         let res = await axios.post('/api/paypal', { amount:( +(amount) + montantDon), data })
         if (res && res.data) {
+
             let link = res.data.links[1].href
             window.location.href = link;
         }
@@ -49,7 +51,7 @@ const PaymentFinal: React.FC<Props> = ({ amount, data }) => {
 
     }
     return (
-        <div className='grid grid-cols-1 gap-8 md:grid-cols-2'>
+        <div className={`'grid grid-cols-1 gap-8 md:grid-cols-2`}>
             <div className="block">
                 <label
                     className="mb"
@@ -93,7 +95,8 @@ const PaymentFinal: React.FC<Props> = ({ amount, data }) => {
             </div>
             <div className="block md:mt-10">
 
-                <Button className='bg-blue-600 text-white' color='primary' onClick={handlePayment}>Payer Maintenant</Button></div>
+                <Button className='bg-blue-600 text-white' color='primary' onClick={handlePayment}>Payer Maintenant</Button>
+                </div>
         </div>
     )
 }

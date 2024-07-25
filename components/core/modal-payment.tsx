@@ -8,8 +8,7 @@ type Props = {
     mode_paiement?: any
 
 }
-const ModalRecap: React.FC<Props> = ({ show, setShow, data, mode_paiement }) => {
-    console.log(data)
+const ModalPayment: React.FC<Props> = ({ show, setShow, data, mode_paiement }) => {
 
     return (
         <>
@@ -26,7 +25,7 @@ const ModalRecap: React.FC<Props> = ({ show, setShow, data, mode_paiement }) => 
                                 {" "}
                                 {/*header*/}
                                 <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
-                                    <h3 className="text-2xl text-blue-500 text-center">Récapitulatif </h3>
+                                    <h3 className="text-2xl text-blue-500 text-center">Paiement </h3>
 
                                     <button
                                         onClick={e => {
@@ -39,23 +38,26 @@ const ModalRecap: React.FC<Props> = ({ show, setShow, data, mode_paiement }) => 
                                 </div>{" "}
                                 {/*body*/}
                                 <div className="relative p-6 flex-auto">
-                                    <Link className="text-blue-500 hover:text-blue-300 block my-4" href={'/'}>Retour à la page principale</Link>
-                                    <p className="uppercase">merci pour votre inscription</p>
-                                    <p>Numéro de confirmation: <span className="font-semibold">{data?.data?.username}</span></p>
-                                    <p> Nous enverrons prochainement un accusé de réception au(x) courriel(s) que vous avez spécifié(s).</p>
-                                    {/* <Récapitulatif> */}
-                                    <p>Mode participation: <span className="font-semibold">{data?.data?.mode_participation}</span></p>
-                                    {data?.data?.mode_participation !== 'DISTANCIEL' && <>
-                                        <p>Lieu: <span className="font-semibold">{`${data?.data?.nomPays}, ${data?.data?.ville?.libelleDepartement}, ${data?.data?.ville?.libelle}(${data?.data?.libelleLocal})`}</span></p>
-                                        <p>Mode paiement: <span className="font-semibold">{data?.data?.modePiement}</span></p>
-                                        <p>Montant: <span className="font-semibold"> {data?.data?.montant_participation} {data?.data?.devise}</span></p>
 
 
-                                    </>}
-                                    <Link
-                                        className="mt-4 text-blue-500 block hover:text-blue-300"
-                                        href={`/liste-participants/${data?.data?.idEvent}`}
-                                    >Tableau des inscrits</Link>
+                                    <div className="w-full">
+
+                                        <h2 className="text-2xl">Paiement via PayPal</h2>
+                                        <hr />
+                                        <div className="block mt-4">
+                                            {/* <p>Mode paiement: <span className="font-semibold">{data?.data?.modePiement}</span></p> */}
+                                            <p>Montant à payer: <span className="font-semibold"> {data?.data?.montant_participation} {data?.data?.devise}</span></p>
+                                        </div>
+                                        <div className="mt-4 flex flex-col">
+                                            {/* <PaymentButton amount={montant} /> */}
+                                            <PaymentFinal from={"inscription"} amount={data?.data?.montant_participation} data={data?.data} />
+                                        </div>
+                                        {/* <Link
+                                                    className="text-blue-500 hover:text-blue-300 block my-4"
+                                                    href={`/paiements`}
+                                                >Payer maintenant</Link> */}
+                                    </div>
+
                                     {/* (hyperlien) Faire un don */}
                                 </div>
                             </div>{" "}
@@ -68,4 +70,4 @@ const ModalRecap: React.FC<Props> = ({ show, setShow, data, mode_paiement }) => 
     );
 }
 
-export default ModalRecap;
+export default ModalPayment;

@@ -25,7 +25,7 @@ export default async function handler(
   formData.append("id_affiliation", req.body.id_affiliation);
   formData.append("id_tranche_age", req.body.id_tranche_age);
   if (req.body.mode_paiement) {
-    formData.append("modePaiement", req.body.mode_paiement);
+    formData.append("modePiement", req.body.mode_paiement);
   }
   console.log(req.body);
   if (req.method === "POST") {

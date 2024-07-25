@@ -21,6 +21,7 @@ import ModalRecap from "@/components/core/modal-recap";
 import ModalAddVille from "@/components/core/modal-add-ville";
 import ModalAddAffiliation from "@/components/core/modal-add-affiliation";
 import { replaceSpecialChars } from "@/helpers/helper";
+import ModalPayment from "../core/modal-payment";
 
 
 type Inputs = {
@@ -97,12 +98,16 @@ const format_events: option[] = [
 ]
 const mode_paiements: option[] = [
   {
-    value: "DIFFERE",
-    label: "Paiement Différé"
+    value: "CHEQUE",
+    label: "Chèque"
   },
   {
-    value: "IMMEDIAT",
-    label: "Paiement Immédiat"
+    value: "PAYPAL",
+    label: "Paypal"
+  },
+  {
+    value: "INTERAC",
+    label: "Interac"
   },
 
 ]
@@ -114,6 +119,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
   const { register, handleSubmit, watch, reset, setValue, getValues, control, formState: { errors } } = useForm<Inputs>();
   const [errorNext, setErrorNext] = useState<any>({});
   const [show, setShow] = useState<boolean>(false);
+  const [showPayment, setShowPayment] = useState<boolean>(false)
   const [showModalVille, setShowModalVille] = useState<boolean>(false);
   const [showModalAffiliation, setShowModalAffiliation] = useState<boolean>(false);
   const router = useRouter()
@@ -137,10 +143,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
   const [selectCivilite, setSelectCivilite] = useState<option | null>(null);
   const [selectTrangeAge, setSelectTrangeAge] = useState<option | null>(null);
   const [selectLocal, setSelectLocal] = useState<option | any>();
-  const [selectModePaiement, setSelectModePaiement] = useState<option | any>({
-    value: "DIFFERE",
-    label: "Paiement Différé"
-  });
+  const [selectModePaiement, setSelectModePaiement] = useState<option | any>(null);
   const [activeStep, setActiveStep] = React.useState(0);
   const [formatEventOptions, setFormatEventOptions] = useState<option[] | any>()
   const [errorEmail, setErrorEmail] = useState<boolean>(true);
@@ -221,12 +224,12 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
 
     }
   }, [optionsPays])
-  useEffect(()=>{
-    if(data_props=== null){
+  useEffect(() => {
+    if (data_props === null) {
       setValue('email', '')
       setErrorEmail(true)
     }
-  },[])
+  }, [])
 
   useEffect(() => {
     const tableOptions: option[] = [];
@@ -459,20 +462,42 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
       },
     }).then(response => {
       if (response.status === 201) {
-        Swal.fire({
-          // position: 'top-end',
-          icon: 'success',
-          title: 'Enregistrement effectué!',
-          // showConfirmButton: false,
-          // timer: 1500
-          // buttonColor:"#000000",
-          // buttons:[""]
-          confirmButtonColor: "#2563eb",
-          confirmButtonText: "Fermer",
-        })
+        // console.log(response.data)
+        if (selectedMode?.value === 'PRESENTIEL' && selectModePaiement?.value == 'PAYPAL') {
+
+          setShowPayment(true);
+        } else {
+
+          Swal.fire({
+            // position: 'top-end',
+            icon: 'success',
+            title: 'Enregistrement effectué!',
+            // showConfirmButton: false,
+            // timer: 1500
+            // buttonColor:"#000000",
+            // buttons:[""]
+            confirmButtonColor: "#2563eb",
+            confirmButtonText: "Fermer",
+          })
+          setShow(true)
+          const sendMessage = () => {
+            axios.post('/api/messages/send-message', { id_event: response.data.data.idEvent, id_participant: response.data.data.id_participant }, {
+              headers: {
+                "Access-Control-Allow-Origin": "*",
+              },
+            })
+              .then(answer => {
+                if (answer.status === 201) {
+                  console.log("Message envoyer")
+                }
+              }).catch(errorSend => {
+                console.log(errorSend)
+              })
+          }
+          sendMessage()
+        }
         setResponseData(response.data)
         setIsSubmit(false);
-        setShow(true)
         reset();
         setValue('id_event', "");
         setValue('id_tranche_age', "");
@@ -492,26 +517,13 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
 
         setSelectedVille(null)
         setSelectedMode(null)
+        setSelectModePaiement(null)
         setSelectedAffiliation(null);
         setActiveStep(0)
         errNext = {};
 
         // setSelectedLocal(null);
-        const sendMessage = () => {
-          axios.post('/api/messages/send-message', { id_event: response.data.data.idEvent, id_participant: response.data.data.id_participant }, {
-            headers: {
-              "Access-Control-Allow-Origin": "*",
-            },
-          })
-            .then(answer => {
-              if (answer.status === 201) {
-                console.log("Message envoyer")
-              }
-            }).catch(errorSend => {
-              console.log(errorSend)
-            })
-        }
-        sendMessage()
+
       }
     }).catch(err => {
       setIsSubmit(false);
@@ -615,7 +627,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
           formData.append("modePaiement", selectModePaiement?.value);
           data.mode_paiement = selectModePaiement?.value
         }
-        if(selectedMode !== null){
+        if (selectedMode !== null) {
           formData.append("modeParticipation", selectedMode?.value)
         }
 
@@ -753,7 +765,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
             onChange={e => {
               //do something
               let pattern = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
-              console.log(!pattern.test(e.currentTarget.value))
+              // console.log(!pattern.test(e.currentTarget.value))
               setEmail(replaceSpecialChars(e.currentTarget.value));
               setErrorEmail(!pattern.test(replaceSpecialChars(e.currentTarget.value)))
 
@@ -1125,7 +1137,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
 
 
         }
-        {/* {selectLocal && selectLocal?.data?.montant_participation > 0 &&
+        {selectLocal && selectLocal?.data?.montant_participation > 0 &&
           <div className="flex-col flex md:-mt-4 z-10">
             <label
               className="mb-2"
@@ -1174,7 +1186,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
             {errors?.mode_paiement && <Error text={errors.mode_paiement.message} />}
 
           </div>
-        } */}
+        }
 
         <div className="col-span-3">
 
@@ -1438,6 +1450,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
         setSelectedVille={setSelectedVille}
         setVal={setValue}
       />
+      <ModalPayment show={showPayment} setShow={setShowPayment} data={responseData} />
     </div>
   );
 };

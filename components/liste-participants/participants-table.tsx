@@ -67,7 +67,7 @@ const TableParticipant: React.FC<Props> = ({ data }) => {
         },
         {
             field: "departement",
-            headerName: "Département",
+            headerName: "Département/Province/Etat/Canton",
             // renderCell: (value) => <PersoToolTip value={value} />,
             // width:100,
             renderCell: value => value.row.ville.libelleDepartement
