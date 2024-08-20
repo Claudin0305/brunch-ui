@@ -46,19 +46,20 @@ const TableParticipant: React.FC<Props> = ({ data, setSelectedRows }) => {
     };
     const columns: GridColDef[] = [
         {
-            field: "prenom",
-            headerName: "Prénom",
-            // renderCell: (value) => <PersoToolTip value={value} />,
-            // width:100,
-            flex: 1,
-        },
-        {
             field: "nom",
             headerName: "Nom",
             // renderCell: (value) => <PersoToolTip value={value} />,
             // width:100,
             flex: 1,
         },
+        {
+            field: "prenom",
+            headerName: "Prénom",
+            // renderCell: (value) => <PersoToolTip value={value} />,
+            // width:100,
+            flex: 1,
+        },
+
         {
             field: "email",
             headerName: "Courriel",

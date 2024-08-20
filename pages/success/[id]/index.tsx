@@ -18,7 +18,7 @@ const Page: React.FC<Props> = ({ data }) => {
                 <h1 className="text-3xl">Confirmation de paiement!</h1>
                 <p>{data?.nomCivilte} {data?.nom} {data?.prenom}, </p>
                 <p>Le commité du Brunch vous remercie pour votre paiement. Vous allez recevoir un email de confirmation avec les détails du paiement.</p>
-                <p>Pour afficher la liste des inscrit, <Link href={`/liste-participants/${data?.idEvent}`}>Cliquez ici</Link></p>
+                <p>Pour afficher la liste des inscrit, <Link className="text-blue-600" href={`/liste-participants/${data?.idEvent}`}>Cliquez ici</Link></p>
             </div>
         </HomeLayout >
     )

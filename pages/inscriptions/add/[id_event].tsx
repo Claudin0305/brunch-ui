@@ -33,7 +33,7 @@ console.log(req.method)
   try {
     // Fetch data from an API or perform other async operations
     const civiliteResp = await axios.get(`${process.env.base_route_get}/civilites`);
-    const trancheAgeResp = await axios.get(`${process.env.base_route_get}/tranche-ages`), paysResp = await axios.get(`${process.env.base_route_get}/pays`), locauxResp = await axios.get(`${process.env.base_route_get}/locaux`), eventResp = await axios.get(`${process.env.base_route_get}/events/${context?.params?.id_event}`), respPart = await axios.get(`${process.env.base_route_get}/participants`), respAff = await axios.get(`${process.env.base_route_get}/affiliations`)
+    const trancheAgeResp = await axios.get(`${process.env.base_route_get}/tranche-ages`), paysResp = await axios.get(`${process.env.base_route_get}/pays`), locauxResp = await axios.get(`${process.env.base_route_get}/locaux`), eventResp = await axios.get(`${process.env.base_route_get}/events/${context?.params?.id_event}`), respPart = await axios.get(`${process.env.base_route_get}/participants`), respAff = await axios.get(`${process.env.base_route_get}/affiliations/validate`)
     // const response = await axios.get(`http://localhost:8080/api/events`);
     const civilites = civiliteResp.data;
     const trancheAges = trancheAgeResp.data;

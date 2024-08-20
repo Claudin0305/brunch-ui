@@ -9,7 +9,7 @@ type Props = {
 
 }
 const ModalRecap: React.FC<Props> = ({ show, setShow, data, mode_paiement }) => {
-    console.log(data)
+    // console.log(data)
 
     return (
         <>

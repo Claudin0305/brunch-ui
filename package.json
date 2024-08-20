@@ -28,6 +28,7 @@
     "formidable": "^3.5.1",
     "next": "13.3.4",
     "next-cookies": "^2.0.3",
+    "next-nprogress-bar": "^2.3.13",
     "paypal-rest-sdk": "^1.8.1",
     "postcss": "8.4.23",
     "react": "18.2.0",

@@ -7,10 +7,12 @@ import CircularIndeterminate from "@/components/core/circular-indeterminate";
 import Error from "@/components/core/error";
 import axios from 'axios';
 import { useRouter } from 'next/router'
+import Star from "@/components/core/star";
 
 
 type Inputs = {
   nom_affiliation:string;
+  validate:string;
 };
 type Props = {
 data_props: any | null;
@@ -26,6 +28,7 @@ const AddAffiliation: React.FC<Props> = ({data_props}) => {
 
     if(data_props !== null){
       setValue('nom_affiliation', data_props.nom_affiliation);
+      setValue('validate', data_props.validate);
 
     }
   },[])
@@ -124,6 +127,24 @@ if(response.status === 201){
           />
             {responseError !== null && <Error text={responseError?.nom_affiliation}/>}
             {errors?.nom_affiliation && <Error text={errors.nom_affiliation.message} />}
+          </div>
+
+          <div className="block">
+            <label htmlFor="validate">Affiliation validée<Star /></label>
+            <div className="flex gap-8">
+              <div className="flex justify-center items-center my-2">
+
+                <input {...register("validate")} onChange={(e) => {
+                }} type="radio" value="1" id="yes1" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 mr-2" />
+                <label htmlFor="yes1" className="mb-1">Oui</label>
+              </div>
+              <div className="flex justify-center items-center my-2">
+
+                <input {...register("validate")} onChange={(e) => {
+                }} type="radio" value="0" id="no1" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 mr-2" />
+                <label htmlFor="no1" className="mb-1">Non</label>
+              </div>
+            </div>
           </div>
 
 

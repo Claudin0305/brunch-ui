@@ -43,7 +43,7 @@ const Home: React.FC<Props> = ({ data }) => {
                                             height={400}
                                             alt={'logo évènement'}
                                         />
-                                        <h2 className='ml-8 text-blue-500'>{`${e.eventType.replace("_", " ")}'${e.createdAt.split("-")[0]}`}</h2>
+                                  <h2 className='ml-8 text-blue-500'>{`${e.eventType.replace("_", " ")}'${e.date_fin.split("-")[0]}`}</h2>
                                     </div>
                                 </Link>
                             ))

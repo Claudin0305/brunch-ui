@@ -11,7 +11,7 @@ export default async function handler( req: NextApiRequest,
 
 if(req.method === 'POST'){
     axios
-          .post(`${process.env.base_route_get}/devises`, formData, {
+          .post(`${process.env.base_route_get}/devises`, req.body, {
     headers: {
           withCredentials: true,
           Cookie: cookie

@@ -118,6 +118,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
   // console.log(pays)
   const { register, handleSubmit, watch, reset, setValue, getValues, control, formState: { errors } } = useForm<Inputs>();
   const [errorNext, setErrorNext] = useState<any>({});
+  // const [errNext, setErrNext] = useState<errType>({})
   const [show, setShow] = useState<boolean>(false);
   const [showPayment, setShowPayment] = useState<boolean>(false)
   const [showModalVille, setShowModalVille] = useState<boolean>(false);
@@ -717,6 +718,11 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
             type="text"
             label="Prénom"
             {...register("prenom", { required: "Ce champ est obligatoire" })}
+            onChange={(e) => {
+              register('prenom').onChange(e)
+              errNext = { ...errNext, prenom: false, invalid_prenom: false }
+            }}
+
             className="md:mt-3"
           />
           {/* {responseError !== null && <Error text={responseError?.libelle}/>} */}
@@ -894,6 +900,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
                 options={optionsPays}
                 value={selectedPays}
                 onChange={e => {
+                  errNext = { ...errNext, departement: false, ville: false, pays: false }
                   setSelectedPays(e)
                   setSelectedDepartement(null);
                   setSelectedVille(null);
@@ -939,6 +946,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
                 options={optionsDepartement}
                 value={selectedDepartement}
                 onChange={e => {
+                  errNext = { ...errNext, departement: false, ville: false }
                   setSelectedVille(null)
                   setSelectedDepartement(e)
                   setValue('id_departement', e)
@@ -986,6 +994,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
                 options={optionsVille}
                 value={selectedVille}
                 onChange={e => {
+                  errNext = { ...errNext, ville: false }
                   if (e?.value == "0") {
                     setShowModalVille(!showModalVille)
                   } else {
@@ -1085,6 +1094,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
                   setSelectedMode(e);
                   // console.log(e)
                   setValue('mode_participation', e)
+                  errNext = { ...errNext, mode_participation: false }
 
                 }}
               />
@@ -1175,6 +1185,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
 
                     // }else{
 
+
                     setValue('mode_paiement', e);
                     setSelectModePaiement(e);
                     // }
@@ -1197,16 +1208,22 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
               id="authorisation_liste"
               className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 mr-2"
             /> */}
-            <label htmlFor="authorisation_liste">{`J'autorise GRAHN-Monde à afficher mon nom dans le tableau des inscrits au Brunch'${new Date().getFullYear()}`}</label>
+            <label htmlFor="authorisation_liste">{`J'autorise GRAHN-Monde à afficher mon nom dans le tableau des inscrits au Brunch'${new Date().getFullYear()}`}<Star /></label>
             <div className="flex gap-8">
               <div className="flex justify-center items-center mt-2">
 
-                <input {...register("authorisation_liste")} type="radio" value="1" id="yes" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 mr-2" />
+                <input {...register("authorisation_liste")} onChange={(e) => {
+                  errNext = { ...errNext, authorisation_liste: false }
+                  register('authorisation_liste').onChange(e)
+                }} type="radio" value="1" id="yes" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 mr-2" />
                 <label htmlFor="yes" className="mb-1">Oui</label>
               </div>
               <div className="flex justify-center items-center mt-2">
 
-                <input {...register("authorisation_liste")} type="radio" value="0" id="no" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 mr-2" />
+                <input {...register("authorisation_liste")} onChange={(e) => {
+                  errNext = { ...errNext, authorisation_liste: false }
+                  register('authorisation_liste').onChange(e)
+                }} type="radio" value="0" id="no" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 mr-2" />
                 <label htmlFor="no" className="mb-1">Non</label>
               </div>
             </div>
@@ -1219,16 +1236,22 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
               id="abonnement_newsletter"
               className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 mr-2"
             /> */}
-            <label htmlFor="abonnement_newsletter">Je souhaite recevoir les communications de GRAHN-Monde</label>
+            <label htmlFor="abonnement_newsletter">Je souhaite recevoir les communications de GRAHN-Monde<Star /></label>
             <div className="flex gap-8">
               <div className="flex justify-center items-center my-2">
 
-                <input {...register("abonnement_newsletter")} type="radio" value="1" id="yes1" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 mr-2" />
+                <input {...register("abonnement_newsletter")} onChange={(e) => {
+                  errNext = { ...errNext, newsletter: false }
+                  register('abonnement_newsletter').onChange(e)
+                }} type="radio" value="1" id="yes1" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 mr-2" />
                 <label htmlFor="yes1" className="mb-1">Oui</label>
               </div>
               <div className="flex justify-center items-center my-2">
 
-                <input {...register("abonnement_newsletter")} type="radio" value="0" id="no1" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 mr-2" />
+                <input {...register("abonnement_newsletter")} onChange={(e) => {
+                  errNext = { ...errNext, newsletter: false }
+                  register('abonnement_newsletter').onChange(e)
+                }} type="radio" value="0" id="no1" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 mr-2" />
                 <label htmlFor="no1" className="mb-1">Non</label>
               </div>
             </div>
@@ -1350,7 +1373,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
       errNext = { ...errNext, invalid_prenom: !reg.test(values.prenom) }
     }
     // console.log(errNext, keys)
-    if (values.email_confirmation.trim() !== "" && values.email !== values.email_confirmation || values.email_confirmation === null || values.email_confirmation === undefined) {
+    if (values?.email_confirmation?.trim() !== "" && values.email !== values.email_confirmation || values.email_confirmation === null || values.email_confirmation === undefined) {
       errNext = { ...errNext, email_confirmation: true }
     } else {
       errNext = { ...errNext, email_confirmation: false }
@@ -1359,22 +1382,42 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
     const val = Object.values(errNext);
 
     const result = val.filter(v => v === true);
-    if (result.length > 0) {
-      Swal.fire({
-        // position: 'top-end',
-        icon: 'error',
-        title: 'Vos données ne sont pas valides!',
-        // showConfirmButton: false,
-        // timer: 1500
-        // buttonColor:"#000000",
-        // buttons:[""]
-        confirmButtonColor: "#2563eb",
-        confirmButtonText: "Fermer",
-      })
-    } else {
 
-      setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    }
+    axios.get(`${process.env.base_route}/participants/${values.email}/${values.nom}/${values.prenom}`).then(resp => {
+
+      if (resp.data !== "") {
+        Swal.fire({
+          // position: 'top-end',
+          icon: 'error',
+          title: 'Une inscription a déjà été faite avec le nom, le prénom et l\'email',
+          // showConfirmButton: false,
+          // timer: 1500
+          // buttonColor:"#000000",
+          // buttons:[""]
+          confirmButtonColor: "#2563eb",
+          confirmButtonText: "Fermer",
+        })
+      } else {
+        if (result.length > 0) {
+          Swal.fire({
+            // position: 'top-end',
+            icon: 'error',
+            title: 'Vos données ne sont pas valides!',
+            // showConfirmButton: false,
+            // timer: 1500
+            // buttonColor:"#000000",
+            // buttons:[""]
+            confirmButtonColor: "#2563eb",
+            confirmButtonText: "Fermer",
+          })
+        } else {
+
+
+          setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        }
+      }
+    })
+
 
   };
 

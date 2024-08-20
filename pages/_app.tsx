@@ -4,7 +4,7 @@ import { ReactNode, ReactElement, useEffect, Suspense } from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { getCookie } from "cookies-next";
-
+import { PagesProgressBar as ProgressBar } from 'next-nprogress-bar';
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
 };
@@ -32,6 +32,12 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
   return getLayout(
     <div id="__next">
       <Component {...pageProps} />
+      <ProgressBar
+        height="4px"
+        color="#38bdf8"
+        options={{ showSpinner: false }}
+        shallowRouting
+      />
     </div>
   );
   // return <Layout>
