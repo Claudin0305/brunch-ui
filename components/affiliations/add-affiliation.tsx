@@ -12,7 +12,7 @@ import Star from "@/components/core/star";
 
 type Inputs = {
   nom_affiliation:string;
-  validate:string;
+  validate:string | any;
 };
 type Props = {
 data_props: any | null;
@@ -28,7 +28,7 @@ const AddAffiliation: React.FC<Props> = ({data_props}) => {
 
     if(data_props !== null){
       setValue('nom_affiliation', data_props.nom_affiliation);
-      setValue('validate', data_props.validate);
+      setValue('validate', data_props.validate ? "1":"0");
 
     }
   },[])
@@ -96,7 +96,8 @@ if(response.status === 201){
    };
   const onSubmit: SubmitHandler<Inputs> = data => {
     // console.log(data)
-
+    data.validate = data.validate == "1" ? 1:0
+    // console.log(data)
     setIsSubmit(true);
     if(data_props === null){
       createAffiliation(data);
@@ -129,7 +130,7 @@ if(response.status === 201){
             {errors?.nom_affiliation && <Error text={errors.nom_affiliation.message} />}
           </div>
 
-          <div className="block">
+          <div className="block md:-mt-2">
             <label htmlFor="validate">Affiliation validée<Star /></label>
             <div className="flex gap-8">
               <div className="flex justify-center items-center my-2">

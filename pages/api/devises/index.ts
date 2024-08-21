@@ -28,6 +28,8 @@ if(req.method === 'POST'){
           .catch((err) => {
             console.log(err)
             if (err?.response?.status === 400) {
+              console.log(err?.response?.data)
+              return res.status(400).json({data: err?.response?.data})
             }
             return res.status(400).json({error:"bad request", err: err})
           });

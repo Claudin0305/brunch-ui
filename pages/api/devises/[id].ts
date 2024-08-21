@@ -27,11 +27,13 @@ export default async function handler( req: NextApiRequest,
 
           })
           .catch((err) => {
-            console.log(err)
+            // console.log(err)
             if (err?.response?.status === 400) {
               // setResponseError(err.response.data);
+              console.log(err?.response?.data)
+              return res.status(400).json({data: err?.response?.data})
             }
-            return res.status(400).json({error:"bad request", err: err})
+            return res.status(400).json({err})
             // setIsSubmit(false);
           });
     }

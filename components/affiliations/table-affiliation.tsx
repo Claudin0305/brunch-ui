@@ -43,11 +43,22 @@ const TableAffiliation: React.FC<Props> = ({ data }) => {
   };
    const columns: GridColDef[] = [
     {
-       field: "nom_affiliation",
+      field: "nom_affiliation",
       headerName: "Nom affiliation",
       // renderCell: (value) => <PersoToolTip value={value} />,
       // width:100,
       flex:1,
+    },
+    {
+      field: "validate",
+      headerName: "Status affiliation",
+      // renderCell: (value) => <PersoToolTip value={value} />,
+      // width:100,
+      renderCell: value => {
+        // console.log(value.row)
+        return value.row.validate ? <span className="p-1 bg-green-600 text-white rounded-lg">Oui</span> : <span className="p-1 bg-red-600 text-white rounded-lg">Non</span>
+      },
+      flex:1
     },
 
 

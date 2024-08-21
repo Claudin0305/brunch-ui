@@ -56,7 +56,8 @@ const AddDevise: React.FC<Props> = ({data_props}) => {
         })
         .catch((err) => {
           if (err.response.status === 400) {
-            setResponseError(err.response.data);
+            setResponseError(err.response.data.data);
+            // console.log(err.response.data.data)
           }
           setIsSubmit(false);
         });
@@ -85,7 +86,8 @@ if(response.status === 201){
   }).catch(err=>{
     setIsSubmit(false);
     if(err.response.status === 400){
-      setResponseError(err.response.data);
+      setResponseError(err.response.data.data);
+      // console.log(err.response.data)
       // console.log(responseError)
       //sweal error
     }
