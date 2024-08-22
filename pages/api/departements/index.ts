@@ -20,7 +20,7 @@ if(req.method === 'POST'){
   })
           .then((response) => {
             if (response.status === 201) {
-              console.log(response)
+              // console.log(response)
 
           return res.status(201).json({message:"succes!", data: response.data})
             }

@@ -94,6 +94,10 @@ const Page: React.FC<Props> = ({ data }) => {
 
               <p>Nom affiliation</p><p>{data.nom_affiliation}</p>
             </div>
+            <div className="flex justify-between">
+
+              <p>Statut</p><p>{data.validate ? "Validé" : "Non-validé"}</p>
+            </div>
 
 
             <hr />

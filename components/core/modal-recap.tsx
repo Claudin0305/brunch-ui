@@ -26,7 +26,7 @@ const ModalRecap: React.FC<Props> = ({ show, setShow, data, mode_paiement }) => 
                                 {" "}
                                 {/*header*/}
                                 <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
-                                    <h3 className="text-2xl text-blue-500 text-center">Récapitulatif </h3>
+                                    <h3 className="text-2xl text-blue-500 text-center">MERCI POUR VOTRE INSCRIPTION </h3>
 
                                     <button
                                         onClick={e => {
@@ -40,18 +40,20 @@ const ModalRecap: React.FC<Props> = ({ show, setShow, data, mode_paiement }) => 
                                 {/*body*/}
                                 <div className="relative p-6 flex-auto">
                                     <Link className="text-blue-500 hover:text-blue-300 block my-4" href={'/'}>Retour à la page principale</Link>
-                                    <p className="uppercase">merci pour votre inscription</p>
-                                    <p>Numéro de confirmation: <span className="font-semibold">{data?.data?.username}</span></p>
-                                    <p> Nous enverrons prochainement un accusé de réception au(x) courriel(s) que vous avez spécifié(s).</p>
+                                    {/* <p className="uppercase">merci pour votre inscription</p>
+                                    <p>Numéro de confirmation: <span className="font-semibold">{data?.data?.username}</span></p> */}
+                                    <p className="my-4"> Vous recevrez prochainement un accusé de réception.</p>
                                     {/* <Récapitulatif> */}
-                                    <p>Mode participation: <span className="font-semibold">{data?.data?.mode_participation}</span></p>
+                                    <p className="font-bold text-2xl uppercase mb-4">RÉCAPITULATIF</p>
+                                    <p><span className="font-semibold">Participant: </span> {data?.data?.nom}, {data?.data?.prenom}</p>
+                                    <p><span className="font-semibold">Numéro de confirmation: </span> {data?.data?.username}</p>
+                                    <p><span className="font-semibold">Mode de participation: </span>{data?.data?.mode_participation}</p>
+                                    <p><span className="font-semibold">Lieu: </span>{data?.data?.mode_participation !== 'DISTANCIEL' ? `${data?.data?.libelleLocal}` : `Distanciel`}</p>
                                     {data?.data?.mode_participation !== 'DISTANCIEL' && <>
-                                        <p>Lieu: <span className="font-semibold">{`${data?.data?.nomPays}, ${data?.data?.ville?.libelleDepartement}, ${data?.data?.ville?.libelle}(${data?.data?.libelleLocal})`}</span></p>
-                                        <p>Mode paiement: <span className="font-semibold">{data?.data?.modePiement}</span></p>
-                                        <p>Montant: <span className="font-semibold"> {data?.data?.montant_participation} {data?.data?.devise}</span></p>
-
-
+                                        <p><span className="font-semibold">Mode de paiement: </span>{data?.data?.modePiement}</p>
+                                        <p><span className="font-semibold">Montant: </span>{data?.data?.montant_participation} {data?.data?.devise}</p>
                                     </>}
+
                                     <Link
                                         className="mt-4 text-blue-500 block hover:text-blue-300"
                                         href={`/liste-participants/${data?.data?.idEvent}`}
