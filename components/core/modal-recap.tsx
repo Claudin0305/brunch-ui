@@ -39,7 +39,7 @@ const ModalRecap: React.FC<Props> = ({ show, setShow, data, mode_paiement }) => 
                                 </div>{" "}
                                 {/*body*/}
                                 <div className="relative p-6 flex-auto">
-                                    <Link className="text-blue-500 hover:text-blue-300 block my-4" href={'/'}>Retour à la page principale</Link>
+                                    <Link className="text-blue-500 hover:text-blue-300 block mb-4" href={'/'}>Retour à la page principale</Link>
                                     {/* <p className="uppercase">merci pour votre inscription</p>
                                     <p>Numéro de confirmation: <span className="font-semibold">{data?.data?.username}</span></p> */}
                                     <p className="my-4"> Vous recevrez prochainement un accusé de réception.</p>
@@ -47,9 +47,9 @@ const ModalRecap: React.FC<Props> = ({ show, setShow, data, mode_paiement }) => 
                                     <p className="font-bold text-2xl uppercase mb-4">RÉCAPITULATIF</p>
                                     <p><span className="font-semibold">Participant: </span> {data?.data?.nom}, {data?.data?.prenom}</p>
                                     <p><span className="font-semibold">Numéro de confirmation: </span> {data?.data?.username}</p>
-                                    <p><span className="font-semibold">Mode de participation: </span>{data?.data?.mode_participation}</p>
-                                    <p><span className="font-semibold">Lieu: </span>{data?.data?.mode_participation !== 'DISTANCIEL' ? `${data?.data?.libelleLocal}` : `Distanciel`}</p>
-                                    {data?.data?.mode_participation !== 'DISTANCIEL' && <>
+                                    <p><span className="font-semibold">Mode de participation: </span>{data?.data?.modeParticipation}</p>
+                                    <p><span className="font-semibold">Lieu: </span>{data?.data?.modeParticipation !== 'DISTANCIEL' ? `${data?.data?.libelleLocal}` : `DISTANCIEL`}</p>
+                                    {data?.data?.modeParticipation !== 'DISTANCIEL' && <>
                                         <p><span className="font-semibold">Mode de paiement: </span>{data?.data?.modePiement}</p>
                                         <p><span className="font-semibold">Montant: </span>{data?.data?.montant_participation} {data?.data?.devise}</p>
                                     </>}
