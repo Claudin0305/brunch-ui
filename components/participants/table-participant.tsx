@@ -120,7 +120,7 @@ const TableParticipant: React.FC<Props> = ({ data, setSelectedRows }) => {
             flex: 1,
         },
         {
-            field: "mode_participation",
+            field: "modeParticipation",
             headerName: "Mode Participation",
             // renderCell: (value) => <PersoToolTip value={value} />,
             // width:100,
