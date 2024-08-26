@@ -1,9 +1,11 @@
 import React from 'react'
-
+import HomeLayout from '@/components/core/home-layout'
 const Faq = () => {
-  return (
-    <div>en construction</div>
-  )
+    return (
+        <HomeLayout>
+            <div>en construction</div>
+        </HomeLayout>
+    )
 }
 
 export default Faq
