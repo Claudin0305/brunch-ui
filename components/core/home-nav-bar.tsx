@@ -26,9 +26,18 @@ const HomeNavBar = ()=>{
         path: '/paiements',
         name: 'Paiement'
       },
+      // {
+      //   path: '/faire-un-don',
+      //   name: 'Faire un don'
+      // },
       {
-        path: '/faire-un-don',
-        name: 'Faire un don'
+        path:"/faq",
+        name:"Foire aux questions"
+
+      },
+      {
+        path:"/embassadeurs",
+        name:"Tableau des ambassadeurs"
       },
       {
         path: '/connexion',

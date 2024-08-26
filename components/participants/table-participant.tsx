@@ -94,7 +94,7 @@ const TableParticipant: React.FC<Props> = ({ data, setSelectedRows }) => {
             field: "departement",
             headerName: "Département",
             // renderCell: (value) => <PersoToolTip value={value} />,
-            // width:100,
+            // width:100, À distance
             renderCell: value => value.row.ville.libelleDepartement,
             valueGetter: value => value.row.ville.libelleDepartement,
             flex: 1,
@@ -124,7 +124,8 @@ const TableParticipant: React.FC<Props> = ({ data, setSelectedRows }) => {
             headerName: "Mode Participation",
             // renderCell: (value) => <PersoToolTip value={value} />,
             // width:100,
-
+            renderCell: value => value.row.modeParticipation == 'DISTANCIEL' ? "À distance" : value.row.modeParticipation,
+            valueGetter: value => value.row.modeParticipation,
 
             flex: 1,
         },
@@ -160,7 +161,7 @@ const TableParticipant: React.FC<Props> = ({ data, setSelectedRows }) => {
                 //     <DeleteBtn callBack={handleClickDelete} cellValues={cellValues} />
                 //   )}
                 // </div>
-                console.log(cellValues.row);
+                // console.log(cellValues.row);
                 return (<MenuAction
                     path_details={`/participants/show/${cellValues.id}`}
                     path_edit={`/inscriptions/edit/${cellValues.row.idEvent}/${cellValues.row.username}`}

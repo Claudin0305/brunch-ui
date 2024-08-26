@@ -359,7 +359,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
         },
         {
           value: "DISTANCIEL",
-          label: "Distanciel"
+          label: "À distance"
         },];
         setFormatEventOptions(tableOptions)
       } else {
@@ -481,10 +481,10 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
           }
           sendMessage()
         }
-        if (selectedMode?.value === 'PRESENTIEL' && selectModePaiement?.value == 'PAYPAL') {
+        // if (selectedMode?.value === 'PRESENTIEL' && selectModePaiement?.value == 'PAYPAL') {
 
-          setShowPayment(true);
-        } else {
+        //   setShowPayment(true);
+        // } else {
 
           Swal.fire({
             // position: 'top-end',
@@ -513,7 +513,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
               })
           }
           sendMessage()
-        }
+        // }
         setResponseData(response.data)
         setIsSubmit(false);
         reset();

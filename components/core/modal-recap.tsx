@@ -47,8 +47,8 @@ const ModalRecap: React.FC<Props> = ({ show, setShow, data, mode_paiement }) => 
                                     <p className="font-bold text-2xl uppercase mb-4">RÉCAPITULATIF</p>
                                     <p><span className="font-semibold">Participant: </span> {data?.data?.nom}, {data?.data?.prenom}</p>
                                     <p><span className="font-semibold">Numéro de confirmation: </span> {data?.data?.username}</p>
-                                    <p><span className="font-semibold">Mode de participation: </span>{data?.data?.modeParticipation}</p>
-                                    <p><span className="font-semibold">Lieu: </span>{data?.data?.modeParticipation !== 'DISTANCIEL' ? `${data?.data?.libelleLocal}` : `DISTANCIEL`}</p>
+                                    <p><span className="font-semibold">Mode de participation: </span>{data?.data?.modeParticipation === 'DISTANCIEL' ? "À distance" : data?.data?.modeParticipation}</p>
+                                    <p><span className="font-semibold">Lieu: </span>{data?.data?.modeParticipation !== 'DISTANCIEL' ? `${data?.data?.libelleLocal}` : `À distance`}</p>
                                     {data?.data?.modeParticipation !== 'DISTANCIEL' && <>
                                         <p><span className="font-semibold">Mode de paiement: </span>{data?.data?.modePiement}</p>
                                         <p><span className="font-semibold">Montant: </span>{data?.data?.montant_participation} {data?.data?.devise}</p>
