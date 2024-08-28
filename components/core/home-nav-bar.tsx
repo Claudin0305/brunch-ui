@@ -30,10 +30,10 @@ const HomeNavBar = () => {
     //   path: '/faire-un-don',
     //   name: 'Faire un don'
     // },
-    {
-      path: "/ambassadeurs",
-      name: "⁠Tableau des ambassadeurs"
-    },
+    // {
+    //   path: "/ambassadeurs",
+    //   name: "⁠Tableau des ambassadeurs"
+    // },
     {
       path: "/faq",
       name: "FAQ"

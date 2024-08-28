@@ -14,7 +14,7 @@ const Faq = () => {
                 <title>Foire aux questions</title>
             </Head>
             <div className="px-8 md:px-32 mx-auto md:mt-32 mt-16 mb-32">
-                <h1 className="font-bold text-sm md:text-lg capitalize mb-4 text-center text-blue-500">
+                <h1 className="font-bold text-md md:text-2xl capitalize mb-4 text-center text-blue-500">
                     Foire aux questions
                 </h1>
                 <ul className="flex flex-col gap-4 list-decimal">
