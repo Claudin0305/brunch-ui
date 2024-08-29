@@ -68,7 +68,7 @@ const TableParticipant: React.FC<Props> = ({ data, setSelectedRows }) => {
             flex: 1,
         },
         {
-            field: "tel_participant",
+            field: "telParticipant",
             headerName: "Tel",
             // renderCell: (value) => <PersoToolTip value={value} />,
             // width:100,
