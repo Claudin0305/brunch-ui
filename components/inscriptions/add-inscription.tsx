@@ -464,23 +464,23 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
     }).then(response => {
       if (response.status === 201) {
         // console.log(response.data)
-        if (selectedMode?.value === 'DISTANCIEL') {
-          const sendMessage = () => {
-            axios.post('/api/messages/send-message', { id_event: response.data.data.idEvent, id_participant: response.data.data.id_participant }, {
-              headers: {
-                "Access-Control-Allow-Origin": "*",
-              },
-            })
-              .then(answer => {
-                if (answer.status === 201) {
-                  console.log("Message envoyer")
-                }
-              }).catch(errorSend => {
-                console.log(errorSend)
-              })
-          }
-          sendMessage()
-        }
+        // if (selectedMode?.value === 'DISTANCIEL') {
+        //   const sendMessage = () => {
+        //     axios.post('/api/messages/send-message', { id_event: response.data.data.idEvent, id_participant: response.data.data.id_participant }, {
+        //       headers: {
+        //         "Access-Control-Allow-Origin": "*",
+        //       },
+        //     })
+        //       .then(answer => {
+        //         if (answer.status === 201) {
+        //           console.log("Message envoyer")
+        //         }
+        //       }).catch(errorSend => {
+        //         console.log(errorSend)
+        //       })
+        //   }
+        //   sendMessage()
+        // }
         // if (selectedMode?.value === 'PRESENTIEL' && selectModePaiement?.value == 'PAYPAL') {
 
         //   setShowPayment(true);

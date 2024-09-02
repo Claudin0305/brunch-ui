@@ -19,17 +19,21 @@ const HomeNavBar = () => {
       name: 'Accueil'
     },
     {
-      path: '/liste-evenements',
-      name: 'Liste des inscrits'
-    },
-    {
-      path: '/paiements',
-      name: 'Paiement/Don'
+      path: '/inscription',
+      name: "Inscription"
     },
     // {
-    //   path: '/faire-un-don',
-    //   name: 'Faire un don'
+    //   path: '/liste-evenements',
+    //   name: 'Liste des inscrits'
     // },
+    // {
+    //   path: '/paiements',
+    //   name: 'Paiement/Don'
+    // },
+    {
+      path: '/faire-un-don',
+      name: 'Faire un don'
+    },
     // {
     //   path: "/ambassadeurs",
     //   name: "⁠Tableau des ambassadeurs"

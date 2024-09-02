@@ -53,7 +53,13 @@ const ModalRecap: React.FC<Props> = ({ show, setShow, data, mode_paiement }) => 
                                         <p><span className="font-semibold">Mode de paiement: </span>{data?.data?.modePiement}</p>
                                         <p><span className="font-semibold">Montant: </span>{data?.data?.montant_participation} {data?.data?.devise}</p>
                                     </>}
-
+                                    <div className="my-4">
+                                        <Link
+                                            className="mt-4 text-blue-500 block hover:text-blue-300"
+                                            href={`/paiements`}
+                                        >DONNEZ MAINTENANT</Link>
+                                        <p className="mt-2">Chaque contribution compte.</p>
+                                    </div>
                                     <Link
                                         className="mt-4 text-blue-500 block hover:text-blue-300"
                                         href={`/liste-participants/${data?.data?.idEvent}`}
