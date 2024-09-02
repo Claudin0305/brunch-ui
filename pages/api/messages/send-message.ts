@@ -13,7 +13,7 @@ if(req.method === 'POST'){
     axios
       .post(`${process.env.base_route_get}/participants/send-message`, formData)
       .then((response) => {
-        if (response.status === 201) {
+        if (response.status === 200) {
           console.log(response);
 
           return res
