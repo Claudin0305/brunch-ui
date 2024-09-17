@@ -21,9 +21,9 @@ const FaireUnDon = () => {
                 <div className="">
                     <h2 className='font-semibold text-xl'>Donnez via CanaDon (QHASUQ ou FMCH)</h2>
                     <ul className="list-decimal ml-8">
-                        <li>Donnez via <a href="https://www.canadahelps.org/fr/dn/37417" target='_blank' className='text-blue-500 hover:blue-400'>QHASUQ</a> avec la mention "Batir2024" pour un soutien en éducation/sports OU
+                        <li>Donnez via <a href="https://www.canadahelps.org/fr/organismesdebienfaisance/fondation-quebec-haiti-pour-une-scolarisation-universelle-de-qualite-qhasuq/" target='_blank' className='text-blue-500 hover:blue-400'>QHASUQ</a> avec la mention "Batir2024" pour un soutien en éducation/sports OU
                         </li>
-                        <li>Donnez via <a href='https://www.canadahelps.org/fr/organismesdebienfaisance/fondation-quebec-haiti-pour-une-scolarisation-universelle-de-qualite-qhasuq/' target='_blank' className='text-blue-500 hover:blue-400'>FMCH</a> avec la mention "Batir2024" pour un soutien en santé </li>
+                        <li>Donnez via <a href='https://www.canadahelps.org/fr/dn/37417' target='_blank' className='text-blue-500 hover:blue-400'>FMCH</a> avec la mention "Batir2024" pour un soutien en santé </li>
                     </ul>
                     <p className="my-8 uppercase">Ou</p>
                     <h2 className='font-semibold text-xl'>Donnez via GRAHN-Monde</h2>
