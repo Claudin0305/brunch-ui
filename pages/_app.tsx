@@ -20,7 +20,13 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
   }
   useEffect(() => {
     const path = router.pathname;
-    const guestRoutes = [/^\/$/, /^\/paiements$/, /^\/inscription$/, /^\/faq$/, /^\/ambassadeurs$/, /^\/success\/\[id]$/, /^\/paypal$/, /^\/liste-evenements$/, /^\/faire-un-don$/, /^\/faire-un-don\/autres-projets$/, /^\/faire-un-don\/projets-en-education$/, /^\/faire-un-don\/projets-en-sante$/, /^\/liste-participants\/\[id_event]$/, /^\/inscriptions\/add\/\[id_event]$/, /^\/inscriptions\/edit\/\[id_event]\/\[username]$/, /^\/inscriptions\/modifier/, /^\/connexion$/];
+    const guestRoutes = [
+      /**
+       * for test
+       */
+      /^\/campagne-2024$/,
+      /** */
+      /^\/$/, /^\/paiements$/, /^\/inscription$/, /^\/faq$/, /^\/ambassadeurs$/, /^\/success\/\[id]$/, /^\/paypal$/, /^\/liste-evenements$/, /^\/faire-un-don$/, /^\/faire-un-don\/autres-projets$/, /^\/faire-un-don\/projets-en-education$/, /^\/faire-un-don\/projets-en-sante$/, /^\/liste-participants\/\[id_event]$/, /^\/inscriptions\/add\/\[id_event]$/, /^\/inscriptions\/edit\/\[id_event]\/\[username]$/, /^\/inscriptions\/modifier/, /^\/connexion$/];
     const result = guestRoutes.filter(reg => reg.test(path));
     if (result.length === 0) {
       const token = getCookie('token');
