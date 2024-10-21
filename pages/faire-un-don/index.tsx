@@ -10,6 +10,7 @@ const FaireUnDon = () => {
             </Head>
             <div className="px-8 md:px-32 mx-auto md:mt-32 mt-16 mb-32">
                 <div className='text-center mb-8 mt-40'>
+                    <Link href={'/campagne-2024'} className='uppercase text-blue-500 md:text-blue-600 text-xl text-center'>Campagne 2024</Link>
                     <p className='text-2xl'>DONNEZ MAINTENANT</p>
 
                     <p>au projet Pôle d'Innovation du Grand Nord (PIGraN)-Cité du savoir</p>
