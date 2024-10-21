@@ -127,6 +127,7 @@ const resetData = ()=>{
                 })
                 setIsSubmit(false);
                 resetData();
+                router.push('/dashboard/don-promesse-objectif')
             }
         }).catch(err => {
             setIsSubmit(false);
