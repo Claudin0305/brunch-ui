@@ -66,7 +66,7 @@ const Barometer: React.FC = () => {
         <Legend />
           <Bar dataKey="Objectif" fill="#dc2626" barSize={100} />
           <Bar dataKey="Dons" fill="#65a30d" barSize={100} />
-          <Bar dataKey="Promesses" fill="#e5e7eb" barSize={100} />
+          <Bar dataKey="Promesses" fill="#d1d5db" barSize={100} />
       </BarChart>
     </ResponsiveContainer>
 
