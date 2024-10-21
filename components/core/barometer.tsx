@@ -50,53 +50,26 @@ const Barometer: React.FC = () => {
   return (
     <div className='flex flex-col'>
       {data && <div className='md:pl-12 flex flex-col md:flex-row mb-8 space-y-8 space-x-0 md:space-x-8 md:space-y-0 tex-white'>
-        <p className='text-xl w-full md:w-1/3 bg-green-500 text-center p-4 rounded-lg text-white'><span className='font-semibold'>Objectif:</span>{data.objectif} $CA</p>
-        <p className='text-xl w-full md:w-1/3 bg-red-500 text-center p-4 rounded-lg text-white'><span className='font-semibold'>Promesses:</span>{data.promesse} $CA</p>
-        <p className='text-xl w-full md:w-1/3 bg-blue-500 text-center p-4 rounded-lg text-white'><span className='font-semibold'>Dons:</span>{data.don} $CA</p>
+        <p className='text-xl w-full md:w-1/3 bg-red-600 text-center p-4 rounded-lg text-white'><span className='font-semibold'>Objectif:</span>{data.objectif} $CA</p>
+        <p className='text-xl w-full md:w-1/3 bg-gray-200 text-center p-4 rounded-lg text-white'><span className='font-semibold'>Promesses:</span>{data.promesse} $CA</p>
+        <p className='text-xl w-full md:w-1/3 bg-lime-600 text-center p-4 rounded-lg text-white'><span className='font-semibold'>Dons:</span>{data.don} $CA</p>
       </div>
       }
 
 
        <ResponsiveContainer width="100%" height={300}>
       <BarChart data={data_}>
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="name" />
-        <YAxis />
+        {/* <CartesianGrid strokeDasharray="0 0" /> */}
+        {/* <XAxis dataKey="name" /> */}
+        {/* <YAxis /> */}
         <Tooltip />
         <Legend />
-        <Bar dataKey="value" fill="#8884d8" />
+          <Bar dataKey="Dons" fill="#65a30d" />
+          <Bar dataKey="Promesses" fill="#e5e7eb" />
+          <Bar dataKey="Objectif" fill="#dc2626" />
       </BarChart>
     </ResponsiveContainer>
-    <ResponsiveContainer width="100%" height={300}>
-        <LineChart data={data_}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          <Line type="monotone" dataKey="value" stroke="#8884d8" />
-        </LineChart>
-      </ResponsiveContainer>
-      {/* <ResponsiveContainer width="100%" height="100%">
-        <BarChart
-          width={500}
-          height={300}
-          data={data_}
-          margin={{
-            top: 5,
-            right: 30,
-            left: 20,
-            bottom: 5,
-          }}
-        >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          <Bar dataKey="value" fill="#8884d8" background={{ fill: '#eee' }} />
-        </BarChart>
-      </ResponsiveContainer> */}
+
     </div>
   );
 };
