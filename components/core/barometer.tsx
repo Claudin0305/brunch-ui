@@ -42,9 +42,9 @@ const Barometer: React.FC = () => {
   // Les données du graphique
   // console.log(data)
   const data_ = [
-    { name: 'Objectif', value: data?.objectif ?? 0 },
-    { name: 'Promesses', value: data?.promesse ?? 0 },
-    { name: 'Dons', value: data?.don ?? 0 }
+    { name: 'Objectif', objectif: data?.objectif ?? 0 },
+    { name: 'Promesses', promesse: data?.promesse ?? 0 },
+    { name: 'Dons', don: data?.don ?? 0 }
   ];
 
   return (
@@ -64,9 +64,9 @@ const Barometer: React.FC = () => {
         {/* <YAxis /> */}
         <Tooltip />
         <Legend />
-          <Bar dataKey="Dons" fill="#65a30d" />
-          <Bar dataKey="Promesses" fill="#e5e7eb" />
-          <Bar dataKey="Objectif" fill="#dc2626" />
+          <Bar dataKey="don" fill="#65a30d" background={{ fill: "#eee" }} />
+          <Bar dataKey="promesses" fill="#e5e7eb" />
+          <Bar dataKey="objectif" fill="#dc2626" />
       </BarChart>
     </ResponsiveContainer>
 
