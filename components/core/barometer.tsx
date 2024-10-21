@@ -64,9 +64,9 @@ const Barometer: React.FC = () => {
         {/* <YAxis /> */}
         <Tooltip />
         <Legend />
-          <Bar dataKey="Objectif" fill="#dc2626" barSize={30} />
-          <Bar dataKey="Dons" fill="#65a30d" barSize={30} />
-          <Bar dataKey="Promesses" fill="#e5e7eb" barSize={30} />
+          <Bar dataKey="Objectif" fill="#dc2626" barSize={60} />
+          <Bar dataKey="Dons" fill="#65a30d" barSize={60} />
+          <Bar dataKey="Promesses" fill="#e5e7eb" barSize={60} />
       </BarChart>
     </ResponsiveContainer>
 
