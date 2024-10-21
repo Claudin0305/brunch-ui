@@ -16,7 +16,7 @@ const Campagne2024: React.FC<Props> = ({ data }) => {
             </Head>
             <div className="px-8 md:px-32 mx-auto md:mt-32 mt-16 mb-32">
                 <div className='text-center mb-8 mt-40'>
-                    <p className='font-bold text-md md:text-2xl capitalize text-center text-blue-500'>"Campagne 2024" Je fais ma part</p>
+                    <p className='font-bold text-md md:text-2xl capitalize text-center text-blue-500 mb-8'>"Campagne 2024" Je fais ma part</p>
 
                     <div className="flex flex-col space-y-8 md:space-y-0 md:grid md:grid-cols-2 md:gap-8">
                         <a href={'https://www.zeffy.com/donation-form/56c2d8e2-95e7-4776-835c-7fed3405bd11 '} target="_blank" className="w-full">
