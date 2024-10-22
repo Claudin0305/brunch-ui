@@ -1452,7 +1452,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
 
   return (
     <div className="container">
-      {!close && <p className="text-center text-lg text-red-600 mb-4 mt-4">Veuillez noter que les <span className="font-bold">inscriptions en présentiel</span>  sont terminées.  Il est désormais uniquement possible de s’inscrire pour une participation à distance via vidéoconférence Zoom.</p>}
+      {close && <p className="text-center text-lg text-red-600 mb-4 mt-4">Veuillez noter que les <span className="font-bold">inscriptions en présentiel</span>  sont terminées.  Il est désormais uniquement possible de s’inscrire pour une participation à distance via vidéoconférence Zoom.</p>}
 
       <h1 className="font-bold text-md text-center md:text-left md:text-lg capitalize mb-4">
         {data_props === null ? '' : 'Modifier'} Inscription Brunch'2024
