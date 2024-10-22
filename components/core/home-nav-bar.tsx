@@ -18,10 +18,10 @@ const HomeNavBar = () => {
       path: '/',
       name: 'Accueil'
     },
-    {
-      path: '/inscription',
-      name: "Inscription"
-    },
+    // {
+    //   path: '/inscription',
+    //   name: "Inscription"
+    // },
     // {
     //   path: '/liste-evenements',
     //   name: 'Liste des inscrits'
