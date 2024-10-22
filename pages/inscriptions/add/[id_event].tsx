@@ -18,7 +18,7 @@ const Add: React.FC<Props> = ({ data }) => {
         <title>Inscription | Ajouter</title>
       </Head>
       <div className="px-4 md:px-32 mx-auto md:mt-32 mt-16">
-        <AddInscription data_props={null} pays={data?.pays} civilites={data?.civilites} tranche_ages={data?.trancheAges} locaux={data?.locaux} event={data?.event} participants={data?.participants} affiliations={data?.affiliations} />
+        <AddInscription data_props={null} pays={data?.pays} civilites={data?.civilites} tranche_ages={data?.trancheAges} locaux={data?.locaux} event={data?.event} participants={data?.participants} affiliations={data?.affiliations} close={true} />
       </div>
 
 
@@ -27,8 +27,8 @@ const Add: React.FC<Props> = ({ data }) => {
 };
 export const getServerSideProps: GetServerSideProps = async (context) => {
   // ...
-const { req, res } = context;
-console.log(req.method)
+  const { req, res } = context;
+  console.log(req.method)
 
   try {
     // Fetch data from an API or perform other async operations
@@ -54,7 +54,7 @@ console.log(req.method)
     // Handle the error
     console.error('Error fetching data:', error);
     // You can return an error prop to display a custom error message on the page
-    const data:any[] = []
+    const data: any[] = []
     return {
       props: {
         data

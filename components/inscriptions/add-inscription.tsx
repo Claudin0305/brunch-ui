@@ -75,6 +75,7 @@ type Props = {
   locaux: any | null;
   participants: any | null;
   affiliations: any | null;
+  close: boolean
 }
 type option = {
   label: string;
@@ -114,7 +115,7 @@ const mode_paiements: option[] = [
 
 let errNext: errType = {};
 const champ = 'Ce champ est obligatoire!';
-const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civilites, event, locaux, participants, affiliations }) => {
+const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civilites, event, locaux, participants, affiliations, close }) => {
   // console.log(pays)
   const { register, handleSubmit, watch, reset, setValue, getValues, control, formState: { errors } } = useForm<Inputs>();
   const [errorNext, setErrorNext] = useState<any>({});
@@ -203,15 +204,18 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
       setValue('id_affiliation', aff);
       setSelectedAffiliation(aff)
       const optionsMod: option[] = [
-        {
-          value: "PRESENTIEL",
-          label: "Présentiel"
-        },
+
         {
           value: "DISTANCIEL",
           label: "Distanciel"
         }
       ]
+      if (!close) {
+        optionsMod.push({
+          value: "PRESENTIEL",
+          label: "Présentiel"
+        })
+      }
       const mod = optionsMod.filter((o: any) => o.value === data_props.mode_participation)[0];
       setValue('mode_participation', mod);
       setSelectedMode(mod)
@@ -353,14 +357,17 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
     if (event !== null) {
       //do something
       if (event?.format_event === 'HYBRIDE') {
-        const tableOptions: option[] = [{
-          value: "PRESENTIEL",
-          label: "Présentiel"
-        },
-        {
-          value: "DISTANCIEL",
-          label: "À distance"
-        },];
+        const tableOptions: option[] = [
+          {
+            value: "DISTANCIEL",
+            label: "À distance"
+          },];
+        if (!close) {
+          tableOptions.push({
+            value: "PRESENTIEL",
+            label: "Présentiel"
+          })
+        }
         setFormatEventOptions(tableOptions)
       } else {
         const result = format_events.filter(f => f.value === event?.format_event);
@@ -486,33 +493,33 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
         //   setShowPayment(true);
         // } else {
 
-          Swal.fire({
-            // position: 'top-end',
-            icon: 'success',
-            title: 'Enregistrement effectué!',
-            // showConfirmButton: false,
-            // timer: 1500
-            // buttonColor:"#000000",
-            // buttons:[""]
-            confirmButtonColor: "#2563eb",
-            confirmButtonText: "Fermer",
+        Swal.fire({
+          // position: 'top-end',
+          icon: 'success',
+          title: 'Enregistrement effectué!',
+          // showConfirmButton: false,
+          // timer: 1500
+          // buttonColor:"#000000",
+          // buttons:[""]
+          confirmButtonColor: "#2563eb",
+          confirmButtonText: "Fermer",
+        })
+        setShow(true)
+        const sendMessage = () => {
+          axios.post('/api/messages/send-message', { id_event: response.data.data.idEvent, id_participant: response.data.data.id_participant }, {
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+            },
           })
-          setShow(true)
-          const sendMessage = () => {
-            axios.post('/api/messages/send-message', { id_event: response.data.data.idEvent, id_participant: response.data.data.id_participant }, {
-              headers: {
-                "Access-Control-Allow-Origin": "*",
-              },
+            .then(answer => {
+              if (answer.status === 201) {
+                console.log("Message envoyer")
+              }
+            }).catch(errorSend => {
+              console.log(errorSend)
             })
-              .then(answer => {
-                if (answer.status === 201) {
-                  console.log("Message envoyer")
-                }
-              }).catch(errorSend => {
-                console.log(errorSend)
-              })
-          }
-          sendMessage()
+        }
+        sendMessage()
         // }
         setResponseData(response.data)
         setIsSubmit(false);
@@ -1445,7 +1452,8 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
 
   return (
     <div className="container">
-      {/* <p className="text-center text-lg text-red-600 mb-4 mt-4">Veuillez noter que les <span className="font-bold">inscriptions en présentiel</span> au Centre de Congrès Palace (Laval, Canada) sont terminées.  Il est désormais uniquement possible de s’inscrire pour une participation à distance via vidéoconférence Zoom.</p> */}
+      {!close && <p className="text-center text-lg text-red-600 mb-4 mt-4">Veuillez noter que les <span className="font-bold">inscriptions en présentiel</span>  sont terminées.  Il est désormais uniquement possible de s’inscrire pour une participation à distance via vidéoconférence Zoom.</p>}
+
       <h1 className="font-bold text-md text-center md:text-left md:text-lg capitalize mb-4">
         {data_props === null ? '' : 'Modifier'} Inscription Brunch'2024
       </h1>
