@@ -83,7 +83,7 @@ const Barometer: React.FC = () => {
               style={{ height: `${pourcentagePromesses}%` }}
             />
             <p className="absolute bottom-[-30px] left-1/2 transform -translate-x-1/2 font-bold text-blue-800">
-              ${data?.promesses}
+              ${data?.promesse}
             </p>
           </div>
 
