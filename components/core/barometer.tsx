@@ -123,6 +123,55 @@ const Barometer: React.FC = () => {
     </ResponsiveContainer>
 
     </div> */}
+      {data && <div className="text-center mt-12">
+        <h1 className="text-4xl font-bold text-[#1F4E79] mb-8">
+          Thermomètre de la Collecte de Fonds: BRUNCH 2024
+        </h1>
+
+        {/* Barre horizontale pour l'objectif */}
+        <div className="w-3/5 mx-auto my-10 relative">
+          <div className="h-2 border-b-4 border-dashed border-[#4CAF50]" />
+          <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 text-[#D62828] font-bold text-xl">
+            Objectif : ${data?.objectif}
+          </div>
+        </div>
+
+        <div className="flex justify-center items-end space-x-16 w-3/5 mx-auto">
+          {/* Thermomètre des montants promis */}
+          <div className="relative w-24 h-96 bg-gray-300">
+            <div className="absolute top-[-40px] left-1/2 transform -translate-x-1/2 font-bold text-[#4CAF50]">
+              Montant promis
+            </div>
+            <div
+              className="absolute bottom-0 w-full bg-[#1F4E79] transition-all duration-500 ease-in-out"
+              style={{ height: `${pourcentagePromesses}%` }}
+            />
+            <div className="absolute bottom-[calc(100%-${pourcentagePromesses}%)] left-1/2 transform -translate-x-1/2 text-white font-bold">
+              ${data?.promesse}
+            </div>
+            <div className="absolute bottom-[-30px] left-1/2 transform -translate-x-1/2 text-[#1F4E79] font-bold">
+              ${data?.promesse}
+            </div>
+          </div>
+
+          {/* Thermomètre des montants reçus */}
+          <div className="relative w-24 h-96 bg-gray-300">
+            <div className="absolute top-[-40px] left-1/2 transform -translate-x-1/2 font-bold text-[#4CAF50]">
+              Montant reçu
+            </div>
+            <div
+              className="absolute bottom-0 w-full bg-[#D62828] transition-all duration-500 ease-in-out"
+              style={{ height: `${pourcentageRecus}%` }}
+            />
+            <div className="absolute bottom-[calc(100%-${pourcentageRecus}%)] left-1/2 transform -translate-x-1/2 text-white font-bold">
+              ${data?.don}
+            </div>
+            <div className="absolute bottom-[-30px] left-1/2 transform -translate-x-1/2 text-[#D62828] font-bold">
+              ${data?.don}
+            </div>
+          </div>
+        </div>
+      </div>}
     </>
   );
 };
