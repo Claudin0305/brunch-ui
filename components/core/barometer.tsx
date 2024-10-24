@@ -96,7 +96,7 @@ const Barometer: React.FC = () => {
           </div>
         </div>
       </div>}
-    <div className='flex flex-col'>
+    {/* <div className='flex flex-col'>
       {data && <div className='md:pl-12 flex flex-col md:flex-row mb-8 space-y-8 space-x-0 md:space-x-8 md:space-y-0 tex-white'>
         <p className='text-xl w-full md:w-1/3 bg-red-600 text-center p-4 rounded-lg text-white'><span className='font-semibold'>Objectif:</span>{data.objectif} $CA</p>
         <p className='text-xl w-full md:w-1/3 bg-gray-200 text-center p-4 rounded-lg text-gray-900'><span className='font-semibold'>Promesses:</span>{data.promesse} $CA</p>
@@ -107,9 +107,7 @@ const Barometer: React.FC = () => {
 
        <ResponsiveContainer width="100%" height={300}>
       <BarChart data={data_}>
-        {/* <CartesianGrid strokeDasharray="0 0" /> */}
-        {/* <XAxis dataKey="name" /> */}
-        {/* <YAxis /> */}
+
         <Tooltip />
         <Legend />
           <Bar dataKey="Objectif" fill="#dc2626" barSize={100} />
@@ -118,7 +116,7 @@ const Barometer: React.FC = () => {
       </BarChart>
     </ResponsiveContainer>
 
-    </div>
+    </div> */}
     </>
   );
 };
