@@ -11,6 +11,17 @@ interface BarometerProps {
 const Barometer: React.FC = () => {
   const [state, setState] = useState<boolean>(false);
   const [data, setData] = useState<any>(null)
+  const [pourcentagePromesses, setPourcentagePromesses] = useState(0);
+  const [pourcentageRecus, setPourcentageRecus] = useState(0);
+
+  useEffect(() => {
+    // Calculer les pourcentages dès que les données sont disponibles
+    const pourcentagePromessesCalc = Math.min((data?.promesse / data?.objectif) * 100, 100);
+    const pourcentageRecusCalc = Math.min((data?.don / data?.objectif) * 100, 100);
+
+    setPourcentagePromesses(pourcentagePromessesCalc);
+    setPourcentageRecus(pourcentageRecusCalc);
+  }, [data]);
 
   useEffect(() => {
     // Définir un intervalle qui s'exécute toutes les 30 secondes (30000 ms)
@@ -48,6 +59,43 @@ const Barometer: React.FC = () => {
   ];
 
   return (
+    <>
+      {data && <div className="flex flex-col items-center mt-12">
+        <h1 className="text-4xl font-bold text-blue-800 mb-8">Thermomètre de la Collecte de Fonds: BRUNCH 2024</h1>
+
+        {/* Barre horizontale pour l'objectif */}
+        <div className="relative w-3/5 my-10">
+          <div className="w-full h-2 border-b-4 border-dashed border-green-500" />
+          <div className="absolute top-[-30px] left-1/2 transform -translate-x-1/2 font-bold text-red-600 text-xl">
+            Objectif : ${data?.objectif}
+          </div>
+        </div>
+
+        {/* Thermomètres */}
+        <div className="flex justify-center items-end space-x-10">
+          {/* Thermomètre des montants promis */}
+          <div className="relative w-24 h-96 bg-gray-200">
+            <div className="absolute top-[-40px] left-1/2 transform -translate-x-1/2 font-bold text-green-500 text-lg">
+              Montant promis
+            </div>
+            <div
+              className="absolute bottom-0 w-full bg-blue-800 transition-all duration-500 ease-in-out"
+              style={{ height: `${pourcentagePromesses}%` }}
+            />
+          </div>
+
+          {/* Thermomètre des montants reçus */}
+          <div className="relative w-24 h-96 bg-gray-200">
+            <div className="absolute top-[-40px] left-1/2 transform -translate-x-1/2 font-bold text-green-500 text-lg">
+              Montant reçu
+            </div>
+            <div
+              className="absolute bottom-0 w-full bg-red-600 transition-all duration-500 ease-in-out"
+              style={{ height: `${pourcentageRecus}%` }}
+            />
+          </div>
+        </div>
+      </div>}
     <div className='flex flex-col'>
       {data && <div className='md:pl-12 flex flex-col md:flex-row mb-8 space-y-8 space-x-0 md:space-x-8 md:space-y-0 tex-white'>
         <p className='text-xl w-full md:w-1/3 bg-red-600 text-center p-4 rounded-lg text-white'><span className='font-semibold'>Objectif:</span>{data.objectif} $CA</p>
@@ -71,6 +119,7 @@ const Barometer: React.FC = () => {
     </ResponsiveContainer>
 
     </div>
+    </>
   );
 };
 
