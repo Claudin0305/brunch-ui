@@ -82,6 +82,9 @@ const Barometer: React.FC = () => {
               className="absolute bottom-0 w-full bg-blue-800 transition-all duration-500 ease-in-out"
               style={{ height: `${pourcentagePromesses}%` }}
             />
+            <p className="absolute bottom-[-30px] left-1/2 transform -translate-x-1/2 font-bold text-blue-800">
+              ${data?.promesses}
+            </p>
           </div>
 
           {/* Thermomètre des montants reçus */}
@@ -93,6 +96,9 @@ const Barometer: React.FC = () => {
               className="absolute bottom-0 w-full bg-red-600 transition-all duration-500 ease-in-out"
               style={{ height: `${pourcentageRecus}%` }}
             />
+            <p className="absolute bottom-[-30px] left-1/2 transform -translate-x-1/2 font-bold text-red-600">
+              ${data?.don}
+            </p>
           </div>
         </div>
       </div>}
