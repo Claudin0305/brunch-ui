@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { LineChart, BarChart,Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { LineChart, BarChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import axios from 'axios'
 
 interface BarometerProps {
@@ -17,7 +17,7 @@ const Barometer: React.FC = () => {
   useEffect(() => {
     // Calculer les pourcentages dès que les données sont disponibles
     const pourcentagePromessesCalc = Math.min((data?.promesse / data?.objectif) * 100, 100);
-    const pourcentageRecusCalc = Math.min((data?.don / data?.objectif) * 100, 100);
+    const pourcentageRecusCalc = Math.min(((data?.don + data?.promesse) / data?.objectif) * 100, 100);
 
     setPourcentagePromesses(pourcentagePromessesCalc);
     setPourcentageRecus(pourcentageRecusCalc);
@@ -67,14 +67,18 @@ const Barometer: React.FC = () => {
         <div className="relative w-3/5 my-10">
           <div className="w-full h-2 border-b-4 border-dashed border-green-500" />
           <div className="absolute top-[-30px] left-1/2 transform -translate-x-1/2 font-bold text-red-600 text-xl">
-            Objectif : ${data?.objectif}
+            Objectif : ${data?.objectif} <span className='text-blue-800'>Don reçu: ${data?.don}</span> <span className='text-red-600'>Promesse de don reçu: ${data?.promesse}</span>
           </div>
         </div>
 
         {/* Thermomètres */}
         <div className="flex justify-center items-end space-x-10">
           {/* Thermomètre des montants promis */}
-          <div className="relative w-24 h-96 bg-gray-200">
+          <div className="flex justify-center items-end space-x-10">
+            <p><span className='font-semibold'>Don promis:</span> {data?.promesse}</p>
+            <p><span className='font-semibold'>Don reçus:</span> {data?.don}</p>
+          </div>
+          {/* <div className="relative w-24 h-96 bg-gray-200">
             <div className="absolute top-[-40px] left-1/2 transform -translate-x-1/2 font-bold text-green-500 text-lg">
               Montant promis
             </div>
@@ -85,12 +89,12 @@ const Barometer: React.FC = () => {
             <p className="absolute bottom-[-30px] left-1/2 transform -translate-x-1/2 font-bold text-blue-800">
               ${data?.promesse}
             </p>
-          </div>
+          </div> */}
 
           {/* Thermomètre des montants reçus */}
           <div className="relative w-24 h-96 bg-gray-200">
             <div className="absolute top-[-40px] left-1/2 transform -translate-x-1/2 font-bold text-green-500 text-lg">
-              Montant reçu
+              Don reçu
             </div>
             <div
               className="absolute bottom-0 w-full bg-red-600 transition-all duration-500 ease-in-out"
@@ -102,7 +106,7 @@ const Barometer: React.FC = () => {
           </div>
         </div>
       </div>}
-    {/* <div className='flex flex-col'>
+      {/* <div className='flex flex-col'>
       {data && <div className='md:pl-12 flex flex-col md:flex-row mb-8 space-y-8 space-x-0 md:space-x-8 md:space-y-0 tex-white'>
         <p className='text-xl w-full md:w-1/3 bg-red-600 text-center p-4 rounded-lg text-white'><span className='font-semibold'>Objectif:</span>{data.objectif} $CA</p>
         <p className='text-xl w-full md:w-1/3 bg-gray-200 text-center p-4 rounded-lg text-gray-900'><span className='font-semibold'>Promesses:</span>{data.promesse} $CA</p>
