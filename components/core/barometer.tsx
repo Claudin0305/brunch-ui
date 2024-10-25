@@ -74,9 +74,9 @@ const Barometer: React.FC = () => {
         {/* Thermomètres */}
         <div className="flex justify-center items-center space-x-10">
           {/* Thermomètre des montants promis */}
-          <div className="flex justify-center items-center space-x-10">
-            <p className='font-bold text-blue-800 text-xl'>Don promis: {data?.promesse}</p>
-            <p className='text-red-600 text-xl font-bold'>Don reçus: {data?.don}</p>
+          <div className="flex flex-col  space-x-0 space-y-10">
+            <p className='font-bold text-blue-800 text-xl'>Don promis: ${data?.promesse}</p>
+            <p className='text-red-600 text-xl font-bold'>Don reçus: ${data?.don}</p>
           </div>
           {/* <div className="relative w-24 h-96 bg-gray-200">
             <div className="absolute top-[-40px] left-1/2 transform -translate-x-1/2 font-bold text-green-500 text-lg">
