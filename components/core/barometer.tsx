@@ -17,7 +17,7 @@ const Barometer: React.FC = () => {
   useEffect(() => {
     // Calculer les pourcentages dès que les données sont disponibles
     const pourcentagePromessesCalc = Math.min((data?.promesse / data?.objectif) * 100, 100);
-    const pourcentageRecusCalc = Math.min(((data?.don + data?.promesse) / data?.objectif) * 100, 100);
+    const pourcentageRecusCalc = Math.min(((data?.don) / data?.objectif) * 100, 100);
 
     setPourcentagePromesses(pourcentagePromessesCalc);
     setPourcentageRecus(pourcentageRecusCalc);
@@ -98,8 +98,10 @@ const Barometer: React.FC = () => {
             </div>
             <div
               className="absolute bottom-0 w-full bg-red-600 transition-all duration-500 ease-in-out"
-              style={{ height: `${pourcentageRecus}%` }}
+              style={{ height: `100%` }}
             />
+            <div className="bg-blue-800" style={{ height: `${pourcentagePromesses}%` }}></div>
+            <div className="bg-red-600" style={{ height: `${pourcentageRecus}%` }}></div>
             <p className="absolute bottom-[-30px] left-1/2 transform -translate-x-1/2 font-bold text-red-600">
               ${data?.don + data?.promesse}
             </p>
@@ -175,28 +177,7 @@ const Barometer: React.FC = () => {
           </div>
         </div>
       </div>} */}
-      {data &&
-        <ResponsiveContainer width="100%" height="100%">
-          <BarChart
-            width={500}
-            height={300}
-            data={data_}
-            margin={{
-              top: 20,
-              right: 30,
-              left: 20,
-              bottom: 5,
-            }}
-          >
-            {/* <CartesianGrid strokeDasharray="3 3" /> */}
-            {/* <XAxis dataKey="name" /> */}
-            {/* <YAxis /> */}
-            {/* <Tooltip /> */}
-            <Legend />
-            <Bar dataKey="promesse" stackId="a" fill="#1e40af" />
-            <Bar dataKey="don" stackId="a" fill="#dc2626" />
-          </BarChart>
-        </ResponsiveContainer>}
+
     </>
   );
 };
