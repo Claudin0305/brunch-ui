@@ -180,7 +180,7 @@ const Barometer: React.FC = () => {
           <BarChart
             width={500}
             height={300}
-            data={data}
+            data={data_}
             margin={{
               top: 20,
               right: 30,
