@@ -92,9 +92,9 @@ const Barometer: React.FC = () => {
           </div> */}
 
           {/* Thermomètre des montants reçus */}
-          <div className="relative w-24 h-96 bg-gray-200">
+          {/* <div className="relative w-24 h-96 bg-gray-200">
             <div className="absolute top-[-40px] left-1/2 transform -translate-x-1/2 font-bold text-green-500 text-lg">
-              Don et promesse de don reçu
+
             </div>
             <div
               className="absolute bottom-0 w-full bg-red-600 transition-all duration-500 ease-in-out"
@@ -105,7 +105,7 @@ const Barometer: React.FC = () => {
             <p className="absolute bottom-[-30px] left-1/2 transform -translate-x-1/2 font-bold text-red-600">
               ${data?.don + data?.promesse}
             </p>
-          </div>
+          </div> */}
         </div>
       </div>}
       {/* <div className='flex flex-col'>
