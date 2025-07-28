@@ -47,15 +47,15 @@ Pôle d'Innovation du Grand Nord (PIGraN)-Cité du savoir. C'est une occasion en
                     <li id="question3">
                         <Question content='Comment peut-on agir à titre de Bâtisseur?' />
                         <Answer content='Vous pouvez agir à titre de Bâtisseur en jouant le rôle de responsable de table(s) ou en versant un(des)
-don(s) totalisant CAD $750 ou plus. En effet, une personne qui garantit une table ou qui fait un don de
-CAD $750 est automatiquement un Bâtisseur BRONZE. Veuillez consulter la rubrique du menu
+don(s) totalisant CAD $1000 ou plus. En effet, une personne qui garantit une table ou qui fait un don de
+CAD $1000 est automatiquement un Bâtisseur BRONZE. Veuillez consulter la rubrique du menu
 “Faire un don” pour voir la procédure, les méthodes de paiement et le plan de reconnaissance.
 Veuillez également consulter les sections ci-après pour plus d’informations sur ces rôles.'/>
 
                     </li>
                     <li id="question4">
                         <Question content='Comment peut-on agir à titre d’ambassadeur Bâtir et ainsi devenir Bâtisseur BRONZE?' />
-                        <Answer content='Vous devez faire un don de 750$ ou plus ou encore garantir une ou plusieurs tables au Brunch. Vous
+                        <Answer content='Vous devez faire un don de 1000$ ou plus ou encore garantir une ou plusieurs tables au Brunch. Vous
 devenez aussitôt un Bâtisseur (BRONZE ou plus). Veuillez consulter les sections se rapportant à un
 Bâtisseur et à un responsable de table pour obtenir plus d’informations.'/>
 
@@ -68,7 +68,7 @@ garantir une ou plusieurs de tables de 10 personnes:"/>
                         <ul className="list-decimal ml-8">
                             <li>Garantir l'inscription de 10 personnes ou plus en présentiel (cf rubrique “Inscription” du menu)</li>
                             <li>
-                                <p>Envoyer un courriel intitulé “Brunch'2024: &lt;votre nom&gt; &lt;votre prénom&gt; à <span className='text-blue-500'>brunch-grahn@grahn-
+                                <p>Envoyer un courriel intitulé “Brunch'2025: &lt;votre nom&gt; &lt;votre prénom&gt; à <span className='text-blue-500'>brunch-grahn@grahn-
                                     monde.org</span> avec la composition des tables:</p>
 
                                 <p>Table #1 (10 personnes)</p>
@@ -86,7 +86,7 @@ garantir une ou plusieurs de tables de 10 personnes:"/>
                     <li id="question6">
                         <Question content="Comment peut-on agir à titre d’artisan Bâtir?" />
                         <Answer content='Vous devez faire un don du montant de votre choix. À titre d’information, une personne qui fait
-un(des) don(s) de CAD $750 ou plus devient automatiquement un Bâtisseur. Pour plus de
+un(des) don(s) de CAD $1000 ou plus devient automatiquement un Bâtisseur. Pour plus de
 renseignements, veuillez consulter la rubrique du menu “Faire un don” pour voir la procédure, les
 
 méthodes de paiement et le plan de reconnaissance. Veuillez également consulter les sections ci-
