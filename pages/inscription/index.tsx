@@ -21,11 +21,11 @@ const Inscription = () => {
                         <ul className='flex flex-col gap-2'>
                             <li>
                                 a. <span className='underline'>Paypal</span>: <a className="text-blue-500 hover:text-blue-600 hover:underline" href='https://paypal.me/DonBatir?country.x=CA&locale.x=fr_CA' target='_blank'>https://paypal.me/DonBatir?country.x=CA&locale.x=fr_CA</a> (ajouter la mention
-                                "Batir2024") OU
+                                "Batir2025") OU
                             </li>
-                            <li>b. <span className='underline'>Virement Interac</span>: <span className='text-blue-500 hover:text-blue-600 hover:underline'>brunch-grahn@grahn-monde.org</span>, mot de passe <span className='text-gray-700 font-semibold'>Batir2024</span> OU</li>
+                            <li>b. <span className='underline'>Virement Interac</span>: <span className='text-blue-500 hover:text-blue-600 hover:underline'>brunch-grahn@grahn-monde.org</span>, mot de passe <span className='text-gray-700 font-semibold'>Batir2025</span> OU</li>
                             <li>c. <span className='underline'>Chèque</span>: GRAHN-Monde, 1649 Rue Notre-Dame-de Fatima, Laval, H7G 4V8, Québec, Canada
-                                (ajouter la mention “Batir2024")</li>
+                                (ajouter la mention “Batir2025")</li>
                         </ul>
                     </li>
                 </ul>

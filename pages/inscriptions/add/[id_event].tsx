@@ -18,7 +18,7 @@ const Add: React.FC<Props> = ({ data }) => {
         <title>Inscription | Ajouter</title>
       </Head>
       <div className="px-4 md:px-32 mx-auto md:mt-32 mt-16">
-        <AddInscription data_props={null} pays={data?.pays} civilites={data?.civilites} tranche_ages={data?.trancheAges} locaux={data?.locaux} event={data?.event} participants={data?.participants} affiliations={data?.affiliations} close={true} />
+        <AddInscription data_props={null} pays={data?.pays} civilites={data?.civilites} tranche_ages={data?.trancheAges} locaux={data?.locaux} event={data?.event} participants={data?.participants} affiliations={data?.affiliations} close={false} />
       </div>
 
 

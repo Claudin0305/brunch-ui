@@ -10,7 +10,7 @@ const FaireUnDon = () => {
             </Head>
             <div className="px-8 md:px-32 mx-auto md:mt-32 mt-16 mb-32">
                 <div className='text-center mb-8 mt-40'>
-                    <Link href={'/campagne-2024'} className='uppercase text-blue-500 md:text-blue-600 text-xl text-center'>Campagne 2024</Link>
+                    <Link href={'/campagne-2025'} className='uppercase text-blue-500 md:text-blue-600 text-xl text-center'>Campagne 2025</Link>
                     <p className='text-2xl'>DONNEZ MAINTENANT</p>
 
                     <p>au projet Pôle d'Innovation du Grand Nord (PIGraN)-Cité du savoir</p>
@@ -22,9 +22,9 @@ const FaireUnDon = () => {
                 <div className="">
                     <h2 className='font-semibold text-xl'>Donnez via CanaDon (QHASUQ ou FMCH)</h2>
                     <ul className="list-decimal ml-8">
-                        <li>Donnez via <a href="https://www.canadahelps.org/fr/organismesdebienfaisance/fondation-quebec-haiti-pour-une-scolarisation-universelle-de-qualite-qhasuq/" target='_blank' className='text-blue-500 hover:blue-400'>QHASUQ</a> avec la mention "Batir2024" pour un soutien en éducation/sports OU
+                        <li>Donnez via <a href="https://www.canadahelps.org/fr/organismesdebienfaisance/fondation-quebec-haiti-pour-une-scolarisation-universelle-de-qualite-qhasuq/" target='_blank' className='text-blue-500 hover:blue-400'>QHASUQ</a> avec la mention "Batir2025" pour un soutien en éducation/sports OU
                         </li>
-                        <li>Donnez via <a href='https://www.canadahelps.org/fr/dn/37417' target='_blank' className='text-blue-500 hover:blue-400'>FMCH</a> avec la mention "Batir2024" pour un soutien en santé </li>
+                        <li>Donnez via <a href='https://www.canadahelps.org/fr/dn/37417' target='_blank' className='text-blue-500 hover:blue-400'>FMCH</a> avec la mention "Batir2025" pour un soutien en santé </li>
                     </ul>
                     <p className="my-8 uppercase">Ou</p>
                     <h2 className='font-semibold text-xl'>Donnez via GRAHN-Monde</h2>
@@ -33,12 +33,12 @@ const FaireUnDon = () => {
                             <p className="">Faites votre paiement via:</p>
                             <ul className="list-none ml-4">
                                 <li>a. <span className='underline'>Paypal</span>: <a href='https://paypal.me/DonBatir?country.x=CA&locale.x=fr_CA' target='_blank' className='text-blue-500 hover:text-blue-400 hover:underline'>https://paypal.me/DonBatir?country.x=CA&locale.x=fr_CA</a> (avec la mention
-                                    "Batir2024") OU
+                                    "Batir2025") OU
                                 </li>
-                                <li>b. <span className='underline'>Virement Interac</span>: brunch-grahn@grahn-monde.org, mot de passe Batir2024 OU</li>
+                                <li>b. <span className='underline'>Virement Interac</span>: brunch-grahn@grahn-monde.org, mot de passe Batir2025 OU</li>
                                 <li>
                                     c. <span className='underline'>Chèque</span>: GRAHN-Monde, 1649 Rue Notre-Dame-de Fatima, Laval, H7G 4V8, Québec,
-                                    Canada (avec la mention “Batir2024”)
+                                    Canada (avec la mention “Batir2025”)
                                 </li>
                             </ul>
                         </li>

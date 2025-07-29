@@ -38,13 +38,13 @@ const Page: React.FC = () => {
                 </h1>
                 <ul className="flex flex-col gap-4 list-decimal pl-8">
                     <li>
-                        <span className="underline">Paypal</span>: <a className="text-blue-600 hover:text-blue-400 cursor-pointer" href="https://paypal.me/DonBatir?country.x=CA&locale.x=fr_CA" target="_blank">https://paypal.me/DonBatir?country.x=CA&locale.x=fr_CA</a> (mention "<span className="text-gray-700">Batir2024</span>") OU
+                        <span className="underline">Paypal</span>: <a className="text-blue-600 hover:text-blue-400 cursor-pointer" href="https://paypal.me/DonBatir?country.x=CA&locale.x=fr_CA" target="_blank">https://paypal.me/DonBatir?country.x=CA&locale.x=fr_CA</a> (mention "<span className="text-gray-700">Batir2025</span>") OU
                     </li>
                     <li>
-                        <span className="underline">Virement Interac</span>: <span className="text-blue-600">brunch-grahn@grahn-monde.org</span>, mot de passe <span className="text-gray-700">Batir2024</span> OU
+                        <span className="underline">Virement Interac</span>: <span className="text-blue-600">brunch-grahn@grahn-monde.org</span>, mot de passe <span className="text-gray-700">Batir2025</span> OU
                     </li>
                     <li>
-                        <span className="underline">Chèque</span>: GRAHN-Monde, 1649 Rue Notre-Dame-de Fatima, Laval, H7G 4V8, Québec, Canada (mention "<span className="text-gray-700">Batir2024</span>")
+                        <span className="underline">Chèque</span>: GRAHN-Monde, 1649 Rue Notre-Dame-de Fatima, Laval, H7G 4V8, Québec, Canada (mention "<span className="text-gray-700">Batir2025</span>")
                     </li>
                 </ul>
 

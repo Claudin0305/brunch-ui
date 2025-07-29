@@ -53,7 +53,7 @@ const Barometer: React.FC = () => {
   // Les données du graphique
   // console.log(data)
   const data_ = [
-    { name: 'Campagne 2024', Objectif: data?.objectif ?? 0, Dons: data?.don ?? 0, Promesses: data?.promesse ?? 0 },
+    { name: 'Campagne 2025', Objectif: data?.objectif ?? 0, Dons: data?.don ?? 0, Promesses: data?.promesse ?? 0 },
     // { name: 'Promesses', promesse: data?.promesse ?? 0 },
     // { name: 'Dons', }
   ];
@@ -61,7 +61,7 @@ const Barometer: React.FC = () => {
   return (
     <>
       {data && <div className="flex flex-col items-center mt-8">
-        {/* <h1 className="text-4xl font-bold text-blue-800 mb-8">Thermomètre de la Collecte de Fonds: BRUNCH 2024</h1> */}
+        {/* <h1 className="text-4xl font-bold text-blue-800 mb-8">Thermomètre de la Collecte de Fonds: BRUNCH 2025</h1> */}
 
         {/* Barre horizontale pour l'objectif */}
         <div className="relative w-3/5 my-4">

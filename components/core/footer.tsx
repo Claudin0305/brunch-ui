@@ -28,7 +28,7 @@ const Footer = () => {
     ]
     return (
     <footer className="bg-black text-white px-4 py-8 md:px-32 mx-auto mt-auto">
-        <p className="text-center">&copy; 2024</p>
+        <p className="text-center">&copy; 2025</p>
     </footer>)
 }
 
