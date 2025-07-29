@@ -208,14 +208,17 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
         {
           value: "DISTANCIEL",
           label: "Distanciel"
-        }
-      ]
-      if (!close) {
-        optionsMod.push({
+        },{
           value: "PRESENTIEL",
           label: "Présentiel"
-        })
-      }
+        }
+      ]
+      // if (!close) {
+      //   optionsMod.push({
+      //     value: "PRESENTIEL",
+      //     label: "Présentiel"
+      //   })
+      // }
       const mod = optionsMod.filter((o: any) => o.value === data_props.mode_participation)[0];
       setValue('mode_participation', mod);
       setSelectedMode(mod)
