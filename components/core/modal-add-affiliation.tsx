@@ -1,11 +1,11 @@
-import  { useState, useEffect } from "react";
-import { useForm, SubmitHandler, Controller } from "react-hook-form";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import Swal from 'sweetalert2'
 import CircularIndeterminate from "@/components/core/circular-indeterminate";
 import Error from "@/components/core/error";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 import axios from 'axios';
+import { useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import Swal from 'sweetalert2';
 type Props = {
     show: boolean;
     setShow: any;
@@ -109,7 +109,7 @@ const ModalAddAffiliation: React.FC<Props> = ({ show, setShow, setSelectedAffili
                                                 size="small"
                                                 id="nom_affiliation"
                                                 label="Nom affiliation"
-                                                {...register("nom_affiliation", { required: 'Ce champ est obligatoire' })}
+                                                {...register("nom_affiliation", { required: 'Vous avez omis de spécifier un champ obligatoire sur cette page.  Veuillez préciser tous les champs obligatoires (ils sont marqués d’un astérisque)' })}
                                             />
                                             {responseError !== null && <Error text={responseError?.nom_affiliation} />}
                                             {errors?.nom_affiliation && <Error text={errors.nom_affiliation.message} />}

@@ -1,18 +1,18 @@
 
-import { useState, useEffect, useMemo } from "react";
-import { useForm, SubmitHandler, Controller } from "react-hook-form";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import Swal from 'sweetalert2'
 import CircularIndeterminate from "@/components/core/circular-indeterminate";
 import Error from "@/components/core/error";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 import axios from 'axios';
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/router';
+import { useEffect, useState } from "react";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import Swal from 'sweetalert2';
 // import ReactQuill from 'react-quill';
+import dynamic from "next/dynamic";
+import Image from "next/image";
 import 'react-quill/dist/quill.snow.css';
 import Select from 'react-select';
-import Image from "next/image"
-import dynamic from "next/dynamic";
 import Star from "../core/star";
 const QuillNoSSRWrapper = dynamic(import('react-quill'), {
   ssr: false,
@@ -323,7 +323,7 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
                 defaultValue={defaultDate}
                 type="date"
                 value={dateDebut}
-                {...register("date_debut", { required: 'Ce champ est obligatoire!' })}
+                {...register("date_debut", { required: 'Vous avez omis de spécifier un champ obligatoire sur cette page.  Veuillez préciser tous les champs obligatoires (ils sont marqués d’un astérisque)!' })}
                 onChange={e => {
                   setDateFin(defaultDate);
                   setDateDebut(e.target.value.trim())
@@ -358,7 +358,7 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
                 defaultValue={defaultDate}
                 type="date"
                 value={dateFin}
-                {...register("date_fin", { required: 'Ce champ est obligatoire' })}
+                {...register("date_fin", { required: 'Vous avez omis de spécifier un champ obligatoire sur cette page.  Veuillez préciser tous les champs obligatoires (ils sont marqués d’un astérisque)' })}
                 onChange={e => {
                   setDateFin(e.target.value.trim());
                   register('date_fin').onChange(e);
@@ -401,7 +401,7 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
                 name={`format_event`}
                 control={control}
                 rules={{
-                  required: "Ce champ est obligatoire",
+                  required: "Vous avez omis de spécifier un champ obligatoire sur cette page.  Veuillez préciser tous les champs obligatoires (ils sont marqués d’un astérisque)",
                 }}
 
                 render={({ field }) => (
@@ -430,7 +430,7 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
                 name={`event_type`}
                 control={control}
                 rules={{
-                  required: "Ce champ est obligatoire",
+                  required: "Vous avez omis de spécifier un champ obligatoire sur cette page.  Veuillez préciser tous les champs obligatoires (ils sont marqués d’un astérisque)",
                 }}
 
                 render={({ field }) => (
@@ -552,7 +552,7 @@ const AddEvent: React.FC<Props> = ({ data_props }) => {
                 {...register("image_event", {
                   required: {
                     value: data_props === null,
-                    message: "Ce champ est obligatoire!"
+                    message: "Vous avez omis de spécifier un champ obligatoire sur cette page.  Veuillez préciser tous les champs obligatoires (ils sont marqués d’un astérisque)!"
                   }
                 })}
                 onChange={e => {

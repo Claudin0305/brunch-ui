@@ -1,16 +1,16 @@
 
-import Head from "next/head";
-import React from "react";
+import Error from "@/components/core/error";
+import HomeLayout from '@/components/core/home-layout';
+import Star from "@/components/core/star";
+import { TextField } from "@mui/material";
+import Button from '@mui/material/Button';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Stepper from '@mui/material/Stepper';
-import Button from '@mui/material/Button';
-import HomeLayout from '@/components/core/home-layout'
-import { useForm, SubmitHandler, Controller } from "react-hook-form";
-import { TextField } from "@mui/material";
-import Error from "@/components/core/error";
 import axios from "axios";
-import Star from "@/components/core/star";
+import Head from "next/head";
+import React from "react";
+import { useForm } from "react-hook-form";
 import PaymentFinal from "./payment-final";
 type Inputs = {
     info: any,
@@ -104,7 +104,7 @@ const Page: React.FC = () => {
                     className=""
 
                 />
-                {errorRequired && <Error text={'Ce champ est obligatoire!'} />}
+                {errorRequired && <Error text={'Vous avez omis de spécifier un champ obligatoire sur cette page.  Veuillez préciser tous les champs obligatoires (ils sont marqués d’un astérisque)!'} />}
                 {errorNotFound && <Error text={'Participant introuvable!'} />}
                 {errorRes && <Error text={errorRes.participant} />}
             </div>
@@ -117,7 +117,7 @@ const Page: React.FC = () => {
                 <input {...register("montant")} type="radio" value={montant} id="me" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 mr-2" />
                 <label htmlFor="me" className="mb-1 mt-8">Pour moi <span className="font-semibold">({montant} {data?.participant?.devise})</span></label>
                 {errorRequired2 && <div className="block">
-                    <Error text={'Ce champ est obligatoire!'} />
+                    <Error text={'Vous avez omis de spécifier un champ obligatoire sur cette page.  Veuillez préciser tous les champs obligatoires (ils sont marqués d’un astérisque)!'} />
                 </div>}
             </div>
         )

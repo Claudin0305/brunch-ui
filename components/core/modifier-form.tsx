@@ -1,13 +1,12 @@
-import { useState, useEffect } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import Swal from 'sweetalert2'
 import CircularIndeterminate from "@/components/core/circular-indeterminate";
 import Error from "@/components/core/error";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 import axios from 'axios';
-import { useRouter } from 'next/router'
-import Router from 'next/router';
+import { useRouter } from 'next/router';
+import { useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import Swal from 'sweetalert2';
 
 
 type Inputs = {
@@ -99,7 +98,7 @@ const UpdateInscription: React.FC = () => {
                             size="small"
                             id="username"
                             label="Numéro de dossier"
-                            {...register("username", { required: 'Ce champ est obligatoire' })}
+                            {...register("username", { required: 'Vous avez omis de spécifier un champ obligatoire sur cette page.  Veuillez préciser tous les champs obligatoires (ils sont marqués d’un astérisque)' })}
                         />
                         {responseError !== null && <Error text={responseError?.username} />}
                         {errors?.username && <Error text={errors.username.message} />}

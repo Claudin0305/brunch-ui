@@ -10,7 +10,7 @@ const FaireUnDon = () => {
             </Head>
             <div className="px-8 md:px-32 mx-auto md:mt-32 mt-16 mb-32">
                 <div className='text-center mb-8 mt-40'>
-                    <Link href={'/campagne-2025'} className='uppercase text-blue-500 md:text-blue-600 text-xl text-center'>Campagne 2025</Link>
+                    {/* <Link href={'/campagne-2025'} className='uppercase text-blue-500 md:text-blue-600 text-xl text-center'>Campagne 2025</Link> */}
                     <p className='text-2xl'>DONNEZ MAINTENANT</p>
 
                     <p>au projet Pôle d'Innovation du Grand Nord (PIGraN)-Cité du savoir</p>
@@ -65,10 +65,10 @@ const FaireUnDon = () => {
                         </li>
                     </ul>
                     <p className="text-center mt-8 mb-4">Tous les dons comptent parce que "seul, on va plus vite; ensemble on va plus loin”.</p>
-                    <div className="text-center flex flex-col gap-4">
+                    {/* <div className="text-center flex flex-col gap-4">
                         <Link href={'/ambassadeurs'} className='text-gray-600 font-semibold'>Tableau des ambassadeurs</Link>
                         <a href={'/plan_de_reconnaissance.pdf'} target='_blank' className='text-blue-500 hover:text-blue-400 font-semibold -mt-2'>Plan de reconnaissance</a>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </HomeLayout>

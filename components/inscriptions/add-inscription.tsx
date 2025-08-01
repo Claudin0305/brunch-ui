@@ -114,7 +114,7 @@ const mode_paiements: option[] = [
 ]
 
 let errNext: errType = {};
-const champ = 'Ce champ est obligatoire!';
+const champ = 'Vous avez omis de spécifier un champ obligatoire sur cette page.  Veuillez préciser tous les champs obligatoires (ils sont marqués d’un astérisque)!';
 const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civilites, event, locaux, participants, affiliations, close }) => {
   // console.log(pays)
   const { register, handleSubmit, watch, reset, setValue, getValues, control, formState: { errors } } = useForm<Inputs>();
@@ -614,7 +614,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
         Swal.fire({
           // position: 'top-end',
           icon: 'error',
-          title: "Échec d’inscription Une inscription existe déjà pour cette personne(même nom, prénom, courriel).",
+          title: "Vous ne pouvez pas ajouter ce participant parce qu’il existe déjà (nom, prénom, courriel)",
           // showConfirmButton: false,
           // timer: 1500
           // buttonColor:"#000000",
@@ -688,7 +688,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
             name={`id_civilite`}
             control={control}
             rules={{
-              required: "Ce champ est obligatoire",
+              required: "Vous avez omis de spécifier un champ obligatoire sur cette page.  Veuillez préciser tous les champs obligatoires (ils sont marqués d’un astérisque)",
             }}
 
             render={({ field }) => (
@@ -716,7 +716,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
             type="text"
             label="Nom"
             {...register("nom", {
-              required: "Ce champ est obligatoire", minLength: {
+              required: "Vous avez omis de spécifier un champ obligatoire sur cette page.  Veuillez préciser tous les champs obligatoires (ils sont marqués d’un astérisque)", minLength: {
                 value: 2,
                 message: "Ce champ doit avoir au moins 2 caractères"
               }
@@ -744,7 +744,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
             size="small"
             type="text"
             label="Prénom"
-            {...register("prenom", { required: "Ce champ est obligatoire" })}
+            {...register("prenom", { required: "Vous avez omis de spécifier un champ obligatoire sur cette page.  Veuillez préciser tous les champs obligatoires (ils sont marqués d’un astérisque)" })}
             onChange={(e) => {
               register('prenom').onChange(e)
               errNext = { ...errNext, prenom: false, invalid_prenom: false }
@@ -769,7 +769,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
             {...register("tel_participant", {
               pattern: {
                 value: /^[+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[-\s\\./0-9]*$/g,
-                message: "Le format du telephone est incorrect"
+                message: "Le format du numéro de téléphone que vous avez spécifié incorrect.  Veuillez entrer un numéro de téléphone valide"
               }
             })}
             className=""
@@ -790,9 +790,9 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
             type="email"
             label="Courriel"
             {...register("email", {
-              required: "Ce champ est obligatoire", pattern: {
+              required: "Vous avez omis de spécifier un champ obligatoire sur cette page.  Veuillez préciser tous les champs obligatoires (ils sont marqués d’un astérisque)", pattern: {
                 value: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-                message: "Le format du courriel que vous avez spécifié incorrect.  Veuillez entrer un courriel valide."
+                message: "Le format du courriel que vous avez spécifié incorrect.  Veuillez entrer un courriel valide"
               }
             })}
             onChange={e => {
@@ -826,9 +826,9 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
             type="email"
             label="Confirmation de courriel"
             {...register("email_confirmation", {
-              required: "Ce champ est obligatoire", pattern: {
+              required: "Vous avez omis de spécifier un champ obligatoire sur cette page.  Veuillez préciser tous les champs obligatoires (ils sont marqués d’un astérisque)", pattern: {
                 value: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-                message: "L'email est invalide!"
+                message: "Le format du courriel que vous avez spécifié incorrect.  Veuillez entrer un courriel valide"
               }
             })}
             onChange={e => {
@@ -839,7 +839,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
           />
           {/* {responseError !== null && <Error text={responseError?.libelle}/>} */}
           {errNext?.email_conf_null && <Error text={champ} />}
-          {errNext?.email_confirmation && <Error text={'Le courriel que vous avez spécifié dans le champ "Confirmation de courriel" ne correspond pas à celui que vous avez indiqué dans le champ courriel.  Veuillez entrer la même valeur dans les 2 champs.'} />}
+          {errNext?.email_confirmation && <Error text={'Le courriel que vous avez spécifié dans le champ "Confirmation de courriel" ne correspond pas à celui que vous avez indiqué dans le champ courriel  Veuillez entrer la même valeur dans les 2 champs'} />}
           {/* {errors?.email_confirmation && <Error text={errors.email_confirmation.message} />}
           {!identiqueEmail && <Error text={"Le courriel que vous avez spécifié dans le champ \"Confirmation de courriel\" ne correspond pas à celui que vous avez indiqué dans le champ courriel.  Veuillez entrer la même valeur dans les 2 champs."} />} */}
         </div>}
@@ -856,7 +856,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
             name={`id_tranche_age`}
             control={control}
             // rules={{
-            //   required: "Ce champ est obligatoire",
+            //   required: "Vous avez omis de spécifier un champ obligatoire sur cette page.  Veuillez préciser tous les champs obligatoires (ils sont marqués d’un astérisque)",
             // }}
 
             render={({ field }) => (
@@ -885,7 +885,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
             name={`id_tranche_age`}
             control={control}
             // rules={{
-            //   required: "Ce champ est obligatoire",
+            //   required: "Vous avez omis de spécifier un champ obligatoire sur cette page.  Veuillez préciser tous les champs obligatoires (ils sont marqués d’un astérisque)",
             // }}
 
             render={({ field }) => (
@@ -914,7 +914,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
             name={`id_pays`}
             control={control}
             rules={{
-              required: "Ce champ est obligatoire",
+              required: "Vous avez omis de spécifier un champ obligatoire sur cette page.  Veuillez préciser tous les champs obligatoires (ils sont marqués d’un astérisque)",
             }}
 
             render={({ field }) => (
@@ -960,7 +960,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
             name={`id_departement`}
             control={control}
             rules={{
-              required: "Ce champ est obligatoire",
+              required: "Vous avez omis de spécifier un champ obligatoire sur cette page.  Veuillez préciser tous les champs obligatoires (ils sont marqués d’un astérisque)",
             }}
 
             render={({ field }) => (
@@ -1008,7 +1008,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
             name={`id_ville`}
             control={control}
             rules={{
-              required: "Ce champ est obligatoire",
+              required: "Vous avez omis de spécifier un champ obligatoire sur cette page.  Veuillez préciser tous les champs obligatoires (ils sont marqués d’un astérisque)",
             }}
 
             render={({ field }) => (
@@ -1059,7 +1059,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
             control={control}
             rules={{
               required: {
-                message: "Ce champ est obligatoire",
+                message: "Vous avez omis de spécifier un champ obligatoire sur cette page.  Veuillez préciser tous les champs obligatoires (ils sont marqués d’un astérisque)",
                 value: false
               },
             }}
@@ -1105,7 +1105,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
             name={`mode_participation`}
             control={control}
             // rules={{
-            //   required: "Ce champ est obligatoire",
+            //   required: "Vous avez omis de spécifier un champ obligatoire sur cette page.  Veuillez préciser tous les champs obligatoires (ils sont marqués d’un astérisque)",
             // }}
 
             render={({ field }) => (
@@ -1147,7 +1147,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
               control={control}
               rules={{
                 required: {
-                  message: "Ce champ est obligatoire",
+                  message: "Vous avez omis de spécifier un champ obligatoire sur cette page.  Veuillez préciser tous les champs obligatoires (ils sont marqués d’un astérisque)",
                   value: selectedMode?.value === 'PRESENTIEL'
                 },
               }}
@@ -1187,7 +1187,7 @@ const AddInscription: React.FC<Props> = ({ data_props, pays, tranche_ages, civil
               name={`mode_paiement`}
               control={control}
               rules={{
-                required: "Ce champ est obligatoire"
+                required: "Vous avez omis de spécifier un champ obligatoire sur cette page.  Veuillez préciser tous les champs obligatoires (ils sont marqués d’un astérisque)"
               }
 
               }

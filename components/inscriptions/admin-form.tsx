@@ -43,7 +43,7 @@ const AdminForm: React.FC<Props> = ({ isAdmin, setIsAdmin }) => {
                         type="password"
                         label="Mot de passe"
                         {...register("password", {
-                            required: "Ce champ est obligatoire", minLength: {
+                            required: "Vous avez omis de spécifier un champ obligatoire sur cette page.  Veuillez préciser tous les champs obligatoires (ils sont marqués d’un astérisque)", minLength: {
                                 value: 2,
                                 message: "Ce champ doit avoir au moins 2 caractères"
                             }

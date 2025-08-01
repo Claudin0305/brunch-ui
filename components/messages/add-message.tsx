@@ -1,15 +1,15 @@
-import { useState, useEffect, useMemo } from "react";
-import { useForm, SubmitHandler, Controller } from "react-hook-form";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import Swal from 'sweetalert2'
 import CircularIndeterminate from "@/components/core/circular-indeterminate";
 import Error from "@/components/core/error";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 import axios from 'axios';
-import { useRouter } from 'next/router'
-import Select from 'react-select';
 import dynamic from "next/dynamic";
+import { useRouter } from 'next/router';
+import { useEffect, useState } from "react";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import 'react-quill/dist/quill.snow.css';
+import Select from 'react-select';
+import Swal from 'sweetalert2';
 import Star from "../core/star";
 const QuillNoSSRWrapper = dynamic(import('react-quill'), {
   ssr: false,
@@ -209,7 +209,7 @@ const AddMessage: React.FC<Props> = ({data_props}) => {
                             id="subject"
                             size="small"
                             label="Objet du message"
-                            {...register("subject", { required: "Ce champ est obligatoire" })}
+                            {...register("subject", { required: "Vous avez omis de spécifier un champ obligatoire sur cette page.  Veuillez préciser tous les champs obligatoires (ils sont marqués d’un astérisque)" })}
                         />
                         {responseError !== null && <Error text={responseError?.subject} />}
                         {errors?.subject && <Error text={errors.subject.message} />}
@@ -249,7 +249,7 @@ const AddMessage: React.FC<Props> = ({data_props}) => {
               modules={modules}
               theme="snow"
               placeholder="contenu du message...*"
-            //    {...register('libelle_texte', { required: "Ce champ est obligatoire!" })}
+            //    {...register('libelle_texte', { required: "Vous avez omis de spécifier un champ obligatoire sur cette page.  Veuillez préciser tous les champs obligatoires (ils sont marqués d’un astérisque)!" })}
         // onChange={handleQuillChange}
               onChange={e=>{
                 // console.log(e)

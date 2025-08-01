@@ -1,13 +1,13 @@
-import { useState, useEffect } from "react";
-import { useForm, SubmitHandler, Controller } from "react-hook-form";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import Swal from 'sweetalert2'
 import CircularIndeterminate from "@/components/core/circular-indeterminate";
 import Error from "@/components/core/error";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 import axios from 'axios';
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/router';
+import { useEffect, useState } from "react";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import Select from 'react-select';
+import Swal from 'sweetalert2';
 import Star from "../core/star";
 
 type option = {
@@ -249,7 +249,7 @@ const AddLocalBrunch: React.FC<Props> = ({ data_props, pays, events, devises }) 
               size="small"
               type="text"
               label="Libelle"
-              {...register("libelle", { required: "Ce champ est obligatoire" })}
+              {...register("libelle", { required: "Vous avez omis de spécifier un champ obligatoire sur cette page.  Veuillez préciser tous les champs obligatoires (ils sont marqués d’un astérisque)" })}
               className="md:mt-3"
             />
             {/* {responseError !== null && <Error text={responseError?.libelle}/>} */}
@@ -267,7 +267,7 @@ const AddLocalBrunch: React.FC<Props> = ({ data_props, pays, events, devises }) 
               name={`id_event`}
               control={control}
               rules={{
-                required: "Ce champ est obligatoire",
+                required: "Vous avez omis de spécifier un champ obligatoire sur cette page.  Veuillez préciser tous les champs obligatoires (ils sont marqués d’un astérisque)",
               }}
 
               render={({ field }) => (
@@ -295,7 +295,7 @@ const AddLocalBrunch: React.FC<Props> = ({ data_props, pays, events, devises }) 
               name={`id_ville`}
               control={control}
               rules={{
-                required: "Ce champ est obligatoire",
+                required: "Vous avez omis de spécifier un champ obligatoire sur cette page.  Veuillez préciser tous les champs obligatoires (ils sont marqués d’un astérisque)",
               }}
 
               render={({ field }) => (
@@ -322,7 +322,7 @@ const AddLocalBrunch: React.FC<Props> = ({ data_props, pays, events, devises }) 
               size="small"
               type="text"
               label="Adresse"
-              {...register("adresse_no_rue", { required: "Ce champ est obligatoire" })}
+              {...register("adresse_no_rue", { required: "Vous avez omis de spécifier un champ obligatoire sur cette page.  Veuillez préciser tous les champs obligatoires (ils sont marqués d’un astérisque)" })}
               className="md:mt-1"
             />
             {/* {responseError !== null && <Error text={responseError?.libelle}/>} */}
@@ -340,7 +340,7 @@ const AddLocalBrunch: React.FC<Props> = ({ data_props, pays, events, devises }) 
               type="email"
               label="Email responsable"
               {...register("email_responsable", {
-                required: "Ce champ est obligatoire", pattern: {
+                required: "Vous avez omis de spécifier un champ obligatoire sur cette page.  Veuillez préciser tous les champs obligatoires (ils sont marqués d’un astérisque)", pattern: {
                   value: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
                   message: "L'email est invalide!"
                 }
@@ -361,7 +361,7 @@ const AddLocalBrunch: React.FC<Props> = ({ data_props, pays, events, devises }) 
               inputProps={{ min }}
               label="Capacité totale"
               {...register("capacite_totale", {
-                required: "Ce champ est obligatoire", min: {
+                required: "Vous avez omis de spécifier un champ obligatoire sur cette page.  Veuillez préciser tous les champs obligatoires (ils sont marqués d’un astérisque)", min: {
                   value: 1,
                   message: 'La valeur doit être plus grande que 1'
                 }
@@ -384,7 +384,7 @@ const AddLocalBrunch: React.FC<Props> = ({ data_props, pays, events, devises }) 
               size="small"
               className="md:mt-2"
               label="Capacité table"
-              {...register("capacite_table", { required: "Ce champ est obligatoire" })}
+              {...register("capacite_table", { required: "Vous avez omis de spécifier un champ obligatoire sur cette page.  Veuillez préciser tous les champs obligatoires (ils sont marqués d’un astérisque)" })}
               onChange={e => {
                 setCapaciteTable(e.target.value);
                 register('capacite_table').onChange(e);
@@ -407,7 +407,7 @@ const AddLocalBrunch: React.FC<Props> = ({ data_props, pays, events, devises }) 
               inputProps={{ min }}
               label="Seuil alerte"
               {...register("seuil_alerte", {
-                required: "Ce champ est obligatoire", min: {
+                required: "Vous avez omis de spécifier un champ obligatoire sur cette page.  Veuillez préciser tous les champs obligatoires (ils sont marqués d’un astérisque)", min: {
                   value: 1,
                   message: 'La valeur doit être plus grande que 1'
                 }
@@ -430,7 +430,7 @@ const AddLocalBrunch: React.FC<Props> = ({ data_props, pays, events, devises }) 
               inputProps={{ min: 0 }}
               label="Montant participation"
               {...register("montant_participation", {
-                required: "Ce champ est obligatoire", min: {
+                required: "Vous avez omis de spécifier un champ obligatoire sur cette page.  Veuillez préciser tous les champs obligatoires (ils sont marqués d’un astérisque)", min: {
                   value: 0,
                   message: 'La valeur doit être plus grande ou égale à 0'
                 }
@@ -453,7 +453,7 @@ const AddLocalBrunch: React.FC<Props> = ({ data_props, pays, events, devises }) 
               name={`id_devise`}
               control={control}
               rules={{
-                required: "Ce champ est obligatoire",
+                required: "Vous avez omis de spécifier un champ obligatoire sur cette page.  Veuillez préciser tous les champs obligatoires (ils sont marqués d’un astérisque)",
               }}
 
               render={({ field }) => (

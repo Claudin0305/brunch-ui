@@ -124,7 +124,7 @@ if(response.status === 201){
             size="small"
             id="nom_affiliation"
             label="Nom affiliation"
-              {...register("nom_affiliation", { required: 'Ce champ est obligatoire' })}
+              {...register("nom_affiliation", { required: 'Vous avez omis de spécifier un champ obligatoire sur cette page.  Veuillez préciser tous les champs obligatoires (ils sont marqués d’un astérisque)' })}
           />
             {responseError !== null && <Error text={responseError?.nom_affiliation}/>}
             {errors?.nom_affiliation && <Error text={errors.nom_affiliation.message} />}
